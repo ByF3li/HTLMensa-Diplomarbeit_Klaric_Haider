@@ -6,6 +6,7 @@ namespace MensaWebAPI.Models.DB
     public class MenuContext : DbContext
     {
         public DbSet<Menu> Menues { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

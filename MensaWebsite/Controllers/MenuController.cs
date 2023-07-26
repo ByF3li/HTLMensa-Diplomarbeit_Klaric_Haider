@@ -32,8 +32,14 @@ namespace MensaWebsite.Controllers
                 Price = price,
                 Date = date
             };
-
-            SafeMenuInDatabase(menu);
+            try
+            {
+                SafeMenuInDatabase(menu);
+            }catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            
 
             if (responseMessage.IsSuccessStatusCode)
             {
