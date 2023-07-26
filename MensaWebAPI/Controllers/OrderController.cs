@@ -32,7 +32,5 @@ namespace MensaWebAPI.Controllers
             this._context.Orders.Add(order);
             return new JsonResult((await this._context.SaveChangesAsync()) == 1);
         }
-
-
     }
 }
