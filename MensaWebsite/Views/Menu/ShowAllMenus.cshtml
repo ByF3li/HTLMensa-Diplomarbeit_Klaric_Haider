@@ -1,0 +1,20 @@
+﻿@using MensaAppKlassenBibliothek
+@model List<Menu>
+@{
+    ViewData["Title"] = "Menüs";
+}
+
+<h1>Alle Menüs</h1>
+@if (Model != null && Model.Count() >= 1)
+{
+    <div class="row">
+        <div class="card-deck mb-3 text-center">
+            @foreach (Menu m in Model)
+            {
+                <div class="col-md-4">
+                    <partial name="_ShowOrdersMenus" model="@m" />
+                </div>
+            }
+        </div>
+    </div>
+}

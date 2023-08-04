@@ -1,8 +1,5 @@
 ﻿using MensaAppKlassenBibliothek;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using System.ComponentModel;
-using System.Threading.Tasks.Dataflow;
 
 namespace MensaWebsite.Controllers
 {
@@ -10,6 +7,7 @@ namespace MensaWebsite.Controllers
     {
 
         HttpResponseMessage responseMessage = new();
+        List<Menu> menus = new List<Menu>();
 
         public IActionResult Index()
         {
@@ -22,7 +20,7 @@ namespace MensaWebsite.Controllers
         }
 
         [HttpPost]
-        public IActionResult SafeMenues(int whichMenu, string starter, string mainCourse, decimal price, DateTime date)
+        public async Task<IActionResult> SafeMenues(int whichMenu, string starter, string mainCourse, decimal price, DateTime date)
         {
             Menu menu = new Menu()
             {
@@ -32,14 +30,20 @@ namespace MensaWebsite.Controllers
                 Price = price,
                 Date = date
             };
+
+
             try
             {
-                SafeMenuInDatabase(menu);
-            }catch (Exception ex)
+                HttpClient client = new HttpClient();
+                responseMessage = await client.PostAsJsonAsync<Menu>("https://localhost:7286/api/mensa/menu/safeMenu", menu);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
             
+
+
 
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -49,12 +53,26 @@ namespace MensaWebsite.Controllers
 
             return View();
         }
-
-        public async void SafeMenuInDatabase(Menu menu)
+        public async Task<ViewResult> ShowAllMenus()
         {
-                HttpClient client = new HttpClient();
-                responseMessage = await client.PostAsJsonAsync<Menu>("https://localhost:7286/api/mensa/menu/safeMenu", menu);
-        }
+            HttpClient client = new HttpClient();
+            try
+            {
+                menus = await client.GetFromJsonAsync<List<Menu>>("https://localhost:7286/api/mensa/menu/getAll");
+                foreach (Menu menu in menus)
+                {
+                    Console.WriteLine(menu);
+                }
+                await Console.Out.WriteLineAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
 
+
+
+            return View(menus);
+        }
     }
 }
