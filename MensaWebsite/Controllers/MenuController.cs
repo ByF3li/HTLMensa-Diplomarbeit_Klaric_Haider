@@ -1,5 +1,7 @@
 ﻿using MensaAppKlassenBibliothek;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace MensaWebsite.Controllers
 {
@@ -8,6 +10,10 @@ namespace MensaWebsite.Controllers
 
         HttpResponseMessage responseMessage = new();
         List<Menu> menus = new List<Menu>();
+        JsonSerializerOptions options = new JsonSerializerOptions()
+        {
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
 
         public IActionResult Index()
         {
@@ -20,7 +26,7 @@ namespace MensaWebsite.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SafeMenues(int whichMenu, string starter, string mainCourse, decimal price, DateTime date)
+        public async Task<IActionResult> SafeMenues(int whichMenu, string starter, string mainCourse, decimal price, DateOnly date)
         {
             Menu menu = new Menu()
             {
@@ -28,9 +34,11 @@ namespace MensaWebsite.Controllers
                 Starter = starter,
                 MainCourse = mainCourse,
                 Price = price,
-                Date = date
+                Date = date,
+                Orders = new List<Order>()
             };
 
+            
 
             try
             {
@@ -48,6 +56,10 @@ namespace MensaWebsite.Controllers
             if (responseMessage.IsSuccessStatusCode)
             {
                 TempData["SuccessAlert"] = "Menü wurde erfolgreich hinzugefügt!";
+                return RedirectToAction("SafeMenues");
+            }else if (!responseMessage.IsSuccessStatusCode)
+            {
+                TempData["NoSuccessAlert"] = "Menü konnte nicht gespeichert werden!";
                 return RedirectToAction("SafeMenues");
             }
 

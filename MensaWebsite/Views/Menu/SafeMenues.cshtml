@@ -58,6 +58,12 @@
                 @TempData["SuccessAlert"]
             </div>
         }
+        else if (TempData["NoSuccessAlert"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["NoSuccessAlert"]
+            </div>
+        }
 
 
     <div class="mx-auto" style="width: 200px;">

@@ -2,6 +2,8 @@
 using MensaWebAPI.Models.DB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace MensaWebAPI.Controllers
 {
@@ -12,6 +14,10 @@ namespace MensaWebAPI.Controllers
     {
         private MenuContext _context = new MenuContext();
 
+        JsonSerializerOptions options = new JsonSerializerOptions()
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles
+        };
 
         public MenuController(MenuContext context) 
         {
@@ -23,7 +29,7 @@ namespace MensaWebAPI.Controllers
         [Route("menu/getAll")]
         public async Task<IActionResult> AsyncGetAllMenues()
         {
-            return new JsonResult(await this._context.Menues.ToListAsync());
+            return new JsonResult(await this._context.Menues.ToListAsync(),options);
         }
 
         [HttpPost]
@@ -31,14 +37,14 @@ namespace MensaWebAPI.Controllers
         public async Task<IActionResult> AsyncSafeMenu(Menu menu)
         {
             this._context.Menues.Add(menu);
-            return new JsonResult((await this._context.SaveChangesAsync()) == 1);
+            return new JsonResult((await this._context.SaveChangesAsync()) == 1, options);
         }
 
         [HttpGet]
         [Route("menu/getMenuByDate/{menuDate}")]
-        public async Task<IActionResult> AsyncGetMenuByDate(DateTime menuDate)
+        public async Task<IActionResult> AsyncGetMenuByDate(DateOnly menuDate)
         {
-            return new JsonResult(await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync());
+            return new JsonResult(await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync(), options);
         }
 
     }
