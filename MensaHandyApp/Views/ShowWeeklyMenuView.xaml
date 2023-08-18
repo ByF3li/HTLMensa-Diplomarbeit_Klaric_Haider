@@ -30,7 +30,7 @@
 
                             <Label Text="Datum des Menüs:" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0,0,0,10"/>
                             <Label Text="{Binding Date}" HorizontalOptions="Start" Grid.Row="4" Grid.Column="1" Margin="0, 0, 0, 10"/>
-
+                            
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

@@ -25,7 +25,7 @@ namespace MensaHandyApp.ViewModels
         private async Task ShowWeeklyMenuAsync()
         {
             HttpClient _client = new HttpClient();
-            Menus = await _client.GetFromJsonAsync<ObservableCollection<Menu>>("https://localhost:7286/api/mensa/menu/getWeeklyMenu");
+            Menus = await _client.GetFromJsonAsync<ObservableCollection<Menu>>("https://localhost:7286/api/mensa/menu/getThisWeeklyMenu");
 
         }
     }
