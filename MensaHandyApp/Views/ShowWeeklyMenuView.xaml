@@ -4,8 +4,9 @@
              x:Class="MensaHandyApp.Views.ShowWeeklyMenuView"
              Title="Wochen-Menü">
 
-    <VerticalStackLayout>
+    
         <ScrollView>
+        <VerticalStackLayout>
             <CollectionView ItemsSource="{Binding Menus}">
 
                 <CollectionView.ItemsLayout>
@@ -30,14 +31,14 @@
 
                             <Label Text="Datum des Menüs:" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0,0,0,10"/>
                             <Label Text="{Binding Date}" HorizontalOptions="Start" Grid.Row="4" Grid.Column="1" Margin="0, 0, 0, 10"/>
-                            
+
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
 
 
             </CollectionView>
-        </ScrollView>
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
     
 </ContentPage>

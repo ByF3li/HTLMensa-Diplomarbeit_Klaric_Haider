@@ -13,7 +13,6 @@ namespace MensaAppKlassenBibliothek
         public string Starter { get; set; }
         public string MainCourse { get; set; }
         public decimal Price { get; set; }
-        public DateOnly Date { get; set; }
-
+        public DateOnly Date { get; set; }   
     }
 }

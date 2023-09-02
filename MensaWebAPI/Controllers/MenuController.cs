@@ -170,14 +170,36 @@ namespace MensaWebAPI.Controllers
                 resultDateOnly.AddDays(-1), //Wednesday
                 resultDateOnly,             //Thursday
                 resultDateOnly.AddDays(+1), //Friday
-                resultDateOnly.AddDays(+2), //Saturday
-                resultDateOnly.AddDays(+3)  //Sunday
+                //resultDateOnly.AddDays(+2), //Saturday
+                //resultDateOnly.AddDays(+3)  //Sunday
 
             };
 
-            //return new JsonResult(days);
-            //return new JsonResult(await this._context.Menues.Where(days.Contains()).toListAsync());
-            return new JsonResult(await this._context.Menues.Where(m => days.Contains(m.Date)).ToListAsync());
-        }   //todo: sort list before JsonResult
+            List<Menu> menuList = new List<Menu>();
+            menuList = await this._context.Menues.Where(m => days.Contains(m.Date)).ToListAsync();
+
+            Menu menuToSafe;
+            for (int i = 0; i <= menuList.Count - 2; i++)
+            {
+                for (int j = 0; j <= menuList.Count - 2; j++)
+                {
+                    //Sorts list by Date
+                    if (menuList[j].Date > menuList[j + 1].Date)
+                    {
+                        menuToSafe = menuList[j + 1];
+                        menuList[j + 1] = menuList[j];
+                        menuList[j] = menuToSafe;
+                    }
+                    if (menuList[j].WhichMenu > menuList[j + 1].WhichMenu && menuList[j].Date == menuList[j + 1].Date)
+                    {
+                        menuToSafe = menuList[j + 1];
+                        menuList[j + 1] = menuList[j];
+                        menuList[j] = menuToSafe;
+                    }
+                }
+            }
+            return new JsonResult(menuList);
+        }   
+        
     }
 }
