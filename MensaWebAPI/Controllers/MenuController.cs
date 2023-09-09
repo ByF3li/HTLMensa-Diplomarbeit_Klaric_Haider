@@ -47,5 +47,21 @@ namespace MensaWebAPI.Controllers
             return new JsonResult(await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync(), options);
         }
 
+        [HttpDelete]
+        [Route("menu/getMenuByDate/{menuId}")]
+        public async Task<IActionResult> AsyncDeleteMenuById(int menuId)
+        {
+            var articleToDelete = await this._context.Menues.FindAsync(menuId);
+
+            if (articleToDelete == null)
+            {
+                return NotFound($"Article with Id = {menuId} not found");
+            }
+
+            this._context.Menues.Remove(articleToDelete);
+            return new JsonResult((await this._context.SaveChangesAsync()) == 1);
+
+        }
+
     }
 }

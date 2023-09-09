@@ -86,5 +86,17 @@ namespace MensaWebsite.Controllers
 
             return View(menus);
         }
+
+
+        [HttpPost]
+        public async Task<ViewResult> DeleteMenuFromDatabase(String menu)
+        {
+
+            int id = int.Parse(menu);
+
+
+
+            return View();
+        } 
     }
 }
