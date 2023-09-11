@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Globalization;
 
 namespace MensaWebAPI.Controllers
 {
@@ -29,7 +30,7 @@ namespace MensaWebAPI.Controllers
         [Route("menu/getAll")]
         public async Task<IActionResult> AsyncGetAllMenues()
         {
-            return new JsonResult(await this._context.Menues.ToListAsync(),options);
+            return new JsonResult(await this._context.Menues.ToListAsync(), options);
         }
 
         [HttpPost]
