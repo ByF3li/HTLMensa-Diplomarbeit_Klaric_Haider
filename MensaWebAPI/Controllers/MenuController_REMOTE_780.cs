@@ -2,8 +2,9 @@
 using MensaWebAPI.Models.DB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
-using System.Text.Json;
+using System.Globalization;
+using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MensaWebAPI.Controllers
 {
@@ -14,10 +15,6 @@ namespace MensaWebAPI.Controllers
     {
         private MenuContext _context = new MenuContext();
 
-        JsonSerializerOptions options = new JsonSerializerOptions()
-        {
-            ReferenceHandler = ReferenceHandler.IgnoreCycles
-        };
 
         public MenuController(MenuContext context)
         {
@@ -29,7 +26,7 @@ namespace MensaWebAPI.Controllers
         [Route("menu/getAll")]
         public async Task<IActionResult> AsyncGetAllMenues()
         {
-            return new JsonResult(await this._context.Menues.ToListAsync(),options);
+            return new JsonResult(await this._context.Menues.ToListAsync());
         }
 
         [HttpPost]
@@ -45,30 +42,15 @@ namespace MensaWebAPI.Controllers
                 Date = date
             };
             this._context.Menues.Add(menu);
-            return new JsonResult((await this._context.SaveChangesAsync()) == 1, options);
+
+            return new JsonResult((await this._context.SaveChangesAsync()) == 1);
         }
 
         [HttpGet]
         [Route("menu/getMenuByDate/{menuDate}")]
         public async Task<IActionResult> AsyncGetMenuByDate(DateOnly menuDate)
         {
-            return new JsonResult(await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync(), options);
-        }
-
-        [HttpDelete]
-        [Route("menu/getMenuByDate/{menuId}")]
-        public async Task<IActionResult> AsyncDeleteMenuById(int menuId)
-        {
-            var articleToDelete = await this._context.Menues.FindAsync(menuId);
-
-            if (articleToDelete == null)
-            {
-                return NotFound($"Article with Id = {menuId} not found");
-            }
-
-            this._context.Menues.Remove(articleToDelete);
-            return new JsonResult((await this._context.SaveChangesAsync()) == 1);
-
+            return new JsonResult(await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync());
         }
 
         [HttpGet]

@@ -2,8 +2,14 @@
 using MensaWebAPI.Models.DB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
 using System.Text.Json.Serialization;
 using System.Text.Json;
+=======
+using System.Globalization;
+using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+>>>>>>> 8d4dd3d4137ca4b3ff075255e32bbdbf48d1a2a7
 
 namespace MensaWebAPI.Controllers
 {
@@ -45,7 +51,12 @@ namespace MensaWebAPI.Controllers
                 Date = date
             };
             this._context.Menues.Add(menu);
+<<<<<<< HEAD
             return new JsonResult((await this._context.SaveChangesAsync()) == 1, options);
+=======
+
+            return new JsonResult((await this._context.SaveChangesAsync()) == 1);
+>>>>>>> 8d4dd3d4137ca4b3ff075255e32bbdbf48d1a2a7
         }
 
         [HttpGet]

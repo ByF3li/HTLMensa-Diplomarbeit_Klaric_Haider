@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="MensaHandyApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:MensaHandyApp.Views">
+
+    <ShellContent
+        Title="Homepage"
+        ContentTemplate="{DataTemplate views:MainPage}"
+        Route="MainPage" />
+
+    <ShellContent
+        Title="Wochen-Menü"
+        ContentTemplate="{DataTemplate views:ShowWeeklyMenuView}"
+        Route="ShowWeeklyMenuView" />
+    
+    <ShellContent
+        Title="Tages-Menü"
+        ContentTemplate="{DataTemplate views:ShowDailyMenuView}"
+        Route="ShowDailyMenuView" />
+
+</Shell>
