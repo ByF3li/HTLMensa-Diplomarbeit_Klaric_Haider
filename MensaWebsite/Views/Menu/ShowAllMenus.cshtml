@@ -1,0 +1,117 @@
+﻿@using MensaAppKlassenBibliothek
+@model List<Menu>
+@{
+    ViewData["Title"] = "Menüs";
+}
+
+<h1>Alle Menüs</h1>
+
+<button id="reloadSite" class="btn btn-success btn-md">Neu Laden</button>
+<button id="deleteMenu" class="btn btn-danger btn-md" disabled>Löschen</button>
+
+<br />
+<br />
+
+<table id="ShowAllMenues" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <td> ID </td>
+            <td> Menü </td>
+            <td> Vorspeiße </td>
+            <td> Hauptspeiße </td>
+            <td> Preis </td>
+            <td> Datum </td>
+    </thead>
+    <tbody>
+        @foreach (Menu m in Model)
+        {
+            <tr>
+                <td>@m.MenuId</td>
+                <td>@m.WhichMenu</td>
+                <td>@m.Starter</td>
+                <td>@m.MainCourse</td>
+                <td>@m.Price.ToString("C")</td>
+                <td>@m.Date</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<br />
+
+@if (TempData["SuccessAlert"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessAlert"]
+    </div>
+}
+else if (TempData["NoSuccessAlert"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["NoSuccessAlert"]
+    </div>
+}
+
+
+
+@section Scripts{
+    <link href="~/css/datatables.min.css" rel="stylesheet" />
+    <script src="~/js/datatables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#ShowAllMenues').DataTable({
+                select: true,
+                        "language": {
+                                "lengthMenu": "_MENU_ Zeilen pro Seite",
+                                "zeroRecords": "Es wurde kein Eintrag gefunden!",
+                                "info": "Seite _PAGE_ von _PAGES_",
+                                "infoEmpty": "Es wurde kein Eintrag gefunden!",
+                                "infoFiltered": "(von _MAX_ Einträge)",
+                                "search": "Suchen:",
+                                "paginate": {
+                                    "next": "->",
+                                    "previous": "<-"
+                                },
+                                "select": {
+                                    "rows": {
+                                        
+                                        "1": "1 Zeile ausgewählt"
+                                    }
+                                }
+                        }               
+            });
+
+
+            table.on('select deselect', function () {
+                var selectedRows = table.rows({ selected: true }).count();
+
+                if (selectedRows === 1) {
+                    $('#deleteMenu').prop('disabled', false);
+                } else {
+                    $('#deleteMenu').prop('disabled', true);
+                }
+            });
+
+
+
+            $('#deleteMenu').click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("DeleteMenuFromDatabase", "Menu")",
+                    dataType: "json",
+                    data: { menu: table.row('.selected').data() }
+                });
+            });
+
+            $('#reloadSite').click(function () {
+                location.reload();
+            });
+
+
+        });
+    </script>
+
+
+}

@@ -6,7 +6,7 @@ namespace MensaWebsite.Controllers
 {
     public class OrderController : Controller
     {
-        private List<Menu> menues = new();
+        List<Menu> menues = new();
         public IActionResult Index()
         {
             return View();
@@ -18,25 +18,24 @@ namespace MensaWebsite.Controllers
         }
 
         [HttpPost]
-        public IActionResult ShowAllOrders(DateTime orderDate)
-        {
-
+        public async Task<ViewResult> ShowAllOrders(DateTime Date)
+        {           
+            HttpClient client = new HttpClient();
             try
             {
-                getOrderByDate(orderDate);
-            }catch (Exception ex)
+                menues = await client.GetFromJsonAsync<List<Menu>>("https://localhost:7286/api/mensa/menu/getMenuByDate/" + Date.ToString("yyyy'-'MM'-'dd"));
+                foreach (Menu menu in menues)
+                {
+                    Console.WriteLine(menu);
+                }
+                await Console.Out.WriteLineAsync();
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
 
-            return View();
-        }
-
-        public async void getOrderByDate(DateTime orderDate)
-        {
-            // TODO: schauen wegen DateTime format funktioniert nicht es ist 18.7.2023; muss aber 2023-07-18 sein!!!!!
-            HttpClient client = new HttpClient();
-            menues = await client.GetFromJsonAsync<List<Menu>>("https://localhost:7286/api/mensa/menu/getMenuByDate/" + orderDate);
+            return View(menues);
         }
     }
 }

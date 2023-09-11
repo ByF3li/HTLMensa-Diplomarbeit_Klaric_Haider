@@ -1,25 +1,27 @@
-﻿@model MensaAppKlassenBibliothek.Order
-
+﻿@using MensaAppKlassenBibliothek
 @{
     ViewData["Title"] = "Alle Bestellungen";
 }
+@model List<MensaAppKlassenBibliothek.Menu>
 
 <h1>Bestellungen</h1>
 <br />
 
-<div class="container">
-    @using (Html.BeginForm())
+    <partial name="_DateTimePicker" />
+
+    <br />
+    @if (Model != null && Model.Count() >= 1)
     {
-        <div class="row justify-content-center">
-            <label class="col-sm-1 col-form-label">Datum:</label>
-            <div class="col-sm-2">
-                @Html.TextBoxFor(m => m.OrderDate, "{0:d}", new {@placeholder = "Tag-Monat-Jahr", @class = "form-control datepicker"})
+    <div class="row">
+        @foreach (Menu m in Model)
+        {
+            <div class="col-md-4">
+                <partial name="_ShowOrdersMenus" model="@m" />
             </div>
-            <div class="col-sm-9">
-                <button type="submit" class="btn btn-success btn-sm">Bestätigen!</button>
-            </div>
-        </div>
+        }
+    </div>
     }
+
 
     @section Scripts{
         <link href="~/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
@@ -27,8 +29,9 @@
 
         <script>
             $('.datepicker').datepicker({
-                format: 'd/m/yyyy'
+                format: 'dd.mm.yyyy'
             });
         </script>
     }
-</div>
+    
+
