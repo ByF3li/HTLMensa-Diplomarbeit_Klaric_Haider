@@ -11,7 +11,7 @@ namespace MensaWebAPI.Models.DB
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // für den Pomelo-MySQL-Treiber
-            string connectionString = "Server=localhost;database=MensaApp;user=root;password=Paluten-7";
+            string connectionString = "Server=localhost;database=MensaApp;user=DAMensaUser;password=DAMensa23";
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
     }
