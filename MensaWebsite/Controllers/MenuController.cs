@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Net.Http.Json;
 
 namespace MensaWebsite.Controllers
 {
@@ -94,6 +95,15 @@ namespace MensaWebsite.Controllers
 
             int id = int.Parse(menu);
 
+            try
+            {
+                HttpClient client = new HttpClient();
+                responseMessage = await client.DeleteAsync("https://localhost:7286/api/mensa/menu/getMenuByDate/" + id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
 
 
             return View();

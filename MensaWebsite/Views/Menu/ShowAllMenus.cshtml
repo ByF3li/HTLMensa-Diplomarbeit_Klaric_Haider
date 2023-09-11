@@ -38,6 +38,22 @@
 </table>
 
 
+<br />
+
+@if (TempData["SuccessAlert"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessAlert"]
+    </div>
+}
+else if (TempData["NoSuccessAlert"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["NoSuccessAlert"]
+    </div>
+}
+
+
 
 @section Scripts{
     <link href="~/css/datatables.min.css" rel="stylesheet" />
@@ -67,10 +83,15 @@
                         }               
             });
 
-            //TODO: wenn auf andere Zeile gedrückt wird, wird button disabled sollte er aber nicht!! FIXEN!!
 
-            $('#ShowAllMenues tbody').on('click', function () {
-                    $('#deleteMenu').prop('disabled', table.row('.selected').any());   
+            table.on('select deselect', function () {
+                var selectedRows = table.rows({ selected: true }).count();
+
+                if (selectedRows === 1) {
+                    $('#deleteMenu').prop('disabled', false);
+                } else {
+                    $('#deleteMenu').prop('disabled', true);
+                }
             });
 
 
