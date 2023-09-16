@@ -6,7 +6,7 @@
 
 <h1>Alle Menüs</h1>
 
-<button id="reloadSite" class="btn btn-success btn-md">Neu Laden</button>
+<button id="reloadSite" class="btn btn-primary btn-md">Neu Laden</button>
 <button id="deleteMenu" class="btn btn-danger btn-md" disabled>Löschen</button>
 
 <br />
@@ -107,6 +107,7 @@ else if (TempData["NoSuccessAlert"] != null)
 
             $('#reloadSite').click(function () {
                 location.reload();
+                $('#deleteMenu').prop('disabled', true);
             });
 
 
