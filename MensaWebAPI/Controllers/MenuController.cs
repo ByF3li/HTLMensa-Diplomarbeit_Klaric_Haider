@@ -53,7 +53,25 @@ namespace MensaWebAPI.Controllers
         [Route("menu/getMenuByDate/{menuDate}")]
         public async Task<IActionResult> AsyncGetMenuByDate(DateOnly menuDate)
         {
-            return new JsonResult(await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync(), options);
+
+            List<Menu> menuList = new();
+            menuList = await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync();
+
+            Menu menuToSafe;
+            for (int i = 0; i <= menuList.Count - 2; i++)
+            {
+                for (int j = 0; j <= menuList.Count - 2; j++)
+                {
+                    if (menuList[j].WhichMenu > menuList[j + 1].WhichMenu)
+                    {
+                        menuToSafe = menuList[j + 1];
+                        menuList[j + 1] = menuList[j];
+                        menuList[j] = menuToSafe;
+                    }
+                }
+            }
+
+            return new JsonResult(menuList, options);
         }
 
         [HttpDelete]

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MensaWebAPI.Migrations
 {
     [DbContext(typeof(MenuContext))]
-    [Migration("20230811182309_hoffnungInCodeVonAndere")]
-    partial class hoffnungInCodeVonAndere
+    [Migration("20230914145854_Laptop")]
+    partial class Laptop
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,8 +56,8 @@ namespace MensaWebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateOnly>("OrderDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("UserEmail")
                         .IsRequired()
@@ -66,6 +66,36 @@ namespace MensaWebAPI.Migrations
                     b.HasKey("OrderId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("MenuOrder", b =>
+                {
+                    b.Property<int>("MenusMenuId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrdersOrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MenusMenuId", "OrdersOrderId");
+
+                    b.HasIndex("OrdersOrderId");
+
+                    b.ToTable("MenuOrder");
+                });
+
+            modelBuilder.Entity("MenuOrder", b =>
+                {
+                    b.HasOne("MensaAppKlassenBibliothek.Menu", null)
+                        .WithMany()
+                        .HasForeignKey("MenusMenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MensaAppKlassenBibliothek.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
