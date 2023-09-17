@@ -67,6 +67,9 @@
 	  <Compile Update="Views\ShowDailyMenuView.xaml.cs">
 	    <DependentUpon>ShowDailyMenuView.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\WarenkorbView.xaml.cs">
+	    <DependentUpon>WarenkorbView.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -77,6 +80,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ShowDailyMenuView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\WarenkorbView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
