@@ -14,7 +14,7 @@
         Title="Wochen-Menü"
         ContentTemplate="{DataTemplate views:ShowWeeklyMenuView}"
         Route="ShowWeeklyMenuView" />
-    
+
     <ShellContent
         Title="Tages-Menü"
         ContentTemplate="{DataTemplate views:ShowDailyMenuView}"

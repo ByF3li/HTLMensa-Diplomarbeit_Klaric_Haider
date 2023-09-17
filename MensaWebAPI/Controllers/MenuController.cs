@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Globalization;
+using Microsoft.VisualBasic;
 
 namespace MensaWebAPI.Controllers
 {
@@ -53,7 +54,10 @@ namespace MensaWebAPI.Controllers
         [Route("menu/getMenuByDate/{menuDate}")]
         public async Task<IActionResult> AsyncGetMenuByDate(DateOnly menuDate)
         {
-            return new JsonResult(await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync(), options);
+            
+            var toSortDate = await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync();
+            toSortDate.Sort();
+            return new JsonResult(toSortDate, options);
         }
 
         [HttpDelete]
@@ -144,8 +148,92 @@ namespace MensaWebAPI.Controllers
             //return new JsonResult(days);
             //return new JsonResult(await this._context.Menues.Where(days.Contains()).toListAsync());
             return new JsonResult(await this._context.Menues.Where(m => days.Contains(m.Date)).ToListAsync());
-        }   //todo: sort list before JsonResult
+        }   
 
+        [HttpGet]
+        [Route("menu/getThisWeeklyMenu")]
+        public async Task<IActionResult> AsyncGetThisWeeklyMenu()
+        {
+            DateOnly resultDateOnly = ReturnThisWeek();
+
+            List<DateOnly> days = new List<DateOnly>()
+            {
+                resultDateOnly.AddDays(-3), //Monday
+                resultDateOnly.AddDays(-2), //Tuesday
+                resultDateOnly.AddDays(-1), //Wednesday
+                resultDateOnly,             //Thursday
+                resultDateOnly.AddDays(+1), //Friday
+                //resultDateOnly.AddDays(+2), //Saturday
+                //resultDateOnly.AddDays(+3)  //Sunday
+            };
+
+            List<Menu> menuList = new List<Menu>();
+            menuList = await this._context.Menues.Where(m => days.Contains(m.Date)).ToListAsync();
+
+            Menu menuToSafe;
+            for (int i = 0; i <= menuList.Count - 2; i++)
+            {
+                for (int j = 0; j <= menuList.Count - 2; j++)
+                {
+                    //Sorts list by Date
+                    if (menuList[j].Date > menuList[j + 1].Date)
+                    {
+                        menuToSafe = menuList[j + 1];
+                        menuList[j + 1] = menuList[j];
+                        menuList[j] = menuToSafe;
+                    }
+                }
+            }
+
+            for (int i = 0; i <= menuList.Count - 2; i++)
+            {
+                for (int j = 0; j <= menuList.Count - 2; j++)
+                {
+                    if (menuList[j].WhichMenu > menuList[j + 1].WhichMenu)
+                    {
+                        menuToSafe = menuList[j + 1];
+                        menuList[j + 1] = menuList[j];
+                        menuList[j] = menuToSafe;
+                    }
+                }
+            }
+
+            return new JsonResult(menuList);
+        }
+
+        [HttpGet]
+        [Route("menu/returnDateOfThursdayOfWeek")]
+        public DateOnly ReturnThisWeek()
+        {
+
+            DateTime dateTimeToday = DateTime.Now;
+
+            DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+            Calendar calendar = dfi.Calendar;
+            int weekOfYear = calendar.GetWeekOfYear(dateTimeToday, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
+
+            int year = DateTime.Now.Year;
+            DateTime jan1 = new DateTime(year, 1, 1);
+            int daysOffset = DayOfWeek.Thursday - jan1.DayOfWeek;
+
+            DateTime firstThursday = jan1.AddDays(daysOffset);
+            var cal = CultureInfo.CurrentCulture.Calendar;
+            int firstWeek = cal.GetWeekOfYear(firstThursday, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+            var weekNum = weekOfYear;
+            if (firstWeek == 1)
+            {
+                weekNum -= 1;
+            }
+
+            var resultDateTime = firstThursday.AddDays(weekNum * 7);
+
+            DateOnly resultDateOnly = DateOnly.FromDateTime(resultDateTime);
+
+            return resultDateOnly;
+        }
+
+        /*
         [HttpGet]
         [Route("menu/getThisWeeklyMenu")]
         public async Task<IActionResult> AsyncGetThisWeeklyMenu()
@@ -219,6 +307,7 @@ namespace MensaWebAPI.Controllers
             }
             return new JsonResult(menuList);
         }   
-        
+        */
+
     }
 }

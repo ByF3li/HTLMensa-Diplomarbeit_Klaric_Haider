@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MensaAppKlassenBibliothek
 {
-    public class Menu
+    public class Menu : IComparable<Menu>
     {
         public int MenuId { get; set; }
         public int WhichMenu { get; set; }
@@ -16,5 +17,13 @@ namespace MensaAppKlassenBibliothek
         public DateOnly Date { get; set; }
         public List<Order> Orders { get; set; }
 
+        public int CompareTo(Menu? other)
+        {
+            if (this.Date.CompareTo(other.Date) == 0)
+            {
+                return this.WhichMenu.CompareTo(other.WhichMenu);
+            }
+            return this.Date.CompareTo(other.Date);
+        }
     }
 }
