@@ -11,10 +11,6 @@ namespace MensaWebsite.Controllers
 
         HttpResponseMessage responseMessage = new();
         List<Menu> menus = new List<Menu>();
-        JsonSerializerOptions options = new JsonSerializerOptions()
-        {
-            ReferenceHandler = ReferenceHandler.Preserve
-        };
 
         public IActionResult Index()
         {
@@ -94,7 +90,7 @@ namespace MensaWebsite.Controllers
         {
 
             int id = int.Parse(menu);
-
+            
             try
             {
                 HttpClient client = new HttpClient();
