@@ -21,6 +21,7 @@
             <td> Hauptspeiße </td>
             <td> Preis </td>
             <td> Datum </td>
+            <td> Bearbeiten </td>
     </thead>
     <tbody>
         @foreach (Menu m in Model)
@@ -32,6 +33,7 @@
                 <td>@m.MainCourse</td>
                 <td>@m.Price.ToString("C")</td>
                 <td>@m.Date</td>
+                <td><button id="editSite" class="btn btn-primary btn-sm">Bearbeiten</button></td>
             </tr>
         }
     </tbody>

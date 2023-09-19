@@ -9,6 +9,11 @@ namespace MensaAppKlassenBibliothek
 {
     public class Order
     {
+
+        /*
+         DTO werden nur die Felder eingetragen die benötigt werden
+        Orders-Menus OrderDTO(Email, List<int> MenuIds)
+         */
         public int OrderId { get; set; }
         public DateOnly OrderDate { get; set; }
         public string UserEmail { get; set; }

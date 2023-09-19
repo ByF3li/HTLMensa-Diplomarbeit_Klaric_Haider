@@ -31,7 +31,9 @@ namespace MensaWebAPI.Controllers
         [Route("menu/getAll")]
         public async Task<IActionResult> AsyncGetAllMenues()
         {
-            return new JsonResult(await this._context.Menues.ToListAsync(), options);
+
+            // TODO: include ORM
+            return new JsonResult(await this._context.Menues.Include("Orders").ToListAsync(), options);
         }
 
         [HttpPost]
@@ -55,7 +57,7 @@ namespace MensaWebAPI.Controllers
         public async Task<IActionResult> AsyncGetMenuByDate(DateOnly menuDate)
         {
             
-            var toSortDate = await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync();
+            var toSortDate = await this._context.Menues.Include("Orders").Where(m => m.Date.Equals(menuDate)).ToListAsync();
             toSortDate.Sort();
             return new JsonResult(toSortDate, options);
         }
