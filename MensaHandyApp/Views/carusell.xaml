@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MensaHandyApp.Views.carusell"
+             Title="carusell">
+    <VerticalStackLayout>
+        <CarouselView IndicatorView="indicatorView">
+            <CarouselView.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Montag</x:String>
+                    <x:String>Dienstag</x:String>
+                    <x:String>Mittwoch</x:String>
+                    <x:String>Donnerstag</x:String>
+                    <x:String>Freitag</x:String>
+                </x:Array>
+            </CarouselView.ItemsSource>
+
+            <CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <VerticalStackLayout BackgroundColor="LightBlue" Padding="10">
+                        <Label FontSize="Medium" FontAttributes="Bold" HorizontalTextAlignment="Center" Text="{Binding .}"/>
+
+                        <Border>
+                            <Grid RowDefinitions="2*, 2*, 2*, 2*, 2*" ColumnDefinitions="1*, 1*"  Margin="10">
+
+                                <Label Text="Menü Nummer:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 10"
+                                      FontSize="10"/>
+                                <Label Text="{Binding WhichMenu}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 10"
+                                      FontSize="10"/>
+
+                                <Label Text="Vorspeiße:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 10"
+                                      FontSize="10"/>
+                                <Label Text="{Binding Starter}" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 10"
+                                      FontSize="10"/>
+
+                                <Label Text="Hauptspeiße:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 10"
+                                      FontSize="10"/>
+                                <Label Text="{Binding MainCourse}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 10" 
+                                      FontSize="10"/>
+
+                                <Label Text="Menü-Preis:" HorizontalOptions="Start" Grid.Row="3" Grid.Column="0" Margin="0, 0, 0, 10"
+                                      FontSize="10"/>
+                                <Label Text="{Binding Price, StringFormat='{0:F2}'}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 10" 
+                                      FontSize="10"/>
+
+                                <Label Text="Menü-Datum:" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0,0,0,10"
+                                      FontSize="10"/>
+                                <Label Text="{Binding Date}" HorizontalOptions="Start" Grid.Row="4" Grid.Column="1" Margin="0, 0, 0, 10"
+                                      FontSize="10"/>
+
+                            </Grid>
+                        </Border>
+                        
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+
+        <IndicatorView x:Name="indicatorView" Margin="5" HorizontalOptions="Center" IndicatorColor="White" SelectedIndicatorColor="Red"/>
+    </VerticalStackLayout>
+</ContentPage>
