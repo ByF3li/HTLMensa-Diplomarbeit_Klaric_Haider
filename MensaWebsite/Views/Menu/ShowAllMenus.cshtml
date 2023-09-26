@@ -7,6 +7,7 @@
 <h1>Alle Menüs</h1>
 
 <button id="reloadSite" class="btn btn-primary btn-md">Neu Laden</button>
+<button id="editMenu" class="btn btn-primary btn-md" disabled>Bearbeiten</button>
 <button id="deleteMenu" class="btn btn-danger btn-md" disabled>Löschen</button>
 
 <br />
@@ -21,7 +22,6 @@
             <td> Hauptspeiße </td>
             <td> Preis </td>
             <td> Datum </td>
-            <td> Bearbeiten </td>
     </thead>
     <tbody>
         @foreach (Menu m in Model)
@@ -33,7 +33,6 @@
                 <td>@m.MainCourse</td>
                 <td>@m.Price.ToString("C")</td>
                 <td>@m.Date</td>
-                <td><button id="editSite" class="btn btn-primary btn-sm">Bearbeiten</button></td>
             </tr>
         }
     </tbody>
@@ -91,28 +90,37 @@ else if (TempData["NoSuccessAlert"] != null)
 
                 if (selectedRows === 1) {
                     $('#deleteMenu').prop('disabled', false);
+                    $('#editMenu').prop('disabled', false);
                 } else {
                     $('#deleteMenu').prop('disabled', true);
+                    $('#editMenu').prop('disabled', true);
                 }
             });
             
 
 
             $('#deleteMenu').click(function () {
+                var data = table.row('.selected').data();
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("DeleteMenuFromDatabase", "Menu")",
                     dataType: "json",
-                    data: { menu: table.row('.selected').data() }
+                    data: { menu: data[0] }
                 });
             });
 
+            $('#editMenu').click(function () {
+                var data = table.row('.selected').data();
+                document.location = 'EditMenu/' + data[0];
+            });
+            
             $('#reloadSite').click(function () {
                 location.reload();
                 $('#deleteMenu').prop('disabled', true);
+                $('#editMenu').prop('disabled', true);
             });
 
-
+            
         });
     </script>
 

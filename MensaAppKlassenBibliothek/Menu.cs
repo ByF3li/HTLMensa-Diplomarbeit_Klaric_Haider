@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,7 @@ namespace MensaAppKlassenBibliothek
         public int WhichMenu { get; set; }
         public string Starter { get; set; }
         public string MainCourse { get; set; }
+        [Column(TypeName = "decimal(5,2)")]
         public decimal Price { get; set; }
         public DateOnly Date { get; set; }
         public List<Order> Orders { get; set; }

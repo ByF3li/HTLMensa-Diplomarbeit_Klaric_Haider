@@ -36,7 +36,7 @@ namespace MensaWebsite.Controllers
             };
 
             
-
+            /*
             try
             {
                 HttpClient client = new HttpClient();
@@ -46,6 +46,7 @@ namespace MensaWebsite.Controllers
             {
                 Console.WriteLine(ex.ToString());
             }
+            */
             
 
 
@@ -86,15 +87,12 @@ namespace MensaWebsite.Controllers
 
 
         [HttpPost]
-        public async Task<ViewResult> DeleteMenuFromDatabase(String menu)
-        {
-
-            int id = int.Parse(menu);
-            
+        public async Task<ViewResult> DeleteMenuFromDatabase(int Id)
+        {        
             try
             {
                 HttpClient client = new HttpClient();
-                responseMessage = await client.DeleteAsync("https://localhost:7286/api/mensa/menu/getMenuByDate/" + id);
+                responseMessage = await client.DeleteAsync("https://localhost:7286/api/mensa/menu/deleteMenuById/" + Id);
             }
             catch (Exception ex)
             {
@@ -103,6 +101,26 @@ namespace MensaWebsite.Controllers
 
 
             return View();
-        } 
+        }
+
+        // TODO: Daten werden In edit angezeigt jetzt nur noch schauen dass es zum speichern geht
+
+        [HttpGet]
+        public async Task<IActionResult> EditMenu(int Id)
+        {
+            Menu menu = new();
+            try
+            {
+                HttpClient client = new HttpClient();
+                menu = await client.GetFromJsonAsync<Menu>("https://localhost:7286/api/mensa/menu/getMenuById/" + Id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return View("SafeMenues", menu);
+        }
+
     }
 }

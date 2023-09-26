@@ -31,8 +31,6 @@ namespace MensaWebAPI.Controllers
         [Route("menu/getAll")]
         public async Task<IActionResult> AsyncGetAllMenues()
         {
-
-            // TODO: include ORM
             return new JsonResult(await this._context.Menues.Include("Orders").ToListAsync(), options);
         }
 
@@ -62,8 +60,15 @@ namespace MensaWebAPI.Controllers
             return new JsonResult(toSortDate, options);
         }
 
+        [HttpGet]
+        [Route("menu/getMenuById/{menuId}")]
+        public async Task<IActionResult> AsyncGetMenuById(int menuId)
+        {
+            return new JsonResult(await this._context.Menues.FindAsync(menuId));
+        }
+
         [HttpDelete]
-        [Route("menu/getMenuByDate/{menuId}")]
+        [Route("menu/deleteMenuById/{menuId}")]
         public async Task<IActionResult> AsyncDeleteMenuById(int menuId)
         {
             var articleToDelete = await this._context.Menues.FindAsync(menuId);

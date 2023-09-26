@@ -3,6 +3,7 @@ using System;
 using MensaWebAPI.Models.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MensaWebAPI.Migrations
 {
     [DbContext(typeof(MenuContext))]
-    partial class MenuContextModelSnapshot : ModelSnapshot
+    [Migration("20230926170649_PriceDecimal2")]
+    partial class PriceDecimal2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace MensaWebAPI.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(5,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("Starter")
                         .IsRequired()
