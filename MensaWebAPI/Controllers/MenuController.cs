@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Globalization;
 using Microsoft.VisualBasic;
+using Microsoft.AspNetCore.Connections.Features;
 
 namespace MensaWebAPI.Controllers
 {
@@ -47,6 +48,22 @@ namespace MensaWebAPI.Controllers
                 Date = date
             };
             this._context.Menues.Add(menu);
+            return new JsonResult((await this._context.SaveChangesAsync()) == 1, options);
+        }
+
+        [HttpPatch]
+        [Route("menu/editMenu")]
+        public async Task<IActionResult> AsyncEditMenu(int id, int whichMenu, string starter, string mainCourse, decimal price, DateOnly date)
+        {
+            var menu = await this._context.Menues.FindAsync(id);
+            if (menu != null)
+            {
+                menu.WhichMenu = whichMenu;
+                menu.Starter = starter;
+                menu.MainCourse = mainCourse;
+                menu.Price = price;
+                menu.Date = date;
+            }
             return new JsonResult((await this._context.SaveChangesAsync()) == 1, options);
         }
 

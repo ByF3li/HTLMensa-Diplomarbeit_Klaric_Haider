@@ -36,7 +36,7 @@ namespace MensaWebsite.Controllers
             };
 
             
-            /*
+            
             try
             {
                 HttpClient client = new HttpClient();
@@ -46,7 +46,7 @@ namespace MensaWebsite.Controllers
             {
                 Console.WriteLine(ex.ToString());
             }
-            */
+            
             
 
 
@@ -103,8 +103,6 @@ namespace MensaWebsite.Controllers
             return View();
         }
 
-        // TODO: Daten werden In edit angezeigt jetzt nur noch schauen dass es zum speichern geht
-
         [HttpGet]
         public async Task<IActionResult> EditMenu(int Id)
         {
@@ -120,6 +118,45 @@ namespace MensaWebsite.Controllers
             }
 
             return View("SafeMenues", menu);
+        }
+
+        // TODO: speichern geht noch nicht! funktioniert aber in WebApi
+
+        [HttpPost]
+        public async Task<IActionResult> EditMenu(int id, int whichMenu, string starter, string mainCourse, decimal price, DateOnly date)
+        {
+            Menu menu = new Menu()
+            {
+                MenuId = id,
+                WhichMenu = whichMenu,
+                Starter = starter,
+                MainCourse = mainCourse,
+                Price = price,
+                Date = date
+            };
+
+            try
+            {
+                HttpClient client = new HttpClient();
+                responseMessage = await client.PatchAsJsonAsync<Menu>("https://localhost:7286/api/mensa/menu/editMenu", menu);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                TempData["SuccessAlert"] = "Menü wurde erfolgreich bearbeitet!";
+                return RedirectToAction("SafeMenues");
+            }
+            else if (!responseMessage.IsSuccessStatusCode)
+            {
+                TempData["NoSuccessAlert"] = "Menü konnte nicht bearbeitet werden!";
+                return RedirectToAction("SafeMenues");
+            }
+
+            return View();
         }
 
     }
