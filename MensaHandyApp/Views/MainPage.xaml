@@ -6,8 +6,8 @@
     <ScrollView>
         <VerticalStackLayout>
             <Grid RowDefinitions="2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*" >
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5"/>
+                <Label Text="Aus irgendeinem grund geht die collectionview nit" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"/>
+                <Label Text="aber sont zeigt es es an in dailyview" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5"/>
                 <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5"/>
                 <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="3" Grid.Column="0" Margin="0, 0, 0, 5"/>
                 <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0, 0, 0, 5"/>

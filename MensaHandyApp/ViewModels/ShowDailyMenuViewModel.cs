@@ -17,6 +17,8 @@ namespace MensaHandyApp.ViewModels
         [ObservableProperty]
         private ObservableCollection<Menu> _menus = new ObservableCollection<Menu>();
 
+        String Text { get; set; } = "Hallo";
+
         public ShowDailyMenuViewModel()
         {
            //Task t = ShowDailyMenuAsync();
