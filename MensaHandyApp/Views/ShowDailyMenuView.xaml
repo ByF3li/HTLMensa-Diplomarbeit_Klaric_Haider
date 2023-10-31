@@ -3,42 +3,68 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MensaHandyApp.Views.ShowDailyMenuView"
              Title="Tages-Menü">
-    <VerticalStackLayout>
-        <ScrollView>
-            <CollectionView ItemsSource="{Binding Menus}">
+    <ScrollView>
+        <VerticalStackLayout>
 
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Span="1" Orientation="Vertical"/>
-                </CollectionView.ItemsLayout>
 
-                <CollectionView.ItemTemplate>
+            <CarouselView IndicatorView="IndicatorView">
+                <CarouselView.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Montag</x:String>
+                        <x:String>Dienstag</x:String>
+                        <x:String>Mittwoch</x:String>
+                        <x:String>Donnerstag</x:String>
+                        <x:String>Freitag</x:String>
+                    </x:Array>
+                </CarouselView.ItemsSource>
+
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" />
+                </CarouselView.ItemsLayout>
+
+                <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <Border>
-                            <Grid RowDefinitions="2*, 2*, 2*, 2*, 2*" ColumnDefinitions="20*, 80*"  Margin="30">
+                        <VerticalStackLayout Padding="10">
+                            <Label Text="{Binding .}" HorizontalTextAlignment="Center" FontAttributes="Bold" FontSize="Medium"></Label>
 
-                                <Label Text="Menü Nummer:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 10"/>
-                                <Label Text="{Binding WhichMenu}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 10"/>
+                            <StackLayout>
+                                <Label Text="Freitag, 22.09.2023" HorizontalOptions="Center" FontAttributes="Bold" FontSize="Large"></Label>
+                                <Label></Label>
+                                <Border StrokeThickness="4" Padding="5" >
+                                    <Grid RowDefinitions="2*, 2*, 2*, 2*, 2*, 2*" ColumnDefinitions="45*,55*" VerticalOptions="Center" Padding="5">
 
-                                <Label Text="Vorspeiße:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 10"/>
-                                <Label Text="{Binding Starter}" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 10"/>
+                                        <Label Text="Menü Nummer:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0"  FontSize="Medium" Margin="0,5,0,5" FontAttributes="Bold" TextColor="White"/>
+                                        <Label Text="a" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1"  FontSize="Medium" Margin="0,5,0,5" TextColor="White"/>
 
-                                <Label Text="Hauptspeiße:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 10"/>
-                                <Label Text="{Binding MainCourse}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 10" />
+                                        <Label Text="Vorspeiße:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" FontSize="Medium" Margin="0,5,0,5" FontAttributes="Bold" TextColor="White"/>
+                                        <Label Text="b" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1"  FontSize="Medium" Margin="0,5,0,5" TextColor="White"/>
 
-                                <Label Text="Preis des Menüs:" HorizontalOptions="Start" Grid.Row="3" Grid.Column="0" Margin="0, 0, 0, 10"/>
-                                <Label Text="{Binding Price, StringFormat='{0:F2}'}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 10" />
+                                        <Label Text="Hauptspeiße:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0"  FontSize="Medium" Margin="0,5,0,5" FontAttributes="Bold" TextColor="White"/>
+                                        <Label Text="c" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" FontSize="Medium" Margin="0,5,0,5" TextColor="White"/>
 
-                                <Label Text="Datum des Menüs:" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0,0,0,10"/>
-                                <Label Text="{Binding Date}" HorizontalOptions="Start" Grid.Row="4" Grid.Column="1" Margin="0, 0, 0, 10"/>
+                                        <Label Text="Preis des Menüs:" HorizontalOptions="Start" Grid.Row="3" Grid.Column="0" FontSize="Medium" Margin="0,5,0,5" FontAttributes="Bold" TextColor="White" />
+                                        <Label Text="d" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" FontSize="Medium" Margin="0,5,0,5" TextColor="White"/>
 
-                            </Grid>
-                        </Border>
+                                        <Label Text="(ACG)" HorizontalOptions="Start" Grid.Row="4" Grid.ColumnSpan="2" FontSize="Medium" Margin="0,5,0,5" FontAttributes="Bold" TextColor="White"></Label>
+                                    </Grid>
+                                </Border>
+
+                                <Label></Label>
+                                <Label Text="A=GLUTENHALTIGES GETREIDE; B=KREBSTIERE; C=EIER; D=FISCH; E=ERDNÜSSE; F=SOJA; G=MILCH UND LACTOSE; H=SCHALENFRÜCHTE (NÜSSE); L=SELLERIE; M=SENF; N=SESAM; O=SULFITE; P=LUPINIEN; R=WEICHTIERE"></Label>
+                            </StackLayout>
+
+                        </VerticalStackLayout>
+                        
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
 
+            <IndicatorView x:Name="IndicatorView" Margin="5" HorizontalOptions="Center" IndicatorColor="White" SelectedIndicatorColor="Red"/>
 
-            </CollectionView>
-        </ScrollView>
-    </VerticalStackLayout>
+            
 
+            
+            
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

@@ -1,11 +1,15 @@
 using MensaAppKlassenBibliothek;
+using MensaHandyApp.ViewModels;
 
 namespace MensaHandyApp.Views;
 
-public partial class carusell : ContentPage
+public partial class Carusell : ContentPage
 {
-	public carusell()
+    private CarusellViewModel _vm = new CarusellViewModel();
+    public Carusell()
 	{
-		InitializeComponent();
-	}
+        
+        this.BindingContext = this._vm;
+        InitializeComponent();
+    }
 }
