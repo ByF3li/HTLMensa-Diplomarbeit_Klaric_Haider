@@ -8,7 +8,7 @@
     <ScrollView>
         <VerticalStackLayout>
             <IndicatorView x:Name="indicatorView" Margin="5" HorizontalOptions="Center" IndicatorColor="White" SelectedIndicatorColor="Red"/>
-            <CarouselView ItemsSource="{Binding Menus}" IndicatorView="indicatorView">
+            <CarouselView ItemsSource="{Binding DayMenus}" IndicatorView="indicatorView">
             
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
@@ -17,7 +17,7 @@
 
                             <CollectionView ItemsSource="{Binding Menus}">
                                 <CollectionView.ItemsLayout>
-                                    <GridItemsLayout Span="3" Orientation="Vertical" />
+                                    <GridItemsLayout Span="1" Orientation="Vertical" />
                                 </CollectionView.ItemsLayout>
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate>
@@ -44,14 +44,14 @@
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
 
-                            <Label Text="A=GLUTENHALTIGES GETREIDE; B=KREBSTIERE; C=EIER; D=FISCH; E=ERDNÜSSE; F=SOJA; G=MILCH UND LACTOSE; H=SCHALENFRÜCHTE (NÜSSE); L=SELLERIE; M=SENF; N=SESAM; O=SULFITE; P=LUPINIEN; R=WEICHTIERE" Padding="10" FontSize="10" TextColor="Purple"></Label>
+                            
                         </VerticalStackLayout>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
 
             </CarouselView>
+            <Label Text="A=GLUTENHALTIGES GETREIDE; B=KREBSTIERE; C=EIER; D=FISCH; E=ERDNÜSSE; F=SOJA; G=MILCH UND LACTOSE; H=SCHALENFRÜCHTE (NÜSSE); L=SELLERIE; M=SENF; N=SESAM; O=SULFITE; P=LUPINIEN; R=WEICHTIERE" Padding="10" FontSize="10" TextColor="Purple"></Label>
 
-            
 
         </VerticalStackLayout>
     </ScrollView>
