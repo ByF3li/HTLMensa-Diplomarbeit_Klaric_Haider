@@ -23,7 +23,9 @@ namespace MensaHandyApp.ViewModels
         {
             HttpClient _client = new HttpClient();
             //Menus = await _client.GetFromJsonAsync<ObservableCollection<Menu>>("https://localhost:7286/api/mensa/menu/getThisWeeklyMenu");
-            DayMenu dayMenu = new DayMenu()
+            
+            //Hardcoded till DB works
+            DayMenu monday = new DayMenu()
             {
                 Date=new DateOnly(2023, 10, 30)
             };
@@ -35,7 +37,7 @@ namespace MensaHandyApp.ViewModels
                 Price = 6.99m,
                 Date = new DateOnly(2023, 10, 30)
             };
-            dayMenu.Menus.Add(m1);
+            monday.Menus.Add(m1);
 
             Menu m2 = new Menu()
             {
@@ -45,7 +47,7 @@ namespace MensaHandyApp.ViewModels
                 Price = 7.99m,
                 Date = new DateOnly(2023, 10, 30)
             };
-            dayMenu.Menus.Add(m2);
+            monday.Menus.Add(m2);
 
             Menu m3 = new Menu()
             {
@@ -55,10 +57,9 @@ namespace MensaHandyApp.ViewModels
                 Price = 6.99m,
                 Date = new DateOnly(2023, 10, 30)
             };
-
-            dayMenu.Menus.Add(m3);
+            monday.Menus.Add(m3);
            
-            DayMenu dayMenu1 = new DayMenu()
+            DayMenu tuesday = new DayMenu()
             {
                 Date = new DateOnly(2023, 10, 31)
             };
@@ -70,7 +71,7 @@ namespace MensaHandyApp.ViewModels
                 Price = 7.99m,
                 Date = new DateOnly(2023, 10, 31)
             };
-            dayMenu1.Menus.Add(m4);
+            tuesday.Menus.Add(m4);
 
             Menu m5 = new Menu()
             {
@@ -80,7 +81,7 @@ namespace MensaHandyApp.ViewModels
                 Price = 7.99m,
                 Date = new DateOnly(2023, 10, 31)
             };
-            dayMenu1.Menus.Add(m5);
+            tuesday.Menus.Add(m5);
 
             Menu m6 = new Menu()
             {
@@ -90,10 +91,115 @@ namespace MensaHandyApp.ViewModels
                 Price = 8.99m,
                 Date = new DateOnly(2023, 10, 31)
             };
-            dayMenu1.Menus.Add(m6);
+            tuesday.Menus.Add(m6);
 
-            DayMenus.Add(dayMenu);
-            DayMenus.Add(dayMenu1);
+            DayMenu wednesday = new DayMenu()
+            {
+                Date = new DateOnly(2023, 11, 1)
+            };
+            Menu m7 = new Menu()
+            {
+                WhichMenu = 1,
+                Starter = "Eisbergsalat",
+                MainCourse = "Hendl",
+                Price = 7.99m,
+                Date = new DateOnly(2023, 11, 1)
+            };
+            wednesday.Menus.Add(m4);
+
+            Menu m8 = new Menu()
+            {
+                WhichMenu = 2,
+                Starter = "Eisbergsalat",
+                MainCourse = "Wassermelone",
+                Price = 7.99m,
+                Date = new DateOnly(2023, 11, 1)
+            };
+            wednesday.Menus.Add(m5);
+
+            Menu m9 = new Menu()
+            {
+                WhichMenu = 3,
+                Starter = "Eisbergsalat",
+                MainCourse = "Bernerwürstel mit Pommes",
+                Price = 8.99m,
+                Date = new DateOnly(2023, 11, 1)
+            };
+            wednesday.Menus.Add(m6);
+
+            DayMenu thursday = new DayMenu()
+            {
+                Date = new DateOnly(2023, 11, 2)
+            };
+            Menu m10 = new Menu()
+            {
+                WhichMenu = 1,
+                Starter = "Eisbergsalat",
+                MainCourse = "Hendl",
+                Price = 7.99m,
+                Date = new DateOnly(2023, 11, 2)
+            };
+            thursday.Menus.Add(m4);
+
+            Menu m11 = new Menu()
+            {
+                WhichMenu = 2,
+                Starter = "Eisbergsalat",
+                MainCourse = "Wassermelone",
+                Price = 7.99m,
+                Date = new DateOnly(2023, 11, 2)
+            };
+            thursday.Menus.Add(m5);
+
+            Menu m12 = new Menu()
+            {
+                WhichMenu = 3,
+                Starter = "Eisbergsalat",
+                MainCourse = "Bernerwürstel mit Pommes",
+                Price = 8.99m,
+                Date = new DateOnly(2023, 11, 2)
+            };
+            thursday.Menus.Add(m6);
+
+            DayMenu friday = new DayMenu()
+            {
+                Date = new DateOnly(2023, 11, 3)
+            };
+            Menu m13 = new Menu()
+            {
+                WhichMenu = 1,
+                Starter = "Eisbergsalat",
+                MainCourse = "Hendl",
+                Price = 7.99m,
+                Date = new DateOnly(2023, 11, 3)
+            };
+            friday.Menus.Add(m4);
+
+            Menu m14 = new Menu()
+            {
+                WhichMenu = 2,
+                Starter = "Eisbergsalat",
+                MainCourse = "Wassermelone",
+                Price = 7.99m,
+                Date = new DateOnly(2023, 11, 3)
+            };
+            friday.Menus.Add(m5);
+
+            Menu m15 = new Menu()
+            {
+                WhichMenu = 3,
+                Starter = "Eisbergsalat",
+                MainCourse = "Bernerwürstel mit Pommes",
+                Price = 8.99m,
+                Date = new DateOnly(2023, 11, 3)
+            };
+            friday.Menus.Add(m6);
+
+            DayMenus.Add(monday);
+            DayMenus.Add(tuesday);
+            DayMenus.Add(wednesday);
+            DayMenus.Add(thursday);
+            DayMenus.Add(friday);
         }
     }
 }
