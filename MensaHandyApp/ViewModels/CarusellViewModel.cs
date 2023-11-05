@@ -14,6 +14,40 @@ namespace MensaHandyApp.ViewModels
         [ObservableProperty]
         private ObservableCollection<DayMenu> _dayMenus = new ObservableCollection<DayMenu>();
 
+        private Menu selectedListItem;
+
+        public Menu SelectedListItem
+        {
+            get
+            {
+                return selectedListItem;
+            }
+            set
+            {
+                if (selectedListItem != value)
+                {
+                    selectedListItem = value;
+                    OnPropertyChanged("SelectedListItem");
+
+                    if (selectedListItem != null)
+                    {
+                        PerformNavigation(SelectedListItem.MenuId);
+                    }
+                }
+            }
+        }
+
+        private async void PerformNavigation(int? GetMenuId)
+        {
+            if (GetMenuId != null)
+            {
+                var navigationParameter = new Dictionary<string, object> { { "MenuId", GetMenuId } };
+                await Shell.Current.GoToAsync($"///Warenkorb", navigationParameter);
+            }
+
+            SelectedListItem = null;
+        }
+
         public CarusellViewModel()
         {
             ShowMenu();
@@ -31,6 +65,7 @@ namespace MensaHandyApp.ViewModels
             };
             Menu m1 = new Menu()
             {
+                MenuId = 1,
                 WhichMenu = 1,
                 Starter = "Eisbergsalat",
                 MainCourse = "Schnitzel mit Pommes",

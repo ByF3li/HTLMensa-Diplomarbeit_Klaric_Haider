@@ -60,6 +60,13 @@ namespace MensaWebAPI.Controllers
             return new JsonResult(toSortDate, options);
         }
 
+        [HttpGet]
+        [Route("menu/getMenuById/{menuId}")]
+        public async Task<IActionResult> AsyncGetMenuById(int menuId)
+        {
+            return new JsonResult(await this._context.Menues.Where(m => m.MenuId.Equals(menuId)).FirstAsync());
+        }
+
         [HttpDelete]
         [Route("menu/getMenuByDate/{menuId}")]
         public async Task<IActionResult> AsyncDeleteMenuById(int menuId)

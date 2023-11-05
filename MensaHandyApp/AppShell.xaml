@@ -20,5 +20,10 @@
         Title="CarusellTest"
         ContentTemplate="{DataTemplate views:Carusell}"
         Route="Carusell" />
-    
+
+    <ShellContent
+        Title="Warenkorb"
+        ContentTemplate="{DataTemplate views:WarenkorbView}"
+        Route="Warenkorb" />
+
 </Shell>

@@ -8,14 +8,14 @@
     <ScrollView>
         <VerticalStackLayout>
             <IndicatorView x:Name="indicatorView" Margin="5" HorizontalOptions="Center" IndicatorColor="White" SelectedIndicatorColor="Red"/>
-            <CarouselView ItemsSource="{Binding DayMenus}" IndicatorView="indicatorView">
+            <CarouselView x:Name="CarusellMenus"  ItemsSource="{Binding DayMenus}" IndicatorView="indicatorView">
 
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
                         <VerticalStackLayout BackgroundColor="LightBlue" Padding="5">
                             <Label FontSize="Medium" FontAttributes="Bold" HorizontalTextAlignment="Center" Text="{Binding Date, StringFormat='{}{0:dddd dd MMM yyyy}'}" Margin="0,0,0,5" TextColor="Purple"/>
 
-                            <CollectionView ItemsSource="{Binding Menus}">
+                            <CollectionView ItemsSource="{Binding Menus}" SelectionMode="Single" SelectedItem="{Binding Path = BindingContext.SelectedListItem, Source={Reference CarusellMenus}}">
                                 <CollectionView.ItemsLayout>
                                     <GridItemsLayout Span="1" Orientation="Vertical" />
                                 </CollectionView.ItemsLayout>

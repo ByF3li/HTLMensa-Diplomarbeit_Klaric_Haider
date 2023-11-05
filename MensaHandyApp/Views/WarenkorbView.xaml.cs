@@ -1,9 +1,15 @@
+using MensaHandyApp.ViewModels;
+
 namespace MensaHandyApp.Views;
 
 public partial class WarenkorbView : ContentPage
 {
-	public WarenkorbView()
+    private WarenkorbViewModel _vm = new WarenkorbViewModel();
+
+    public WarenkorbView()
 	{
-		InitializeComponent();
-	}
+        this.BindingContext = this._vm;
+
+        InitializeComponent();	
+    }
 }

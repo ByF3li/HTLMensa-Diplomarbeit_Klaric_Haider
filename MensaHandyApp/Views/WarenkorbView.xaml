@@ -4,9 +4,37 @@
              x:Class="MensaHandyApp.Views.WarenkorbView"
              Title="WarenkorbView">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <ScrollView>
+            <CollectionView ItemsSource="{Binding Menus}">
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Span="1" Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeThickness="4" Padding="50" >
+                            <Grid RowDefinitions="2*, 2*, 2*, 2*, 2*" ColumnDefinitions="1*, 1*"  Margin="5">
+
+                                <Label Text="Menü Nummer:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding WhichMenu}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                <Label Text="Vorspeiße:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding Starter}" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                <Label Text="Hauptspeiße:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding MainCourse}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 5"  FontSize="10"/>
+
+                                <Label Text="Preis des Menüs:" HorizontalOptions="Start" Grid.Row="3" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10" />
+                                <Label Text="{Binding Price, StringFormat='{0:F2}'}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                <Label Text="Allergene:" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"></Label>
+                                <Label Text="(ACG)" HorizontalOptions="Start" Grid.Row="4" Grid.Column="1"  FontSize="10" Margin="0, 0, 0, 5"></Label>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
     </VerticalStackLayout>
 </ContentPage>
