@@ -9,6 +9,7 @@ public partial class Carusell : ContentPage
     public Carusell()
 	{
         this.BindingContext = this._vm;
+
         InitializeComponent();
     }
 

@@ -15,7 +15,6 @@ namespace MensaHandyApp.ViewModels
         private ObservableCollection<DayMenu> _dayMenus = new ObservableCollection<DayMenu>();
 
         private Menu selectedListItem;
-
         public Menu SelectedListItem
         {
             get
@@ -31,9 +30,24 @@ namespace MensaHandyApp.ViewModels
 
                     if (selectedListItem != null)
                     {
-                        PerformNavigation(SelectedListItem.MenuId);
+                        SendAlert();
                     }
                 }
+            }
+        }
+
+        private async void SendAlert()
+        {
+            bool answer = await Shell.Current.DisplayAlert("Hinzufügen", "Soll das Menü dem Warenkorb hinzugefügt werden", "Ja", "Nein");
+            if (answer)
+            {
+                await Shell.Current.DisplayAlert("Ja", "Das Menü wird hinzugefügt", "OK");
+                PerformNavigation(SelectedListItem.MenuId);
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Nein", "Das Menü wird nicht hinzugefügt", "OK");
+                SelectedListItem = null;
             }
         }
 
