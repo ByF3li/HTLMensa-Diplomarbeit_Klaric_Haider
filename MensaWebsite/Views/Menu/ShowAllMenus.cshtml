@@ -105,7 +105,7 @@ else if (TempData["NoSuccessAlert"] != null)
                     type: "POST",
                     url: "@Url.Action("DeleteMenuFromDatabase", "Menu")",
                     dataType: "json",
-                    data: { menu: data[0] }
+                    data: { Id: data[0] }
                 });
             });
 

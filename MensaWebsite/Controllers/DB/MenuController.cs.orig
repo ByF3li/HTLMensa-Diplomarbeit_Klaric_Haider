@@ -6,7 +6,6 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Globalization;
 using Microsoft.VisualBasic;
-using Microsoft.AspNetCore.Connections.Features;
 
 namespace MensaWebAPI.Controllers
 {
@@ -32,7 +31,7 @@ namespace MensaWebAPI.Controllers
         [Route("menu/getAll")]
         public async Task<IActionResult> AsyncGetAllMenues()
         {
-            return new JsonResult(await this._context.Menues.Include("Orders").ToListAsync(), options);
+            return new JsonResult(await this._context.Menues.ToListAsync(), options);
         }
 
         [HttpPost]
@@ -51,41 +50,40 @@ namespace MensaWebAPI.Controllers
             return new JsonResult((await this._context.SaveChangesAsync()) == 1, options);
         }
 
-        [HttpPatch]
-        [Route("menu/editMenu")]
-        public async Task<IActionResult> AsyncEditMenu(int id, int whichMenu, string starter, string mainCourse, decimal price, DateOnly date)
-        {
-            var menu = await this._context.Menues.FindAsync(id);
-            if (menu != null)
-            {
-                menu.WhichMenu = whichMenu;
-                menu.Starter = starter;
-                menu.MainCourse = mainCourse;
-                menu.Price = price;
-                menu.Date = date;
-            }
-            return new JsonResult((await this._context.SaveChangesAsync()) == 1);
-        }
-
         [HttpGet]
         [Route("menu/getMenuByDate/{menuDate}")]
         public async Task<IActionResult> AsyncGetMenuByDate(DateOnly menuDate)
         {
+<<<<<<< HEAD
+
+            List<Menu> menuList = new();
+            menuList = await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync();
+
+            Menu menuToSafe;
+            for (int i = 0; i <= menuList.Count - 2; i++)
+            {
+                for (int j = 0; j <= menuList.Count - 2; j++)
+                {
+                    if (menuList[j].WhichMenu > menuList[j + 1].WhichMenu)
+                    {
+                        menuToSafe = menuList[j + 1];
+                        menuList[j + 1] = menuList[j];
+                        menuList[j] = menuToSafe;
+                    }
+                }
+            }
+
+            return new JsonResult(menuList, options);
+=======
             
-            var toSortDate = await this._context.Menues.Include("Orders").Where(m => m.Date.Equals(menuDate)).ToListAsync();
+            var toSortDate = await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync();
             toSortDate.Sort();
             return new JsonResult(toSortDate, options);
-        }
-
-        [HttpGet]
-        [Route("menu/getMenuById/{menuId}")]
-        public async Task<IActionResult> AsyncGetMenuById(int menuId)
-        {
-            return new JsonResult(await this._context.Menues.FindAsync(menuId));
+>>>>>>> master
         }
 
         [HttpDelete]
-        [Route("menu/deleteMenuById/{menuId}")]
+        [Route("menu/getMenuByDate/{menuId}")]
         public async Task<IActionResult> AsyncDeleteMenuById(int menuId)
         {
             var articleToDelete = await this._context.Menues.FindAsync(menuId);

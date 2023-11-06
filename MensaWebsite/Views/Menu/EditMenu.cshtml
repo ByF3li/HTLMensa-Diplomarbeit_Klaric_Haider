@@ -1,12 +1,12 @@
 ﻿@model MenuDTO
 @{
-    ViewData["Title"] = "Menüs hinzufügen";
+    ViewData["Title"] = "Menü bearbeiten";
 }
 
-<h1>Menüs hinzufügen:</h1>
+<h1>Menü bearbeiten:</h1>
 <br />
-<form asp-controller="menu" asp-action="SafeMenues" method="post">
-    <partial name="_SafeMenuFormPartialView" model="@Model" />
+<form asp-controller="menu" asp-action="EditMenu" method="post">
+<partial name="_SafeMenuFormPartialView" model="@Model" />
 </form>
 
 @section Scripts{
