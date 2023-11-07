@@ -2,9 +2,11 @@
 using MensaAppKlassenBibliothek;
 using MensaHandyApp.Models;
 using Microsoft.Maui.Controls.Compatibility;
+using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Net.Http.Json;
+using static System.Net.WebRequestMethods;
 
 namespace MensaHandyApp.ViewModels
 {
@@ -69,192 +71,119 @@ namespace MensaHandyApp.ViewModels
 
         private async Task ShowMenu()
         {
-            HttpClient _client = new HttpClient();
-            //Menus = await _client.GetFromJsonAsync<ObservableCollection<Menu>>("https://localhost:7286/api/mensa/menu/getThisWeeklyMenu");
-            //sort Menu
-            //Monday.Add(Menu[1-3])
-            //...
+            try
+            {
+                var handler = new HttpClientHandler();
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.ServerCertificateCustomValidationCallback =
+                    (httpRequestMessage, cert, cetChain, policyErrors) =>
+                    {
+                        return true;
+                    };
 
-            //Hardcoded till DB works
-            DayMenu monday = new DayMenu()
-            {
-                Date=new DateOnly(2023, 10, 30)
-            };
-            Menu m1 = new Menu()
-            {
-                MenuId = 1,
-                WhichMenu = 1,
-                Starter = "Eisbergsalat",
-                MainCourse = "Schnitzel mit Pommes",
-                Price = 6.99m,
-                Date = new DateOnly(2023, 10, 30)
-            };
-            monday.Menus.Add(m1);
+                var client = new HttpClient(handler);
 
-            Menu m2 = new Menu()
-            {
-                MenuId = 2,
-                WhichMenu = 2,
-                Starter = "Eisbergsalat",
-                MainCourse = "Tortellini mit Füllung",
-                Price = 7.99m,
-                Date = new DateOnly(2023, 10, 30)
-            };
-            monday.Menus.Add(m2);
+                // Fetch the weekly menus from the API
+                var response = await client.GetFromJsonAsync<List<Menu>>("https://213.47.166.108:7286/api/mensa/menu/getThisWeeklyMenu");
 
-            Menu m3 = new Menu()
+                if (response != null && response.Count >= 15)
+                {
+                    // Create DayMenus for each day of the week
+                    DateOnly resultDateOnly = ReturnThisWeek();
+                    for (int i = 0; i < 5; i++)
+                    {
+                        DayMenu dayMenu = new DayMenu
+                        {
+                            Date = resultDateOnly.AddDays(i - 3),
+                            Menus = new List<Menu>
+                    {
+                        response[i * 3],
+                        response[i * 3 + 1],
+                        response[i * 3 + 2]
+                    }
+                        };
+                        DayMenus.Add(dayMenu);
+                    }
+                }
+                else
+                {
+                    DayMenu test = new DayMenu
+                    {
+                        Date = DateOnly.MaxValue,
+                        Menus = new List<Menu>
+                    {
+                        new Menu
+                        {
+                            MenuId = 1,
+                            WhichMenu = 0,
+                            Starter = "Fehler",
+                            MainCourse = "Fehler",
+                            Price = 9999.99m,
+                            Date = DateOnly.MaxValue
+                        },
+                        new Menu
+                        {
+                            MenuId = 2,
+                            WhichMenu = 0,
+                            Starter = "Fehler",
+                            MainCourse = "Fehler",
+                            Price = 9999.99m,
+                            Date = DateOnly.MaxValue
+                        },
+                        new Menu
+                        {
+                            MenuId = 3,
+                            WhichMenu = 0,
+                            Starter = "Fehler",
+                            MainCourse = "Fehler",
+                            Price = 9999.99m,
+                            Date = DateOnly.MaxValue
+                        }
+                    }
+                    };
+                    DayMenus.Add(test);
+                }
+            }
+            catch (HttpRequestException ex)
             {
-                MenuId = 3,
-                WhichMenu = 3,
-                Starter = "Eisbergsalat",
-                MainCourse = "Steak",
-                Price = 6.99m,
-                Date = new DateOnly(2023, 10, 30)
-            };
-            monday.Menus.Add(m3);
-           
-            DayMenu tuesday = new DayMenu()
+                // Handle the specific exception related to the HTTP request
+                Console.WriteLine("HttpRequestException: " + ex.Message);
+            }
+            catch (Exception ex)
             {
-                Date = new DateOnly(2023, 10, 31)
-            };
-            Menu m4 = new Menu()
-            {
-                MenuId = 4,
-                WhichMenu = 1,
-                Starter = "Eisbergsalat",
-                MainCourse = "Hendl",
-                Price = 7.99m,
-                Date = new DateOnly(2023, 10, 31)
-            };
-            tuesday.Menus.Add(m4);
+                // Handle any other exceptions that may occur during the API request or data processing
+                Console.WriteLine("An error occurred: " + ex.Message);
+            }
+        }
 
-            Menu m5 = new Menu()
-            {
-                WhichMenu = 2,
-                Starter = "Eisbergsalat",
-                MainCourse = "Wassermelone",
-                Price = 7.99m,
-                Date = new DateOnly(2023, 10, 31)
-            };
-            tuesday.Menus.Add(m5);
+        public DateOnly ReturnThisWeek()
+        {
 
-            Menu m6 = new Menu()
-            {
-                WhichMenu = 3,
-                Starter = "Eisbergsalat",
-                MainCourse = "Bernerwürstel mit Pommes",
-                Price = 8.99m,
-                Date = new DateOnly(2023, 10, 31)
-            };
-            tuesday.Menus.Add(m6);
+            DateTime dateTimeToday = DateTime.Now;
 
-            DayMenu wednesday = new DayMenu()
-            {
-                Date = new DateOnly(2023, 11, 1)
-            };
-            Menu m7 = new Menu()
-            {
-                WhichMenu = 1,
-                Starter = "Eisbergsalat",
-                MainCourse = "Hendl",
-                Price = 7.99m,
-                Date = new DateOnly(2023, 11, 1)
-            };
-            wednesday.Menus.Add(m4);
+            DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+            Calendar calendar = dfi.Calendar;
+            int weekOfYear = calendar.GetWeekOfYear(dateTimeToday, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
 
-            Menu m8 = new Menu()
-            {
-                WhichMenu = 2,
-                Starter = "Eisbergsalat",
-                MainCourse = "Wassermelone",
-                Price = 7.99m,
-                Date = new DateOnly(2023, 11, 1)
-            };
-            wednesday.Menus.Add(m5);
+            int year = DateTime.Now.Year;
+            DateTime jan1 = new DateTime(year, 1, 1);
+            int daysOffset = DayOfWeek.Thursday - jan1.DayOfWeek;
 
-            Menu m9 = new Menu()
-            {
-                WhichMenu = 3,
-                Starter = "Eisbergsalat",
-                MainCourse = "Bernerwürstel mit Pommes",
-                Price = 8.99m,
-                Date = new DateOnly(2023, 11, 1)
-            };
-            wednesday.Menus.Add(m6);
+            DateTime firstThursday = jan1.AddDays(daysOffset);
+            var cal = CultureInfo.CurrentCulture.Calendar;
+            int firstWeek = cal.GetWeekOfYear(firstThursday, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
 
-            DayMenu thursday = new DayMenu()
+            var weekNum = weekOfYear;
+            if (firstWeek == 1)
             {
-                Date = new DateOnly(2023, 11, 2)
-            };
-            Menu m10 = new Menu()
-            {
-                WhichMenu = 1,
-                Starter = "Eisbergsalat",
-                MainCourse = "Hendl",
-                Price = 7.99m,
-                Date = new DateOnly(2023, 11, 2)
-            };
-            thursday.Menus.Add(m4);
+                weekNum -= 1;
+            }
 
-            Menu m11 = new Menu()
-            {
-                WhichMenu = 2,
-                Starter = "Eisbergsalat",
-                MainCourse = "Wassermelone",
-                Price = 7.99m,
-                Date = new DateOnly(2023, 11, 2)
-            };
-            thursday.Menus.Add(m5);
+            var resultDateTime = firstThursday.AddDays(weekNum * 7);
 
-            Menu m12 = new Menu()
-            {
-                WhichMenu = 3,
-                Starter = "Eisbergsalat",
-                MainCourse = "Bernerwürstel mit Pommes",
-                Price = 8.99m,
-                Date = new DateOnly(2023, 11, 2)
-            };
-            thursday.Menus.Add(m6);
+            DateOnly resultDateOnly = DateOnly.FromDateTime(resultDateTime);
 
-            DayMenu friday = new DayMenu()
-            {
-                Date = new DateOnly(2023, 11, 3)
-            };
-            Menu m13 = new Menu()
-            {
-                WhichMenu = 1,
-                Starter = "Eisbergsalat",
-                MainCourse = "Hendl",
-                Price = 7.99m,
-                Date = new DateOnly(2023, 11, 3)
-            };
-            friday.Menus.Add(m4);
-
-            Menu m14 = new Menu()
-            {
-                WhichMenu = 2,
-                Starter = "Eisbergsalat",
-                MainCourse = "Wassermelone",
-                Price = 7.99m,
-                Date = new DateOnly(2023, 11, 3)
-            };
-            friday.Menus.Add(m5);
-
-            Menu m15 = new Menu()
-            {
-                WhichMenu = 3,
-                Starter = "Eisbergsalat",
-                MainCourse = "Bernerwürstel mit Pommes",
-                Price = 8.99m,
-                Date = new DateOnly(2023, 11, 3)
-            };
-            friday.Menus.Add(m6);
-
-            DayMenus.Add(monday);
-            DayMenus.Add(tuesday);
-            DayMenus.Add(wednesday);
-            DayMenus.Add(thursday);
-            DayMenus.Add(friday);
+            return resultDateOnly;
         }
     }
 }

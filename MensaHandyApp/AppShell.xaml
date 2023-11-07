@@ -12,6 +12,11 @@
         Route="MainPage" />
 
     <ShellContent
+        Title="Orders"
+        ContentTemplate="{DataTemplate views:Orders}"
+        Route="Orders" />
+
+    <ShellContent
         Title="Menüs"
         ContentTemplate="{DataTemplate views:Carusell}"
         Route="Carusell" />
