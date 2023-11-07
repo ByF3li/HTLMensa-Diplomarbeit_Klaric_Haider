@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MensaHandyApp.Views.Orders"
+             Title="Orders">
+    
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label>Hier sind alle Orders</Label>
+            <Label>Es wird nötig sein die Email aus jeder Order um Mitternacht oder so zu löschen (Datenschutz).</Label>
+            <Label>Für die Auswertung nur welche Menüs gekauft wurden benötigt</Label>
+
+            <CollectionView ItemsSource="{Binding Orders}">
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Span="1" Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeThickness="4" Padding="50" >
+                            <Grid RowDefinitions="2*, 2*, 2*" ColumnDefinitions="1*, 1*"  Margin="5">
+
+                                <Label Text="Bestellungs-Id:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding OrderId}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                <Label Text="Bestullugns-Datum:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding OrderDate}" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                <Label Text="Ihre Email:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding UserEmail}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                <Label Text="Ihre Email:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding Menus}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

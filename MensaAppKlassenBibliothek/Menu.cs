@@ -15,7 +15,7 @@ namespace MensaAppKlassenBibliothek
         public string MainCourse { get; set; }
         public decimal Price { get; set; }
         public DateOnly Date { get; set; }
-        public List<Order>? Orders { get; set; } = null;
+        public List<Order>? Orders { get; set; } = new List<Order>();
 
         public int CompareTo(Menu? other)
         {

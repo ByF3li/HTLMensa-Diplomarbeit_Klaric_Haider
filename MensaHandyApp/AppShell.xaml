@@ -12,12 +12,7 @@
         Route="MainPage" />
 
     <ShellContent
-        Title="Tages-Menü"
-        ContentTemplate="{DataTemplate views:ShowDailyMenuView}"
-        Route="ShowDailyMenuView" />
-
-    <ShellContent
-        Title="CarusellTest"
+        Title="Menüs"
         ContentTemplate="{DataTemplate views:Carusell}"
         Route="Carusell" />
 
@@ -25,5 +20,4 @@
         Title="Warenkorb"
         ContentTemplate="{DataTemplate views:WarenkorbView}"
         Route="Warenkorb" />
-
 </Shell>

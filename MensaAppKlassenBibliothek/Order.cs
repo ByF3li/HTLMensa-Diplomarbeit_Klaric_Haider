@@ -12,7 +12,7 @@ namespace MensaAppKlassenBibliothek
         public int OrderId { get; set; }
         public DateOnly OrderDate { get; set; }
         public string UserEmail { get; set; }
-        public List<Menu> Menus { get; set; }
+        public List<Menu> Menus { get; set; } = new List<Menu>();
 
         //UserEmail needs to be deleted after midnight (userdata doesn't need to be stored over longer time only the orders)
     }

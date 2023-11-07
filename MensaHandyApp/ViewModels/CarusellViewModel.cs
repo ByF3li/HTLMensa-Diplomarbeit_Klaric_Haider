@@ -71,7 +71,10 @@ namespace MensaHandyApp.ViewModels
         {
             HttpClient _client = new HttpClient();
             //Menus = await _client.GetFromJsonAsync<ObservableCollection<Menu>>("https://localhost:7286/api/mensa/menu/getThisWeeklyMenu");
-            
+            //sort Menu
+            //Monday.Add(Menu[1-3])
+            //...
+
             //Hardcoded till DB works
             DayMenu monday = new DayMenu()
             {
@@ -90,6 +93,7 @@ namespace MensaHandyApp.ViewModels
 
             Menu m2 = new Menu()
             {
+                MenuId = 2,
                 WhichMenu = 2,
                 Starter = "Eisbergsalat",
                 MainCourse = "Tortellini mit Füllung",
@@ -100,6 +104,7 @@ namespace MensaHandyApp.ViewModels
 
             Menu m3 = new Menu()
             {
+                MenuId = 3,
                 WhichMenu = 3,
                 Starter = "Eisbergsalat",
                 MainCourse = "Steak",
@@ -114,6 +119,7 @@ namespace MensaHandyApp.ViewModels
             };
             Menu m4 = new Menu()
             {
+                MenuId = 4,
                 WhichMenu = 1,
                 Starter = "Eisbergsalat",
                 MainCourse = "Hendl",

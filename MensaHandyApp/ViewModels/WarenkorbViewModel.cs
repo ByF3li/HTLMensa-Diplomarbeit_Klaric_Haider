@@ -16,6 +16,9 @@ namespace MensaHandyApp.ViewModels
         [ObservableProperty]
         private ObservableCollection<Menu> _menus = new ObservableCollection<Menu>();
 
+        [ObservableProperty]
+        private ObservableCollection<Order> _orders = new ObservableCollection<Order>();
+
         public int GetMenuId { get; private set; }
         private Menu selectedListItem;
         public Menu SelectedListItem
@@ -65,19 +68,11 @@ namespace MensaHandyApp.ViewModels
             }
             else if(takenMenuIds.Contains(menuId))
             {
-                Menu menudouble = new Menu()
-                {
-                    MenuId = menuId,
-                    WhichMenu = 1,
-                    Starter = "Gibt keine",
-                    MainCourse = "Menü doppelt eingetragen",
-                    Price = 99999.99m,
-                    Date = DateOnly.FromDateTime(DateTime.Now)
-                };
-                Menus.Add(menudouble);
+                return;
             }
             else
             {
+                //getmenubyId statt hardcoded
                 Menu menuTest = new Menu()
                 {
                     MenuId = menuId,
@@ -88,6 +83,25 @@ namespace MensaHandyApp.ViewModels
                     Date = DateOnly.FromDateTime(DateTime.Now)
                 };
                 Menus.Add(menuTest);
+
+                
+                Order o1 = new Order()
+                {
+                    OrderId = 1,
+                    UserEmail = "fehaider@tsn.at",
+                    OrderDate = new DateOnly(2023, 11, 9),
+                    Menus = Menus.ToList()
+                };
+                Orders.Add(o1);
+
+
+                /*
+                HttpClient _client = new HttpClient();
+                //Anhand des Einloggens die Email bekommen -> in variable speichern und hier benutzten 
+                String testMail = "testSchüler@tsn.at";
+
+                Orders.Add(await _client.GetFromJsonAsync<Order>("https://localhost:7286/api/mensa/order/getOrderByUserEmail/" + testMail));
+                */
             }
 
 
@@ -104,6 +118,7 @@ namespace MensaHandyApp.ViewModels
             var client = new HttpClient(handler); 
             Menus.Add(await client.GetFromJsonAsync<Menu>("https://213.47.166.108:7286/api/mensa/menu/getMenuById/" + menuId));
             */
+
 
         }
 
