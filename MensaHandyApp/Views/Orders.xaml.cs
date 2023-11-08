@@ -4,7 +4,7 @@ namespace MensaHandyApp.Views;
 
 public partial class Orders : ContentPage
 {
-    private CarusellViewModel _vm = new CarusellViewModel();
+    private OrdersViewModel _vm = new OrdersViewModel();
 
     public Orders()
 	{

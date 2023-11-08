@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MensaAppKlassenBibliothek;
 using System;
 using System.Collections.Generic;
@@ -72,54 +73,47 @@ namespace MensaHandyApp.ViewModels
             }
             else
             {
-                //getmenubyId statt hardcoded
-                Menu menuTest = new Menu()
-                {
-                    MenuId = menuId,
-                    WhichMenu = 1,
-                    Starter = "Eisbergsalat",
-                    MainCourse = "Schnitzel mit Pommes",
-                    Price = 6.99m,
-                    Date = DateOnly.FromDateTime(DateTime.Now)
-                };
-                Menus.Add(menuTest);
+                var handler = new HttpClientHandler();
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.ServerCertificateCustomValidationCallback =
+                    (httpRequestMessage, cert, cetChain, policyErrors) =>
+                    {
+                        return true;
+                    };
 
-                
-                Order o1 = new Order()
+                var client = new HttpClient(handler);
+                Menus.Add(await client.GetFromJsonAsync<Menu>("https://213.47.166.108:7286/api/mensa/menu/getMenuById/" + menuId));
+
+
+
+
+                //denk nach Pati bitte 
+                //warenkorb hinzufügen (tabelle)
+                /*
+                String testMail = "testSchüler@tsn.at";
+
+                Order order = new Order()
                 {
                     OrderId = 1,
-                    UserEmail = "fehaider@tsn.at",
+                    UserEmail = "testSchüler@tsn.at",
                     OrderDate = new DateOnly(2023, 11, 9),
                     Menus = Menus.ToList()
                 };
-                Orders.Add(o1);
+                Orders.Add(order);
 
+                await client.PostAsJsonAsync<Order>("https://213.47.166.108:7286/api/mensa/order/safeOrder", order);
 
-                /*
-                HttpClient _client = new HttpClient();
-                //Anhand des Einloggens die Email bekommen -> in variable speichern und hier benutzten 
-                String testMail = "testSchüler@tsn.at";
-
-                Orders.Add(await _client.GetFromJsonAsync<Order>("https://localhost:7286/api/mensa/order/getOrderByUserEmail/" + testMail));
+                Orders.Add(await client.GetFromJsonAsync<Order>("https://213.47.166.108:7286/api/mensa/order/getOrderByUserEmail/" + testMail));
                 */
+
+                //todo warenkorb löschen nach kauf (von warenkorb -> kaufen -> order)
+                //2 tabellen gekauft(order) und warenkorb
+                //email aus order löschen (freitag abend)
+
+                //Warenkorb button der zu bezahlung führt rechts in der ecke
+
+
             }
-
-
-
-            /*
-            var handler = new HttpClientHandler();
-            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-            handler.ServerCertificateCustomValidationCallback =
-                (httpRequestMessage, cert, cetChain, policyErrors) =>
-                {
-                    return true;
-                };
-
-            var client = new HttpClient(handler); 
-            Menus.Add(await client.GetFromJsonAsync<Menu>("https://213.47.166.108:7286/api/mensa/menu/getMenuById/" + menuId));
-            */
-
-
         }
 
         private async void SendAlert()
@@ -156,6 +150,40 @@ namespace MensaHandyApp.ViewModels
                 await Shell.Current.DisplayAlert("Nein", "Das Menü wird nicht entfernt", "OK");
                 SelectedListItem = null;
             }
+        }
+
+        public IAsyncRelayCommand CmdPay { get; set; }
+
+        public WarenkorbViewModel()
+        {
+            CmdPay = new AsyncRelayCommand(Pay);
+        }
+
+        public async Task Pay()
+        {
+            var handler = new HttpClientHandler();
+            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+            handler.ServerCertificateCustomValidationCallback =
+                (httpRequestMessage, cert, cetChain, policyErrors) =>
+                {
+                    return true;
+                };
+
+            var client = new HttpClient(handler);
+
+            String testMail = "testSchüler@tsn.at";
+
+            Order order = new Order()
+            {
+                UserEmail = testMail,
+                OrderDate = new DateOnly(2023, 11, 9),
+                Menus = Menus.ToList()
+            };
+            Orders.Add(order);
+
+            await client.PostAsJsonAsync<Order>("https://213.47.166.108:7286/api/mensa/order/safeOrder", order);
+
+            await Shell.Current.GoToAsync($"///Orders");
         }
     }
 }

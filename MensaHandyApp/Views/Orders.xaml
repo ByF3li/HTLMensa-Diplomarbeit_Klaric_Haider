@@ -8,35 +8,28 @@
     <ScrollView>
         <VerticalStackLayout>
 
-            <CollectionView ItemsSource="{Binding Menus}">
+            <CollectionView ItemsSource="{Binding Orders}">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Span="1" Orientation="Vertical" />
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Border StrokeThickness="4" Padding="50" >
-                            <Grid RowDefinitions="2*, 2*, 2*, 2*, 2*" ColumnDefinitions="1*, 1*"  Margin="5">
+                            <Grid RowDefinitions="2*, 2*, 2*" ColumnDefinitions="1*, 1*"  Margin="5">
 
-                                <Label Text="Menü Nummer:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
-                                <Label Text="{Binding WhichMenu}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="Bestellungs-Id:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding OrderId}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
 
-                                <Label Text="Vorspeiße:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
-                                <Label Text="{Binding Starter}" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="Bestellungs-Datum:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding OrderDate}" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
 
-                                <Label Text="Hauptspeiße:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
-                                <Label Text="{Binding MainCourse}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 5"  FontSize="10"/>
-
-                                <Label Text="Preis des Menüs:" HorizontalOptions="Start" Grid.Row="3" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10" />
-                                <Label Text="{Binding Price, StringFormat='{0:F2}'}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
-
-                                <Label Text="Allergene:" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"></Label>
-                                <Label Text="(ACG)" HorizontalOptions="Start" Grid.Row="4" Grid.Column="1"  FontSize="10" Margin="0, 0, 0, 5"></Label>
+                                <Label Text="Ihre Email:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding UserEmail}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Label Text="A=GLUTENHALTIGES GETREIDE; B=KREBSTIERE; C=EIER; D=FISCH; E=ERDNÜSSE; F=SOJA; G=MILCH UND LACTOSE; H=SCHALENFRÜCHTE (NÜSSE); L=SELLERIE; M=SENF; N=SESAM; O=SULFITE; P=LUPINIEN; R=WEICHTIERE" Padding="10" FontSize="10" TextColor="Purple"></Label>
 
         </VerticalStackLayout>
     </ScrollView>
