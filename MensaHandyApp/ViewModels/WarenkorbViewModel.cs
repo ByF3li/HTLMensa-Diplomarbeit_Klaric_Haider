@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MensaAppKlassenBibliothek;
+using MensaHandyApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -52,7 +53,6 @@ namespace MensaHandyApp.ViewModels
 
         public async void SetMenuId(int menuId)
         {
-            List<int> takenMenuIds = Menus.Select(menu => menu.MenuId).ToList();
 
             if (menuId == null)
             {
@@ -67,10 +67,6 @@ namespace MensaHandyApp.ViewModels
                 };
                 Menus.Add(noMenuFound);
             }
-            else if(takenMenuIds.Contains(menuId))
-            {
-                return;
-            }
             else
             {
                 var handler = new HttpClientHandler();
@@ -82,37 +78,7 @@ namespace MensaHandyApp.ViewModels
                     };
 
                 var client = new HttpClient(handler);
-                Menus.Add(await client.GetFromJsonAsync<Menu>("https://213.47.166.108:7286/api/mensa/menu/getMenuById/" + menuId));
-
-
-
-
-                //denk nach Pati bitte 
-                //warenkorb hinzufügen (tabelle)
-                /*
-                String testMail = "testSchüler@tsn.at";
-
-                Order order = new Order()
-                {
-                    OrderId = 1,
-                    UserEmail = "testSchüler@tsn.at",
-                    OrderDate = new DateOnly(2023, 11, 9),
-                    Menus = Menus.ToList()
-                };
-                Orders.Add(order);
-
-                await client.PostAsJsonAsync<Order>("https://213.47.166.108:7286/api/mensa/order/safeOrder", order);
-
-                Orders.Add(await client.GetFromJsonAsync<Order>("https://213.47.166.108:7286/api/mensa/order/getOrderByUserEmail/" + testMail));
-                */
-
-                //todo warenkorb löschen nach kauf (von warenkorb -> kaufen -> order)
-                //2 tabellen gekauft(order) und warenkorb
-                //email aus order löschen (freitag abend)
-
-                //Warenkorb button der zu bezahlung führt rechts in der ecke
-
-
+                Menus.Add(await client.GetFromJsonAsync<Menu>("https://84.113.2.195:7286/api/mensa/menu/getMenuById/" + menuId));
             }
         }
 
@@ -131,7 +97,8 @@ namespace MensaHandyApp.ViewModels
                     };
 
                 var client = new HttpClient(handler);
-                //Menus.Remove(await client.GetFromJsonAsync<Menu>("https://213.47.166.108:7286/api/mensa/menu/getMenuByDate/" + SelectedListItem.MenuId));
+
+                //hier menü aus dem Warenkorb löschen irgendwie
                 Menu deleteErfolgreich = new Menu()
                 {
                     MenuId = 420,
@@ -172,18 +139,21 @@ namespace MensaHandyApp.ViewModels
             var client = new HttpClient(handler);
 
             String testMail = "testSchüler@tsn.at";
+            List<int> menuIds = Menus.Select(menu => menu.MenuId).ToList();
 
-            Order order = new Order()
+            
+            DtoOrder order = new DtoOrder()
             {
                 UserEmail = testMail,
-                OrderDate = new DateOnly(2023, 11, 9),
-                Menus = Menus.ToList()
+                OrderDate = DateOnly.FromDateTime(DateTime.Now),
+                MenuIds = menuIds
             };
-            Orders.Add(order);
 
-            await client.PostAsJsonAsync<Order>("https://213.47.166.108:7286/api/mensa/order/safeOrder", order);
+            await client.PostAsJsonAsync("https://84.113.2.195:7286/api/mensa/order/safeOrder", order);
 
             await Shell.Current.GoToAsync($"///Orders");
         }
+
+        
     }
 }

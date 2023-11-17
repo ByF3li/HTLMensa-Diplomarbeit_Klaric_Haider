@@ -21,4 +21,10 @@
     <ProjectReference Include="..\MensaAppKlassenBibliothek\MensaAppKlassenBibliothek.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="MensaHandyApp">
+      <HintPath>..\MensaHandyApp\bin\Debug\net7.0-android\MensaHandyApp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

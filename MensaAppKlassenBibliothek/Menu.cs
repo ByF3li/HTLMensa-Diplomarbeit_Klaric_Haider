@@ -26,4 +26,5 @@ namespace MensaAppKlassenBibliothek
             return this.Date.CompareTo(other.Date);
         }
     }
+
 }

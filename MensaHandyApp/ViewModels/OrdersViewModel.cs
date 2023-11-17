@@ -1,18 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MensaAppKlassenBibliothek;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MensaHandyApp.ViewModels
 {
     [ObservableObject]
     public partial class OrdersViewModel
     {
+    
         [ObservableProperty]
         private ObservableCollection<Order> _orders = new ObservableCollection<Order>();
         
@@ -22,9 +18,7 @@ namespace MensaHandyApp.ViewModels
         }
         private async Task ShowOrder()
         {
-            String testMail = "testSchüler@tsn.at";
 
-            /*
             var handler = new HttpClientHandler();
             handler.ClientCertificateOptions = ClientCertificateOption.Manual;
             handler.ServerCertificateCustomValidationCallback =
@@ -35,21 +29,25 @@ namespace MensaHandyApp.ViewModels
 
             var client = new HttpClient(handler);
 
-            //bitte nit hardcoden danke
-            
+            String testMail = "testSchüler@tsn.at";
 
-            //mach a liste drauß weil mehrere Orders pro person sein können
-            //Onclick auf die Order -> neue View mit alle Menüs zu dem Order 
-            Orders.Add(await client.GetFromJsonAsync<Order>("https://213.47.166.108:7286/api/mensa/order/getOrderByUserEmail/" + testMail));
-            */
-
-            Order order = new Order()
+            try
             {
-                OrderId = 1,
-                UserEmail = testMail,
-                OrderDate = new DateOnly(2023, 11, 9),
-            };
-            Orders.Add(order);
+                List<Order> o = new List<Order>();
+                o = await client.GetFromJsonAsync<List<Order>>("https://84.113.2.195:7286/api/mensa/order/getOrderByUserEmail?mail=" + testMail);
+                // da hohl i mir alle Orders, brauch aber nur de von dieser Woche...
+                // alte Orders (nit die neuerste), da sind die Menus wenn ma mit getOrderByUserEmail drüberfährt nit drinnen => aus zwischentabelle holen
+                foreach (var order in o)
+                {
+                    Orders.Add(order);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            
         }
+    
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MensaWebAPI.Controllers
 {
@@ -11,7 +12,11 @@ namespace MensaWebAPI.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-            private MenuContext _context = new MenuContext();
+        JsonSerializerOptions options = new JsonSerializerOptions()
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles
+        };
+        private MenuContext _context = new MenuContext();
 
         public OrderController(MenuContext context) 
         {
@@ -23,22 +28,44 @@ namespace MensaWebAPI.Controllers
         [Route("order/getAll")]
         public async Task<IActionResult> AsyncGetAllOrders()
         {
-            return new JsonResult(await this._context.Orders.ToListAsync());
+            return new JsonResult(await this._context.Orders.ToListAsync(), options);
         }
 
         [HttpGet]
-        [Route("order/getOrderByUserEmail/{userMail}")]
+        [Route("order/getOrderByUserEmail")]
         public async Task<IActionResult> AsyncGetOrderByUserEmail(String mail)
         {
-            return new JsonResult(await this._context.Orders.Where(o => o.UserEmail.Equals(mail)).FirstAsync());
+            return new JsonResult(await this._context.Orders.Where(o => o.UserEmail.Equals(mail)).ToListAsync(), options);
         }
 
         [HttpPost]
         [Route("order/safeOrder")]
-        public async Task<IActionResult> AsyncSafeOrder(Order order)
+        public async Task<IActionResult> AsyncSaveOrder(DtoOrder order)
         {
-            this._context.Orders.Add(order);
-            return new JsonResult((await this._context.SaveChangesAsync()) == 1);
+            List<Menu> menus = new List<Menu>();
+
+            foreach (int i in order.MenuIds)
+            {
+                Menu toAdd = await getMenuById(i);
+                menus.Add(toAdd);
+            }
+
+            Order orderToPost = new Order()
+            {
+                //OrderId = 100,
+                OrderDate = order.OrderDate,
+                UserEmail = order.UserEmail,
+                Menus = menus
+            };
+
+            _context.Add(orderToPost);
+            return new JsonResult((await this._context.SaveChangesAsync()) >= 1);
         }
+
+        private async Task<Menu> getMenuById(int id)
+        {
+            return await _context.Menues.FindAsync(id);
+        }
+
     }
 }

@@ -82,9 +82,10 @@ namespace MensaHandyApp.ViewModels
                     };
 
                 var client = new HttpClient(handler);
-
+                
                 // Fetch the weekly menus from the API
-                var response = await client.GetFromJsonAsync<List<Menu>>("https://213.47.166.108:7286/api/mensa/menu/getThisWeeklyMenu");
+                var response = await client.GetFromJsonAsync<List<Menu>>("https://84.113.2.195:7286/api/mensa/menu/getThisWeeklyMenu");
+
 
                 if (response != null && response.Count >= 15)
                 {
@@ -107,7 +108,7 @@ namespace MensaHandyApp.ViewModels
                 }
                 else
                 {
-                    DayMenu test = new DayMenu
+                    DayMenu testFailed = new DayMenu
                     {
                         Date = DateOnly.MaxValue,
                         Menus = new List<Menu>
@@ -141,7 +142,7 @@ namespace MensaHandyApp.ViewModels
                         }
                     }
                     };
-                    DayMenus.Add(test);
+                    DayMenus.Add(testFailed);
                 }
             }
             catch (HttpRequestException ex)
