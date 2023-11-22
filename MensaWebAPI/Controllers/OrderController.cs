@@ -39,7 +39,7 @@ namespace MensaWebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("order/safeOrder")]
+        [Route("order/saveOrder")]
         public async Task<IActionResult> AsyncSaveOrder(DtoOrder order)
         {
             List<Menu> menus = new List<Menu>();
@@ -52,7 +52,6 @@ namespace MensaWebAPI.Controllers
 
             Order orderToPost = new Order()
             {
-                //OrderId = 100,
                 OrderDate = order.OrderDate,
                 UserEmail = order.UserEmail,
                 Menus = menus

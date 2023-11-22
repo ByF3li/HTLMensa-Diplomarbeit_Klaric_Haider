@@ -1,6 +1,6 @@
 using MensaHandyApp.ViewModels;
 
-namespace MensaHandyApp.Views;
+namespace MensaHandyApp.Views.Menus;
 
 public partial class WarenkorbView : ContentPage
 {

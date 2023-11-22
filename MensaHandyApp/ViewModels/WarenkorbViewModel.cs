@@ -151,9 +151,10 @@ namespace MensaHandyApp.ViewModels
 
             await client.PostAsJsonAsync("https://oliverserver.ddns.net:7286/api/mensa/order/safeOrder", order);
 
-            await Shell.Current.GoToAsync($"///Orders");
+            await Shell.Current.GoToAsync($"/views/Orders/OrderHistory.xaml");
+            SelectedListItem = null;
         }
 
-        
+
     }
 }

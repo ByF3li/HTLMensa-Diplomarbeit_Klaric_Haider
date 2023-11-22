@@ -57,11 +57,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\carusell.xaml.cs">
-	    <DependentUpon>Carusell.xaml</DependentUpon>
+	  <Compile Update="Views\Menus\WeeklyMenus.xaml.cs">
+	    <DependentUpon>WeeklyMenus.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\MainPage.xaml.cs">
 	    <DependentUpon>MainPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Orders\WeeklyOrders.xaml.cs">
+	    <DependentUpon>WeeklyOrders.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Orders\OrderHistory.xaml.cs">
+	    <DependentUpon>OrderHistory.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\ShowWeeklyMenuView.xaml.cs">
 	    <DependentUpon>ShowWeeklyMenuView.xaml</DependentUpon>
@@ -69,19 +75,22 @@
 	  <Compile Update="Views\ShowDailyMenuView.xaml.cs">
 	    <DependentUpon>ShowDailyMenuView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\WarenkorbView.xaml.cs">
+	  <Compile Update="Views\Menus\WarenkorbView.xaml.cs">
 	    <DependentUpon>WarenkorbView.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\Carusell.xaml">
+	  <MauiXaml Update="Views\Menus\WeeklyMenus.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\MainPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Orders.xaml">
+	  <MauiXaml Update="Views\Orders\WeeklyOrders.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Orders\OrderHistory.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ShowWeeklyMenuView.xaml">
@@ -90,7 +99,7 @@
 	  <MauiXaml Update="Views\ShowDailyMenuView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\WarenkorbView.xaml">
+	  <MauiXaml Update="Views\Menus\WarenkorbView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

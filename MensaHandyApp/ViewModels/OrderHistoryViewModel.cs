@@ -6,13 +6,13 @@ using System.Net.Http.Json;
 namespace MensaHandyApp.ViewModels
 {
     [ObservableObject]
-    public partial class OrdersViewModel
+    public partial class OrderHistoryViewModel
     {
     
         [ObservableProperty]
         private ObservableCollection<Order> _orders = new ObservableCollection<Order>();
         
-        public OrdersViewModel()
+        public OrderHistoryViewModel()
         {
             Task t = ShowOrder();
         }

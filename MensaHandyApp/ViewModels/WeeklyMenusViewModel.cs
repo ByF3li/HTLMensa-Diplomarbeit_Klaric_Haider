@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MensaAppKlassenBibliothek;
 using MensaHandyApp.Models;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Compatibility;
 using System;
 using System.Collections.ObjectModel;
@@ -11,7 +12,7 @@ using static System.Net.WebRequestMethods;
 namespace MensaHandyApp.ViewModels
 {
     [ObservableObject]
-    partial class CarusellViewModel
+    partial class WeeklyMenusViewModel
     {
         [ObservableProperty]
         private ObservableCollection<DayMenu> _dayMenus = new ObservableCollection<DayMenu>();
@@ -38,6 +39,20 @@ namespace MensaHandyApp.ViewModels
             }
         }
 
+        private int _carouselPosition;
+        public int CarouselPosition
+        {
+            get { return _carouselPosition; }
+            set
+            {
+                if (_carouselPosition != value)
+                {
+                    _carouselPosition = value;
+                    OnPropertyChanged(nameof(CarouselPosition));
+                }
+            }
+        }
+
         private async void SendAlert()
         {
             bool answer = await Shell.Current.DisplayAlert("Hinzufügen", "Soll das Menü dem Warenkorb hinzugefügt werden", "Ja", "Nein");
@@ -58,13 +73,13 @@ namespace MensaHandyApp.ViewModels
             if (GetMenuId != null)
             {
                 var navigationParameter = new Dictionary<string, object> { { "MenuId", GetMenuId } };
+                SelectedListItem = null;
                 await Shell.Current.GoToAsync($"///Warenkorb", navigationParameter);
             }
-
             SelectedListItem = null;
         }
 
-        public CarusellViewModel()
+        public WeeklyMenusViewModel()
         {
             ShowMenu();
         }
@@ -87,7 +102,7 @@ namespace MensaHandyApp.ViewModels
                 var response = await client.GetFromJsonAsync<List<Menu>>("https://oliverserver.ddns.net:7286/api/mensa/menu/getThisWeeklyMenu");
 
 
-                if (response != null && response.Count >= 15)
+                if (response != null ) //&& response.Count >= 15)
                 {
                     // Create DayMenus for each day of the week
                     DateOnly resultDateOnly = ReturnThisWeek();
@@ -97,11 +112,11 @@ namespace MensaHandyApp.ViewModels
                         {
                             Date = resultDateOnly.AddDays(i - 3),
                             Menus = new List<Menu>
-                    {
-                        response[i * 3],
-                        response[i * 3 + 1],
-                        response[i * 3 + 2]
-                    }
+                            {
+                                response[i * 3],
+                                response[i * 3 + 1],
+                                response[i * 3 + 2]
+                            }
                         };
                         DayMenus.Add(dayMenu);
                     }
@@ -112,38 +127,40 @@ namespace MensaHandyApp.ViewModels
                     {
                         Date = DateOnly.MaxValue,
                         Menus = new List<Menu>
-                    {
-                        new Menu
                         {
-                            MenuId = 1,
-                            WhichMenu = 0,
-                            Starter = "Fehler",
-                            MainCourse = "Fehler",
-                            Price = 9999.99m,
-                            Date = DateOnly.MaxValue
-                        },
-                        new Menu
-                        {
-                            MenuId = 2,
-                            WhichMenu = 0,
-                            Starter = "Fehler",
-                            MainCourse = "Fehler",
-                            Price = 9999.99m,
-                            Date = DateOnly.MaxValue
-                        },
-                        new Menu
-                        {
-                            MenuId = 3,
-                            WhichMenu = 0,
-                            Starter = "Fehler",
-                            MainCourse = "Fehler",
-                            Price = 9999.99m,
-                            Date = DateOnly.MaxValue
+                            new Menu
+                            {
+                                MenuId = 1,
+                                WhichMenu = 0,
+                                Starter = "Fehler",
+                                MainCourse = "Fehler",
+                                Price = 9999.99m,
+                                Date = DateOnly.MaxValue
+                            },
+                            new Menu
+                            {
+                                MenuId = 2,
+                                WhichMenu = 0,
+                                Starter = "Fehler",
+                                MainCourse = "Fehler",
+                                Price = 9999.99m,
+                                Date = DateOnly.MaxValue
+                            },
+                            new Menu
+                            {
+                                MenuId = 3,
+                                WhichMenu = 0,
+                                Starter = "Fehler",
+                                MainCourse = "Fehler",
+                                Price = 9999.99m,
+                                Date = DateOnly.MaxValue
+                            }
                         }
-                    }
                     };
                     DayMenus.Add(testFailed);
                 }
+
+                GetCarusellPositionAsync();
             }
             catch (HttpRequestException ex)
             {
@@ -185,6 +202,52 @@ namespace MensaHandyApp.ViewModels
             DateOnly resultDateOnly = DateOnly.FromDateTime(resultDateTime);
 
             return resultDateOnly;
+        }
+        
+
+        //Pos wär eigentlich richtig aber wird nicht in view übernommen 
+        public async Task GetCarusellPositionAsync()
+        {
+            DateOnly dateThisWeek = ReturnThisWeek();
+
+            DateOnly monday = dateThisWeek.AddDays(-3); //Monday
+            DateOnly tuesday = dateThisWeek.AddDays(-2); //Tuesday
+            DateOnly wednesday = dateThisWeek.AddDays(-1); //Wednesday
+            DateOnly thursday = dateThisWeek;             //Thursday
+            DateOnly friday = dateThisWeek.AddDays(+1); //Friday
+            DateOnly saturaday = dateThisWeek.AddDays(+2); //Saturday
+            DateOnly sunday = dateThisWeek.AddDays(+3); //Sunday
+
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+
+            if (today == monday || today == saturaday || today == sunday)
+            {
+                CarouselPosition = 0;
+            }
+            else if (today == tuesday)
+            {
+                CarouselPosition = 1;
+            }
+            else if (today == wednesday)
+            {
+                CarouselPosition = 2;
+            }
+            else if (today == thursday)
+            {
+                CarouselPosition = 3;
+            }
+            else if (today == friday)
+            {
+                CarouselPosition = 4;
+            }
+            else
+            {
+                CarouselPosition = 0;
+                await Shell.Current.DisplayAlert("Fehler", "GetCarusellPosition geht nicht", "OK");
+            }
+
+            String pos = CarouselPosition.ToString();
+            await Shell.Current.DisplayAlert("pos", pos, "OK");
         }
     }
 }
