@@ -84,7 +84,7 @@ namespace MensaHandyApp.ViewModels
                 var client = new HttpClient(handler);
                 
                 // Fetch the weekly menus from the API
-                var response = await client.GetFromJsonAsync<List<Menu>>("https://84.113.2.195:7286/api/mensa/menu/getThisWeeklyMenu");
+                var response = await client.GetFromJsonAsync<List<Menu>>("https://oliverserver.ddns.net:7286/api/mensa/menu/getThisWeeklyMenu");
 
 
                 if (response != null && response.Count >= 15)

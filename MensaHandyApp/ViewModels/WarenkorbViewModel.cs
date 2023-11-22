@@ -78,7 +78,7 @@ namespace MensaHandyApp.ViewModels
                     };
 
                 var client = new HttpClient(handler);
-                Menus.Add(await client.GetFromJsonAsync<Menu>("https://84.113.2.195:7286/api/mensa/menu/getMenuById/" + menuId));
+                Menus.Add(await client.GetFromJsonAsync<Menu>("https://oliverserver.ddns.net:7286/api/mensa/menu/getMenuById/" + menuId));
             }
         }
 
@@ -149,7 +149,7 @@ namespace MensaHandyApp.ViewModels
                 MenuIds = menuIds
             };
 
-            await client.PostAsJsonAsync("https://84.113.2.195:7286/api/mensa/order/safeOrder", order);
+            await client.PostAsJsonAsync("https://oliverserver.ddns.net:7286/api/mensa/order/safeOrder", order);
 
             await Shell.Current.GoToAsync($"///Orders");
         }

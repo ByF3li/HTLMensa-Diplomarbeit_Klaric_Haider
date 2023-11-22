@@ -12,17 +12,26 @@
         Route="MainPage" />
 
     <ShellContent
-        Title="Menüs"
+        Title="Wöchentliches Menü"
         ContentTemplate="{DataTemplate views:Carusell}"
         Route="Carusell" />
 
     <ShellContent
-        Title="Warenkorb"
+        Title="Ihr Warenkorb"
         ContentTemplate="{DataTemplate views:WarenkorbView}"
         Route="Warenkorb" />
 
+    <!--
     <ShellContent
-        Title="Orders"
+        Title="Ihre Bestellungen"
+        ContentTemplate="{DataTemplate views:CurrentOrders}"
+        Route="CurrentOrders" />
+    -->
+    
+
+    <ShellContent
+        Title="Bestellverlauf"
         ContentTemplate="{DataTemplate views:Orders}"
         Route="Orders" />
+
 </Shell>

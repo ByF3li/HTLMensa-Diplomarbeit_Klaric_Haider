@@ -34,7 +34,7 @@ namespace MensaHandyApp.ViewModels
             try
             {
                 List<Order> o = new List<Order>();
-                o = await client.GetFromJsonAsync<List<Order>>("https://84.113.2.195:7286/api/mensa/order/getOrderByUserEmail?mail=" + testMail);
+                o = await client.GetFromJsonAsync<List<Order>>("https://oliverserver.ddns.net:7286/api/mensa/order/getOrderByUserEmail?mail=" + testMail);
                 // da hohl i mir alle Orders, brauch aber nur de von dieser Woche...
                 // alte Orders (nit die neuerste), da sind die Menus wenn ma mit getOrderByUserEmail drüberfährt nit drinnen => aus zwischentabelle holen
                 foreach (var order in o)

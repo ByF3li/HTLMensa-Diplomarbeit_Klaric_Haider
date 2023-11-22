@@ -5,7 +5,11 @@
              Title="MainPage">
     <ScrollView>
         <VerticalStackLayout>
-            <Label>Willkommen bei der Mensa App</Label>
+            <Label HorizontalOptions="Center" FontAttributes="Bold" FontSize="Medium">Willkommen bei der Mensa App</Label>
+            <Image HorizontalOptions="CenterAndExpand" Source="mensa_logo.png"></Image>
+            <Label HorizontalOptions="Center" Margin="20">Mittagessen von 11:00 - 14:00</Label>
+            <Label HorizontalOptions="Center" Margin="20">Telefon: 0650 461 32 30</Label>
+            <Label HorizontalOptions="Center" Margin="20">Email: info@htl-mensa.at</Label>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
