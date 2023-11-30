@@ -38,7 +38,7 @@ namespace MensaWebsite.Controllers
 
         [HttpPost]
         public async Task<ViewResult> ShowAllOrders(DateOnly date)
-        {           
+        {   
             try
             {
                 menus = await _context.Menues.Include("Orders").Where(m => m.Date == date).OrderBy(m => m.WhichMenu).ToListAsync();
@@ -47,7 +47,7 @@ namespace MensaWebsite.Controllers
             {
                 Console.WriteLine(ex.ToString());
             }
-
+            // TODO: Daten werden übergeben aber nicht richtig angezeigt in der View
             return View(menus);
         }
     }

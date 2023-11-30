@@ -24,7 +24,7 @@
     <div class="row">
         @foreach (Menu m in Model)
         {
-            <div class="col-md-4">
+            <div id="orders" class="col-md-4">
                 <partial name="_ShowOrdersMenus" model="@m" />
             </div>
         }
@@ -41,14 +41,17 @@
                 format: 'dd.mm.yyyy'
             });
 
-
+        // TODO: Ajax gibt Error da wir kein Json übergebn deshalb wird View nicht ausgeführt (vermutlich)
         function reloadPage() {
-            let date = document.getElementById("date");
+            let date = document.getElementById("date").value;
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("ShowAllOrders", "Order")",
-                dataType: "json",
-                data: { date: date }
+                dataType: "html",
+                data: { date: date },
+                success: function(data){
+                    $("data").fadeOut().html(data).fadeIn();
+                }
             });
         }
 
@@ -58,8 +61,8 @@
                 reloadEveryTenSeconds();
             }, 10000); 
         }
-        // TODO: nachschauen wegen alle 10 Sekunden reloaden dem formular erneut abschicken zeug
-        //reloadEveryTenSeconds();
+
+        reloadEveryTenSeconds();
     </script>
     }
     

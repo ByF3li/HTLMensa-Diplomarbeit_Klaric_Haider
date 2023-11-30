@@ -20,4 +20,8 @@
     <ProjectReference Include="..\MensaAppKlassenBibliothek\MensaAppKlassenBibliothek.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\jquery-ajax-unobtrusive\" />
+  </ItemGroup>
+
 </Project>
