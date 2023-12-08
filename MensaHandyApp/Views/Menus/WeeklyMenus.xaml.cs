@@ -1,5 +1,6 @@
 using MensaAppKlassenBibliothek;
 using MensaHandyApp.ViewModels;
+using System.Globalization;
 
 namespace MensaHandyApp.Views.Menus;
 

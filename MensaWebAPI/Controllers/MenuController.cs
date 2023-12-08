@@ -192,7 +192,7 @@ namespace MensaWebAPI.Controllers
             {
                 for (int j = 0; j <= menuList.Count - 2; j++)
                 {
-                    if (menuList[j].WhichMenu > menuList[j + 1].WhichMenu)
+                    if (menuList[j].Date == menuList[j + 1].Date && menuList[j].WhichMenu > menuList[j + 1].WhichMenu)
                     {
                         menuToSafe = menuList[j + 1];
                         menuList[j + 1] = menuList[j];

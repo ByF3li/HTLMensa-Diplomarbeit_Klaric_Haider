@@ -7,8 +7,6 @@
 
     <ScrollView>
         <VerticalStackLayout>
-            <Label Text="Hallo"></Label>
-            
             <CollectionView ItemsSource="{Binding Orders}">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Span="1" Orientation="Vertical" />

@@ -8,12 +8,12 @@
     <ScrollView>
         <VerticalStackLayout>
             <IndicatorView x:Name="indicatorView" Margin="5" HorizontalOptions="Center" IndicatorColor="White" SelectedIndicatorColor="Red"/>
-            <CarouselView x:Name="carusellMenus"  ItemsSource="{Binding DayMenus}" IndicatorView="indicatorView" Position="{Binding CarouselPosition }">
+            <CarouselView x:Name="carusellMenus"  ItemsSource="{Binding DayMenus}" IndicatorView="indicatorView" CurrentItem="{Binding DayMenu}">
 
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <VerticalStackLayout BackgroundColor="LightBlue" Padding="5">
-                            <Label FontSize="Medium" FontAttributes="Bold" HorizontalTextAlignment="Center" Text="{Binding Date, StringFormat='{}{0:dddd dd MMM yyyy}'}" Margin="0,0,0,5" TextColor="Purple"/>
+                        <VerticalStackLayout BackgroundColor="DarkViolet" Padding="5">
+                            <Label FontSize="Medium" FontAttributes="Bold" HorizontalTextAlignment="Center" Text="{Binding Date, StringFormat='{}{0:dddd dd MMM yyyy}'}" Margin="0,0,0,5" TextColor="White"/>
 
                             <CollectionView ItemsSource="{Binding Menus}" SelectionMode="Single" SelectedItem="{Binding Path = BindingContext.SelectedListItem, Source={Reference carusellMenus}}">
                                 <CollectionView.ItemsLayout>
@@ -43,7 +43,7 @@
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
-                            <Label Text="A=GLUTENHALTIGES GETREIDE; B=KREBSTIERE; C=EIER; D=FISCH; E=ERDNÜSSE; F=SOJA; G=MILCH UND LACTOSE; H=SCHALENFRÜCHTE (NÜSSE); L=SELLERIE; M=SENF; N=SESAM; O=SULFITE; P=LUPINIEN; R=WEICHTIERE" Padding="10" FontSize="10" TextColor="Purple"></Label>
+                            <Label Text="A=GLUTENHALTIGES GETREIDE; B=KREBSTIERE; C=EIER; D=FISCH; E=ERDNÜSSE; F=SOJA; G=MILCH UND LACTOSE; H=SCHALENFRÜCHTE (NÜSSE); L=SELLERIE; M=SENF; N=SESAM; O=SULFITE; P=LUPINIEN; R=WEICHTIERE" Padding="10" FontSize="10" TextColor="White"></Label>
 
 
                         </VerticalStackLayout>

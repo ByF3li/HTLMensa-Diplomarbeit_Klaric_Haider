@@ -38,9 +38,9 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Label Text="A=GLUTENHALTIGES GETREIDE; B=KREBSTIERE; C=EIER; D=FISCH; E=ERDNÜSSE; F=SOJA; G=MILCH UND LACTOSE; H=SCHALENFRÜCHTE (NÜSSE); L=SELLERIE; M=SENF; N=SESAM; O=SULFITE; P=LUPINIEN; R=WEICHTIERE" Padding="10" FontSize="10" TextColor="Purple"></Label>
+            <Label Text="A=GLUTENHALTIGES GETREIDE; B=KREBSTIERE; C=EIER; D=FISCH; E=ERDNÜSSE; F=SOJA; G=MILCH UND LACTOSE; H=SCHALENFRÜCHTE (NÜSSE); L=SELLERIE; M=SENF; N=SESAM; O=SULFITE; P=LUPINIEN; R=WEICHTIERE" Padding="10" FontSize="10" TextColor="White"></Label>
 
-            <Button Command="{Binding CmdPay}" Text="Bezahlen" HorizontalOptions="Center" Margin="20" FontSize="10"></Button>
+            <Button Command="{Binding CmdPay}" Text="Bezahlen" HorizontalOptions="Center" Margin="20" FontSize="Large" TextColor="White" BackgroundColor="Blue"></Button>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

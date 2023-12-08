@@ -39,19 +39,9 @@ namespace MensaHandyApp.ViewModels
             }
         }
 
-        private int _carouselPosition;
-        public int CarouselPosition
-        {
-            get { return _carouselPosition; }
-            set
-            {
-                if (_carouselPosition != value)
-                {
-                    _carouselPosition = value;
-                    OnPropertyChanged(nameof(CarouselPosition));
-                }
-            }
-        }
+        [ObservableProperty]
+        private DayMenu _dayMenu;
+        
 
         private async void SendAlert()
         {
@@ -160,7 +150,6 @@ namespace MensaHandyApp.ViewModels
                     DayMenus.Add(testFailed);
                 }
 
-                GetCarusellPositionAsync();
             }
             catch (HttpRequestException ex)
             {
@@ -172,11 +161,12 @@ namespace MensaHandyApp.ViewModels
                 // Handle any other exceptions that may occur during the API request or data processing
                 Console.WriteLine("An error occurred: " + ex.Message);
             }
+
+            await GetCarusellPositionAsync();
         }
 
         public DateOnly ReturnThisWeek()
         {
-
             DateTime dateTimeToday = DateTime.Now;
 
             DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
@@ -222,32 +212,30 @@ namespace MensaHandyApp.ViewModels
 
             if (today == monday || today == saturaday || today == sunday)
             {
-                CarouselPosition = 0;
+                DayMenu = DayMenus[0];
             }
             else if (today == tuesday)
             {
-                CarouselPosition = 1;
+                DayMenu = DayMenus[1];
             }
             else if (today == wednesday)
             {
-                CarouselPosition = 2;
+                DayMenu = DayMenus[2];
             }
             else if (today == thursday)
             {
-                CarouselPosition = 3;
+                DayMenu = DayMenus[3];
             }
             else if (today == friday)
             {
-                CarouselPosition = 4;
+                DayMenu = DayMenus[4];
             }
             else
             {
-                CarouselPosition = 0;
-                await Shell.Current.DisplayAlert("Fehler", "GetCarusellPosition geht nicht", "OK");
+                DayMenu = DayMenus[0];
+                //await Shell.Current.DisplayAlert("Fehler", "GetCarusellPosition geht nicht", "OK");
             }
-
-            String pos = CarouselPosition.ToString();
-            await Shell.Current.DisplayAlert("pos", pos, "OK");
+            //await Shell.Current.DisplayAlert("pos", pos, "OK");
         }
     }
 }
