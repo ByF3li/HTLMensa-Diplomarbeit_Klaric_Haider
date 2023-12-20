@@ -23,7 +23,6 @@ namespace MensaWebAPI.Controllers
                 this._context = context;    
         }
 
-
         [HttpGet]
         [Route("order/getAll")]
         public async Task<IActionResult> AsyncGetAllOrders()
