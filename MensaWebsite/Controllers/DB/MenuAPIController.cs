@@ -1,5 +1,5 @@
 ﻿using MensaAppKlassenBibliothek;
-using MensaWebAPI.Models.DB;
+using MensaWebsite.Models.DB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -8,12 +8,11 @@ using System.Globalization;
 using Microsoft.VisualBasic;
 using Microsoft.AspNetCore.Connections.Features;
 
-namespace MensaWebAPI.Controllers
+namespace MensaWebsite.Controllers.DB
 {
-
-    [Route("api/mensa")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class MenuController : ControllerBase
+    public class MenuAPIController : ControllerBase
     {
         private MenuContext _context = new MenuContext();
 
@@ -22,29 +21,28 @@ namespace MensaWebAPI.Controllers
             ReferenceHandler = ReferenceHandler.IgnoreCycles
         };
 
-        public MenuController(MenuContext context)
+        public MenuAPIController(MenuContext context)
         {
             this._context = context;
         }
 
 
-        [HttpGet]
-        [Route("menu/getAll")]
+        [HttpGet("GetAllMenus")]
         public async Task<IActionResult> AsyncGetAllMenues()
         {
-            return new JsonResult(await this._context.Menues.Include("Orders").ToListAsync(), options);
+            return new JsonResult(await this._context.Menues.Include("Orders").Include("Prices").ToListAsync(), options);
         }
-
+/*
         [HttpPost]
         [Route("menu/safeMenu")]
         public async Task<IActionResult> AsyncSafeMenu(int whichMenu, string starter, string mainCourse, decimal price, DateOnly date)
         {
             Menu menu = new Menu()
             {
-                WhichMenu = whichMenu,
+                //WhichMenu = whichMenu,
                 Starter = starter,
                 MainCourse = mainCourse,
-                Price = price,
+                //Price = price,
                 Date = date
             };
             this._context.Menues.Add(menu);
@@ -58,32 +56,31 @@ namespace MensaWebAPI.Controllers
             var menu = await this._context.Menues.FindAsync(id);
             if (menu != null)
             {
-                menu.WhichMenu = whichMenu;
+                //menu.WhichMenu = whichMenu;
                 menu.Starter = starter;
                 menu.MainCourse = mainCourse;
-                menu.Price = price;
+                //menu.Price = price;
                 menu.Date = date;
             }
             return new JsonResult((await this._context.SaveChangesAsync()) == 1);
         }
+*/
 
-        [HttpGet]
-        [Route("menu/getMenuByDate/{menuDate}")]
+        [HttpGet("getMenuByDate/{menuDate}")]
         public async Task<IActionResult> AsyncGetMenuByDate(DateOnly menuDate)
         {
             
-            var toSortDate = await this._context.Menues.Include("Orders").Where(m => m.Date.Equals(menuDate)).ToListAsync();
+            var toSortDate = await this._context.Menues.Include("Orders").Include("Prices").Where(m => m.Date.Equals(menuDate)).ToListAsync();
             toSortDate.Sort();
             return new JsonResult(toSortDate, options);
         }
 
-        [HttpGet]
-        [Route("menu/getMenuById/{menuId}")]
-        public async Task<IActionResult> AsyncGetMenuById(int menuId)
+        [HttpGet("getMenuById/{menuId}")]
+        public async Task<IActionResult> GetMenuById(int menuId)
         {
-            return new JsonResult(await this._context.Menues.FindAsync(menuId));
+            return new JsonResult(this._context.Menues.Include("Prices").Include("Orders").Where(m => m.MenuId == menuId), options);
         }
-
+        /*
         [HttpDelete]
         [Route("menu/deleteMenuById/{menuId}")]
         public async Task<IActionResult> AsyncDeleteMenuById(int menuId)
@@ -97,19 +94,17 @@ namespace MensaWebAPI.Controllers
 
             this._context.Menues.Remove(articleToDelete);
             return new JsonResult((await this._context.SaveChangesAsync()) == 1);
-
         }
+        */
 
-        [HttpGet]
-        [Route("menu/getDailyMenu")]
+        [HttpGet("getDailyMenu")]
         public async Task<IActionResult> AsyncGetDailyMenu()
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
             return new JsonResult(await this._context.Menues.Where(m => m.Date.Equals(today)).ToListAsync());
         }
 
-        [HttpGet]
-        [Route("menu/LetsGetItStartedAhLetsGetItStartedInHere")]
+        [HttpGet("LetsGetItStartedAhLetsGetItStartedInHere")]
         public async Task<IActionResult> LetsGetItStartedAhLetsGetItStartedInHere()
         {
             DateTime dateTimeToday = DateTime.Now;
@@ -130,7 +125,7 @@ namespace MensaWebAPI.Controllers
         }
 
         //todo: year und weekofyear besetzen ohne in swagger eingeben zu müssen; dann sollt der scheiß funktionieren
-        [HttpGet]
+        [HttpGet("getWeeklyMenu")]
         [Route("menu/getWeeklyMenu")]
         public async Task<IActionResult> AsyncGetAnyWeeklyMenu(int year, int weekOfYear)
         {
@@ -174,7 +169,7 @@ namespace MensaWebAPI.Controllers
             return new JsonResult(await this._context.Menues.Where(m => days.Contains(m.Date)).ToListAsync());
         }   
 
-        [HttpGet]
+        [HttpGet("getThisWeeklyMenu")]
         [Route("menu/getThisWeeklyMenu")]
         public async Task<IActionResult> AsyncGetThisWeeklyMenu()
         {
@@ -213,7 +208,7 @@ namespace MensaWebAPI.Controllers
             {
                 for (int j = 0; j <= menuList.Count - 2; j++)
                 {
-                    if (menuList[j].WhichMenu > menuList[j + 1].WhichMenu)
+                    if (menuList[j].Prices.PriceId > menuList[j + 1].Prices.PriceId)
                     {
                         menuToSafe = menuList[j + 1];
                         menuList[j + 1] = menuList[j];
@@ -225,7 +220,7 @@ namespace MensaWebAPI.Controllers
             return new JsonResult(menuList);
         }
 
-        [HttpGet]
+        [HttpGet("returnDateOfThursdayOfWeek")]
         [Route("menu/returnDateOfThursdayOfWeek")]
         public DateOnly ReturnThisWeek()
         {

@@ -17,5 +17,25 @@
         $('.datepicker').datepicker({
             format: 'dd.mm.yyyy'
         });
+
+
+        $('#WhichMenu').change(function(){
+            var whichMenu = $('#WhichMenu').val();
+            $.ajax({
+                url: '@Url.Action("_PricesPartialView","Menu")',
+                dataType: 'html',
+                type: 'GET',
+                data: {
+                    priceId: whichMenu
+                },
+                success: function(data){
+                    $('#prices').html(data).fadeIn();
+                },
+                error: function(){
+                    alert('Error');
+                }
+            });
+            
+        });
     </script>
 }

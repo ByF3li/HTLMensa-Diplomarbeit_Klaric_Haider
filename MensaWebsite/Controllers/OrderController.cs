@@ -1,9 +1,8 @@
 ﻿using MensaAppKlassenBibliothek;
-using MensaWebAPI.Models.DB;
+using MensaWebsite.Models.DB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MensaWebsite.Controllers
 {
@@ -26,7 +25,7 @@ namespace MensaWebsite.Controllers
         {
             try
             {
-                menus = await _context.Menues.Include("Orders").Where(m => m.Date == DateOnly.FromDateTime(DateTime.Now)).OrderBy(m => m.WhichMenu).ToListAsync();
+                menus = await _context.Menues.Include("Orders").Include("Prices").Where(m => m.Date == DateOnly.FromDateTime(DateTime.Now)).OrderBy(m => m.Prices.PriceId).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -41,14 +40,28 @@ namespace MensaWebsite.Controllers
         {   
             try
             {
-                menus = await _context.Menues.Include("Orders").Where(m => m.Date == date).OrderBy(m => m.WhichMenu).ToListAsync();
+                menus = await _context.Menues.Include("Orders").Include("Prices").Where(m => m.Date == date).OrderBy(m => m.Prices.PriceId).ToListAsync();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
-            // TODO: Daten werden übergeben aber nicht richtig angezeigt in der View
             return View(menus);
+        }
+        [HttpGet]
+        public async Task<PartialViewResult> _ShowOrdersMenus(String orderDate)
+        {
+            DateOnly date = DateOnly.Parse(orderDate);
+            try
+            {
+                menus = await _context.Menues.Include("Orders").Where(m => m.Date == date).OrderBy(m => m.Prices.PriceId).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return PartialView(menus);
         }
     }
 }

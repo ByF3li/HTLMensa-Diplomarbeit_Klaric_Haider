@@ -11,7 +11,7 @@
     <div class="row justify-content-center">
         <label class="col-sm-1 col-form-label">Datum:</label>
         <div class="col-sm-2">
-            @Html.TextBox("Date",DateTime.Now.ToString("dd'.'MM'.'yyyy"),"{0:d}", new {@id="date", @placeholder = "Tag-Monat-Jahr", @class = "form-control datepicker"})
+            @Html.TextBox("Date", DateOnly.FromDateTime(DateTime.Now),"{0:d}", new {@id="date", @placeholder = "Tag-Monat-Jahr", @class = "form-control datepicker"})
         </div>
         <div class="col-sm-9">
             <button id="datePickerBtn" type="submit" class="btn btn-success btn-sm">Bestätigen!</button>
@@ -21,15 +21,12 @@
     <br />
     @if (Model != null && Model.Count() >= 1)
     {
-    <div class="row">
-        @foreach (Menu m in Model)
-        {
-            <div id="orders" class="col-md-4">
-                <partial name="_ShowOrdersMenus" model="@m" />
-            </div>
-        }
+    <div id="orders" class="row">
+            
+                <partial name="_ShowOrdersMenus" model="@Model" />
     </div>
-    }
+    <label id="lastRefresh"></label>
+}
 
 
     @section Scripts{
@@ -41,21 +38,23 @@
                 format: 'dd.mm.yyyy'
             });
 
-        // TODO: Ajax gibt Error da wir kein Json übergebn deshalb wird View nicht ausgeführt (vermutlich)
         function reloadPage() {
-            let date = document.getElementById("date").value;
+            let date = $('#date').val();
+            const d = new Date();
+            let lastRefresh = d.toLocaleTimeString();
+            document.getElementById("lastRefresh").innerHTML = "Zuletzt neu geladen um " + lastRefresh;
             $.ajax({
-                type: "POST",
-                url: "@Url.Action("ShowAllOrders", "Order")",
+                type: "GET",
+                url: "@Url.Action("_ShowOrdersMenus", "Order")",
                 dataType: "html",
-                data: { date: date },
+                data: { orderDate: date },
                 success: function(data){
-                    $("data").fadeOut().html(data).fadeIn();
+                    $("#orders").html(data).fadeIn();
                 }
             });
         }
 
-        function reloadEveryTenSeconds() {
+       function reloadEveryTenSeconds() {
             setTimeout(function () {
                 reloadPage();
                 reloadEveryTenSeconds();
@@ -63,6 +62,7 @@
         }
 
         reloadEveryTenSeconds();
+        
     </script>
     }
     

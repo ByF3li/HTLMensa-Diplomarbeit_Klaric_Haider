@@ -1,0 +1,66 @@
+﻿@model MensaAppKlassenBibliothek.PriceForMenu
+@{
+    ViewData["Title"] = "Preis bearbeiten";
+}
+<h1>Preis bearbeiten:</h1>
+<br/>
+<form asp-action="UpdatePrice" asp-controller="menu" method="post">
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Menü:</label>
+        <div class="col-sm-6">
+            <select asp-for="PriceId">
+                <option value="1">Menü 1</option>
+                <option value="2">Menü 2</option>
+                <option value="3">Menü 3</option>
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <span asp-validation-for="PriceId"></span>
+        </div>
+    </div>
+    <div id="changePrices">
+        <partial name="_ChangePricePartialView" model="@Model"/>
+    </div>
+
+    <br />
+
+    @if (TempData["SuccessAlert"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessAlert"]
+        </div>
+    }
+    else if (TempData["NoSuccessAlert"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["NoSuccessAlert"]
+        </div>
+    }
+
+    <div class="mx-auto" style="width: 200px;">
+        <button type="submit" class="btn btn-success btn-lg">Speichern!</button>
+    </div>
+</form>
+
+@section Scripts{
+    <script>
+        $('#PriceId').change(function () {
+                var priceId = $('#PriceId').val();
+                $.ajax({
+                url: '@Url.Action("_ChangePricePartialView", "Menu")',
+                dataType: 'html',
+                type: 'GET',
+                data: {
+                    priceId: priceId
+                },
+                success: function(data){
+                    $('#changePrices').html(data).fadeIn();
+                },
+                error: function(){
+                    alert('Error');
+                }
+            });
+
+        });
+    </script>
+}

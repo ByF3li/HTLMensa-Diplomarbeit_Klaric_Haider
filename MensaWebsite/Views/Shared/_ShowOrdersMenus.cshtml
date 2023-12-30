@@ -1,19 +1,39 @@
 ﻿@using MensaAppKlassenBibliothek
-@model MensaAppKlassenBibliothek.Menu
+@model List<MensaAppKlassenBibliothek.Menu>
 
-<!--TODO: Ausgabe der Menü Liste, die wir von Datenbank holen weiter machen!!!!-->
+@foreach (Menu m in Model)
+{
+<div id="orders" class="col-md-4">
     <div class="card mb-4 box-shadow">
         <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Menü @Model.WhichMenu</h4>
+            <h4 class="my-0 font-weight-normal">Menü @m.Prices.PriceId</h4>
         </div>
         <div class="card-body">
-        <h1 class="card-title">Bestellungen: @(Model.Orders == null ? "0" : Model.Orders.Count )</h1>
-        <ul class="list-unstyled mt-3 mb-4">
-                <li>@Model.Starter</li>
-                <li>@Model.MainCourse</li>
-                <li>@Model.Price.ToString("C")</li>
-                <li>@Model.Date.ToString("dd'.'MM'.'yyyy")</li>
-            </ul>
+                <h1 class="card-title">Bestellungen: @(m.Orders == null ? "0" : m.Orders.Count)</h1>
+
+                <table>
+                    <tr>
+                        <td><strong>Vorspeise: </strong></td>
+                        <td style="padding-left: 50px;">@m.Starter</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hauptspeise: </strong></td>
+                        <td style="padding-left: 50px;">@m.MainCourse</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Preis Schüler: </strong></td>
+                        <td style="padding-left: 50px;">@m.Prices.PriceStudent</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Preis Lehrer: </strong></td>
+                        <td style="padding-left: 50px;">@m.Prices.PriceTeacher</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Datum: </strong></td>
+                        <td style="padding-left: 50px;">@m.Date</td>
+                    </tr>
+                </table>
         </div>
     </div>
-
+</div>
+}

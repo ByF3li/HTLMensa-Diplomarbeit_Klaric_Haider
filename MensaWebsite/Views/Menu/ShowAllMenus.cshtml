@@ -1,5 +1,5 @@
 ﻿@using MensaAppKlassenBibliothek
-@model List<Menu>
+@model List<MenuDTO>
 @{
     ViewData["Title"] = "Menüs";
 }
@@ -20,18 +20,20 @@
             <td> Menü </td>
             <td> Vorspeiße </td>
             <td> Hauptspeiße </td>
-            <td> Preis </td>
+            <td> Preis Schüler </td>
+            <td> Preis Lehrer </td>
             <td> Datum </td>
     </thead>
     <tbody>
-        @foreach (Menu m in Model)
+        @foreach (MenuDTO m in Model)
         {
             <tr>
                 <td>@m.MenuId</td>
                 <td>@m.WhichMenu</td>
                 <td>@m.Starter</td>
                 <td>@m.MainCourse</td>
-                <td>@m.Price.ToString("C")</td>
+                <td>@m.PriceStudent</td>
+                <td>@m.PriceTeacher</td>
                 <td>@m.Date</td>
             </tr>
         }
@@ -40,23 +42,12 @@
 
 
 <br />
-
-@if (TempData["SuccessAlert"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessAlert"]
-    </div>
-}
-else if (TempData["NoSuccessAlert"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["NoSuccessAlert"]
-    </div>
-}
+<div id="message">
+    <partial name="_MessagePartialView" model="@Model"/>
+</div>
 
 
-
-@section Scripts{
+@section Scripts {
     <link href="~/css/datatables.min.css" rel="stylesheet" />
     <script src="~/js/datatables.min.js"></script>
 
@@ -64,24 +55,25 @@ else if (TempData["NoSuccessAlert"] != null)
         $(document).ready(function () {
             var table = $('#ShowAllMenues').DataTable({
                 select: true,
-                        "language": {
-                                "lengthMenu": "_MENU_ Zeilen pro Seite",
-                                "zeroRecords": "Es wurde kein Eintrag gefunden!",
-                                "info": "Seite _PAGE_ von _PAGES_",
-                                "infoEmpty": "Es wurde kein Eintrag gefunden!",
-                                "infoFiltered": "(von _MAX_ Einträge)",
-                                "search": "Suchen:",
-                                "paginate": {
-                                    "next": "->",
-                                    "previous": "<-"
-                                },
-                                "select": {
-                                    "rows": {
-                                        
-                                        "1": "1 Zeile ausgewählt"
-                                    }
-                                }
-                        }               
+                "language": {
+                    "lengthMenu": "_MENU_ Zeilen pro Seite",
+                    "zeroRecords": "Es wurde kein Eintrag gefunden!",
+                    "info": "Seite _PAGE_ von _PAGES_",
+                    "infoEmpty": "Es wurde kein Eintrag gefunden!",
+                    "infoFiltered": "(von _MAX_ Einträge)",
+                    "search": "Suchen:",
+                    "paginate": {
+                        "next": "->",
+                        "previous": "<-"
+                    },
+                    "select": {
+                        "rows": {
+
+                            "1": "1 Zeile ausgewählt"
+                        }
+                    }
+                },
+                order: [0, 'desc']
             });
 
 
@@ -96,7 +88,7 @@ else if (TempData["NoSuccessAlert"] != null)
                     $('#editMenu').prop('disabled', true);
                 }
             });
-            
+
 
 
             $('#deleteMenu').click(function () {
@@ -104,10 +96,10 @@ else if (TempData["NoSuccessAlert"] != null)
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("DeleteMenuFromDatabase", "Menu")",
-                    dataType: "json",
+                    dataType: "html",
                     data: { Id: data[0] },
-                    success: function () {
-                        alert("Success!");
+                    success: function (data) {
+                        $('#message').html(data).fadeIn();
                     },
                     error: function () {
                         alert('Error!');
@@ -119,14 +111,14 @@ else if (TempData["NoSuccessAlert"] != null)
                 var data = table.row('.selected').data();
                 document.location = 'EditMenu/' + data[0];
             });
-            
+
             $('#reloadSite').click(function () {
                 location.reload();
                 $('#deleteMenu').prop('disabled', true);
                 $('#editMenu').prop('disabled', true);
             });
 
-            
+
         });
     </script>
 

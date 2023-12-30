@@ -1,0 +1,19 @@
+﻿@model MensaAppKlassenBibliothek.PriceForMenu
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">Preis Schüler:</label>
+    <div class="col-sm-6">
+        <input class="form-control" asp-for="PriceStudent" placeholder="7,50" />
+    </div>
+    <div class="col-sm-4">
+        <span asp-validation-for="PriceStudent"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">Preis Lehrer:</label>
+    <div class="col-sm-6">
+        <input class="form-control" asp-for="PriceTeacher" placeholder="8,20" />
+    </div>
+    <div class="col-sm-4">
+        <span asp-validation-for="PriceTeacher"></span>
+    </div>
+</div>

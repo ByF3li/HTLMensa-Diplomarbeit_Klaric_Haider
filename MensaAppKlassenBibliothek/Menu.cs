@@ -12,19 +12,17 @@ namespace MensaAppKlassenBibliothek
     public class Menu : IComparable<Menu>
     {
         public int MenuId { get; set; }
-        public int WhichMenu { get; set; }
         public string Starter { get; set; }
         public string MainCourse { get; set; }
-        [Column(TypeName = "decimal(5,2)")]
-        public decimal Price { get; set; }
         public DateOnly Date { get; set; }
+        public PriceForMenu Prices { get; set; }
         public List<Order> Orders { get; set; }
 
         public int CompareTo(Menu? other)
         {
             if (this.Date.CompareTo(other.Date) == 0)
             {
-                return this.WhichMenu.CompareTo(other.WhichMenu);
+                return this.Prices.PriceId.CompareTo(other.Prices.PriceId);
             }
             return this.Date.CompareTo(other.Date);
         }

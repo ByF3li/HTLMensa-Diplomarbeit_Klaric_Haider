@@ -1,33 +1,36 @@
 ﻿using MensaAppKlassenBibliothek;
-using MensaWebAPI.Models.DB;
+using MensaWebsite.Models.DB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
-namespace MensaWebAPI.Controllers
+namespace MensaWebsite.Controllers.DB
 {
-    [Route("api/mensa")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrderAPIController : ControllerBase
     {
             private MenuContext _context = new MenuContext();
 
-        public OrderController(MenuContext context) 
+        public OrderAPIController(MenuContext context) 
         {
                 this._context = context;    
         }
+        JsonSerializerOptions options = new JsonSerializerOptions()
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles
+        };
 
 
-        [HttpGet]
-        [Route("order/getAll")]
+        [HttpGet("getAllOrders")]
         public async Task<IActionResult> AsyncGetAllOrders()
         {
-            return new JsonResult(await this._context.Orders.ToListAsync());
+            return new JsonResult(await this._context.Orders.Include("Menus").ToListAsync(),options);
         }
 
-        [HttpPost]
-        [Route("order/safeOrder")]
+        [HttpPost("saveOrder/{order}")]
         public async Task<IActionResult> AsyncSafeOrder(Order order)
         {
             this._context.Orders.Add(order);

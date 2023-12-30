@@ -44,7 +44,7 @@ namespace MensaWebAPI.Controllers
                 WhichMenu = whichMenu,
                 Starter = starter,
                 MainCourse = mainCourse,
-                Price = price,
+                //Price = price,
                 Date = date
             };
             this._context.Menues.Add(menu);
@@ -61,7 +61,7 @@ namespace MensaWebAPI.Controllers
                 menu.WhichMenu = whichMenu;
                 menu.Starter = starter;
                 menu.MainCourse = mainCourse;
-                menu.Price = price;
+                //menu.Price = price;
                 menu.Date = date;
             }
             return new JsonResult((await this._context.SaveChangesAsync()) == 1);

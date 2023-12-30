@@ -1,4 +1,4 @@
-using MensaWebAPI.Models.DB;
+using MensaWebsite.Models.DB;
 
 var builder = WebApplication.CreateBuilder(args);
 
