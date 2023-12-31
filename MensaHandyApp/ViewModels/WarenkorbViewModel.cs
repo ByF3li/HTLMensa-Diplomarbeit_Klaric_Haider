@@ -1,29 +1,28 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MensaAppKlassenBibliothek;
-using MensaHandyApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace MensaHandyApp.ViewModels
 {
     [ObservableObject]
-    public partial class WarenkorbViewModel : IQueryAttributable
+    public partial class WarenkorbViewModel
     {
-        [ObservableProperty]
-        private ObservableCollection<Order> _orders = new ObservableCollection<Order>();
 
+        private Person person;
         [ObservableProperty]
-        private ObservableCollection<ShoppingCart> _shoppingcart = new ObservableCollection<ShoppingCart>();
+        List<MenuPerson> _shoppingcart = new List<MenuPerson>();
 
         public int GetMenuId { get; private set; }
-        private Menu selectedListItem;
-        public Menu SelectedListItem
+
+        private MenuPerson selectedListItem;
+        public MenuPerson SelectedListItem
         {
             get
             {
@@ -38,45 +37,31 @@ namespace MensaHandyApp.ViewModels
 
                     if (selectedListItem != null)
                     {
-                        SendAlert(selectedListItem.MenuId);
+                        SendAlert(selectedListItem.Menu.MenuId);
                     }
                 }
             }
         }
 
-        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        public async void GetShoppingCart()
         {
-            GetMenuId = ((int)((int)query["MenuId"] as int?));
-            OnPropertyChanged("MenuId");
-            SetMenuId(GetMenuId);
-        }
-
-        public async void SetMenuId(int menuId)
-        {
-
-            if (menuId == null)
-            {
-                ShoppingCart noMenuFound = new ShoppingCart()
+            var handler = new HttpClientHandler();
+            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+            handler.ServerCertificateCustomValidationCallback =
+                (httpRequestMessage, cert, cetChain, policyErrors) =>
                 {
-                    ShoppingCartId = 0,
+                    return true;
                 };
-                Shoppingcart.Add(noMenuFound);
-            }
-            else
-            {
-                var handler = new HttpClientHandler();
-                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-                handler.ServerCertificateCustomValidationCallback =
-                    (httpRequestMessage, cert, cetChain, policyErrors) =>
-                    {
-                        return true;
-                    };
+            var client = new HttpClient(handler);
 
-                var client = new HttpClient(handler);
-                Shoppingcart.Add(await client.GetFromJsonAsync<ShoppingCart>("https://oliverserver.ddns.net:7286/api/mensa/shoppingcart/getShoppingcartById/" + menuId));
-                //Menus.Add(await client.GetFromJsonAsync<Menu>("https://oliverserver.ddns.net:7286/api/mensa/menu/getMenuById/" + menuId));
-            }
+
+            List<MenuPerson> mps = await client.GetFromJsonAsync<List<MenuPerson>>("https://oliverserver.ddns.net:7286/api/mensa/order/getAllOrderByUserEmail?mail=" + person.Email);
+            person.MenuPersons.Clear();
+            person.MenuPersons.AddRange(mps);
+           // person.SaveObject();
+            Shoppingcart = mps.Where(mp => mp.InShoppingcart).ToList();
         }
+
 
         private async void SendAlert(int menuId)
         {
@@ -84,6 +69,7 @@ namespace MensaHandyApp.ViewModels
             if (answer)
             {
                 await Shell.Current.DisplayAlert("Ja", "Das Menü wird entfernt", "OK");
+
                 var handler = new HttpClientHandler();
                 handler.ClientCertificateOptions = ClientCertificateOption.Manual;
                 handler.ServerCertificateCustomValidationCallback =
@@ -92,10 +78,27 @@ namespace MensaHandyApp.ViewModels
                         return true;
                     };
 
-                var client = new HttpClient(handler);
+                var _client = new HttpClient(handler);
 
-                Shoppingcart.RemoveAt(menuId);
-                SelectedListItem = null;
+                var requestUri = $"https://oliverserver.ddns.net:7286/api/mensa/order/deleteOrderByMenuId?userEmail={Uri.EscapeDataString(person.Email)}&menuId={menuId}";
+
+                var requestMessage = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = new Uri(requestUri),
+                };
+
+                using var response = await _client.SendAsync(requestMessage);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    await Shell.Current.DisplayAlert("Fehler", "Das Menü wird entfernt", "OK");
+                    throw new Exception("Order konnte nicht gelöscht werden");
+                }
+                else
+                {
+                    GetShoppingCart();
+                }
             }
             else
             {
@@ -108,11 +111,18 @@ namespace MensaHandyApp.ViewModels
 
         public WarenkorbViewModel()
         {
+            Setup();
             CmdPay = new AsyncRelayCommand(Pay);
+        }
+
+        public async Task Setup()
+        {
+            person = await Person.LoadObject();
         }
 
         public async Task Pay()
         {
+            
             var handler = new HttpClientHandler();
             handler.ClientCertificateOptions = ClientCertificateOption.Manual;
             handler.ServerCertificateCustomValidationCallback =
@@ -121,24 +131,26 @@ namespace MensaHandyApp.ViewModels
                     return true;
                 };
 
-            var client = new HttpClient(handler);
+            var _client = new HttpClient(handler);
 
-            String testMail = "testSchüler@tsn.at";
-            List<int> menuIds = (List<int>) Shoppingcart.Select(sc => sc.MenuItems);
-            
-            DtoOrder order = new DtoOrder()
+            //await _client.PatchAsJsonAsync("https://localhost:7286/api/mensa/order/updatePayedOrder", person.Email);
+            var requestUri = $"https://oliverserver.ddns.net:7286/api/mensa/order/updatePayedOrder?userEmail={Uri.EscapeDataString(person.Email)}";
+
+            var requestMessage = new HttpRequestMessage
             {
-                UserEmail = testMail,
-                OrderDate = DateOnly.FromDateTime(DateTime.Now),
-                MenuIds = menuIds
+                Method = HttpMethod.Put, 
+                RequestUri = new Uri(requestUri),
             };
-
-            await client.PostAsJsonAsync("https://oliverserver.ddns.net:7286/api/mensa/order/safeOrder", order);
+            using var response = await _client.SendAsync(requestMessage);
 
             await Shell.Current.GoToAsync($"///OrderHistory");
             SelectedListItem = null;
         }
 
-
+        public void ReloadData()
+        {
+            // Perform actions to reload data
+            GetShoppingCart();
+        }
     }
 }

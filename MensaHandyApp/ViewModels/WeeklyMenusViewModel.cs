@@ -7,6 +7,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using static System.Net.WebRequestMethods;
 
 namespace MensaHandyApp.ViewModels
@@ -14,8 +16,22 @@ namespace MensaHandyApp.ViewModels
     [ObservableObject]
     partial class WeeklyMenusViewModel
     {
+        private Person person  = new Person()
+        {
+            Email = "testuser@gmx.at",
+            Password = "hallo123"
+        };
+        JsonSerializerOptions options = new JsonSerializerOptions()
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles
+        };
+
+
         [ObservableProperty]
         private ObservableCollection<DayMenu> _dayMenus = new ObservableCollection<DayMenu>();
+
+        [ObservableProperty]
+        private DayMenu _dayMenu;
 
         private Menu selectedListItem;
         public Menu SelectedListItem
@@ -39,17 +55,52 @@ namespace MensaHandyApp.ViewModels
             }
         }
 
-        [ObservableProperty]
-        private DayMenu _dayMenu;
-        
-
         private async void SendAlert()
         {
             bool answer = await Shell.Current.DisplayAlert("Hinzufügen", "Soll das Menü dem Warenkorb hinzugefügt werden", "Ja", "Nein");
             if (answer)
             {
                 await Shell.Current.DisplayAlert("Ja", "Das Menü wird hinzugefügt", "OK");
-                PerformNavigation(SelectedListItem.MenuId);
+
+                var handler = new HttpClientHandler();
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.ServerCertificateCustomValidationCallback =
+                    (httpRequestMessage, cert, cetChain, policyErrors) =>
+                    {
+                        return true;
+                    };
+
+                var _client = new HttpClient(handler);
+                List<MenuPerson> mps = await _client.GetFromJsonAsync<List<MenuPerson>>("https://localhost:7286/api/mensa/order/getAllOrderByUserEmail?mail=" + person.Email);
+
+                // um Bug zu lösen, wegen 400 response
+                mps.ForEach(mp => {
+                    mp.Person = person;
+                    mp.Menu.MenuPersons.Clear();
+                });
+
+                Menu menu = selectedListItem;
+                MenuPerson mp = new MenuPerson()
+                {
+                    OrderDate = DateOnly.FromDateTime(DateTime.Now),
+                    Payed = false,
+                    Activated = false,
+                    Person = person,
+                    Menu = menu,
+                    InShoppingcart = true,
+                    MenuPersonId = 0
+                };
+                mp.Menu.MenuPersons.Clear();
+                mps.Add(mp);
+                //person.SaveObject();
+                List<MenuPerson> shoppingcart = mps.Where(mp => mp.InShoppingcart).ToList();
+                
+                Console.WriteLine(await _client.PostAsJsonAsync("https://oliverserver.ddns.net:7286/api/mensa/order/saveOrder", shoppingcart, options));
+
+                selectedListItem = new();
+                await Shell.Current.GoToAsync($"///Warenkorb");
+
+                //PerformNavigation(SelectedListItem.MenuId);
             }
             else
             {
@@ -58,6 +109,7 @@ namespace MensaHandyApp.ViewModels
             }
         }
 
+        /*
         private async void PerformNavigation(int? GetMenuId)
         {
             if (GetMenuId != null)
@@ -68,6 +120,7 @@ namespace MensaHandyApp.ViewModels
             }
             SelectedListItem = null;
         }
+        */
 
         public WeeklyMenusViewModel()
         {
@@ -78,6 +131,7 @@ namespace MensaHandyApp.ViewModels
         {
             try
             {
+                
                 var handler = new HttpClientHandler();
                 handler.ClientCertificateOptions = ClientCertificateOption.Manual;
                 handler.ServerCertificateCustomValidationCallback =
@@ -90,7 +144,6 @@ namespace MensaHandyApp.ViewModels
                 
                 // Fetch the weekly menus from the API
                 var response = await client.GetFromJsonAsync<List<Menu>>("https://oliverserver.ddns.net:7286/api/mensa/menu/getThisWeeklyMenu");
-
 
                 if (response != null ) //&& response.Count >= 15)
                 {
@@ -233,7 +286,7 @@ namespace MensaHandyApp.ViewModels
             else
             {
                 DayMenu = DayMenus[0];
-                //await Shell.Current.DisplayAlert("Fehler", "GetCarusellPosition geht nicht", "OK");
+                await Shell.Current.DisplayAlert("Fehler", "GetCarusellPosition geht nicht", "OK");
             }
             //await Shell.Current.DisplayAlert("pos", pos, "OK");
         }

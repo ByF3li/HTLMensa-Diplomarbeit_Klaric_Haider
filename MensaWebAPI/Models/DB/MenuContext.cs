@@ -1,15 +1,14 @@
 ﻿using MensaAppKlassenBibliothek;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace MensaWebAPI.Models.DB
 {
     public class MenuContext : DbContext
     {
         public DbSet<Menu> Menues { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
-        public DbSet<MenuShoppingCartItem> MenuShoppingCartItems { get; set; }
-
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<MenuPerson> MenuPersons { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -20,16 +19,22 @@ namespace MensaWebAPI.Models.DB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MenuShoppingCartItem>()
-            .HasKey(msc => new { msc.MenuId, msc.ShoppingCartId });
+            // Configure MenuPerson-Menu relationship
+            /*modelBuilder.Entity<MenuPerson>()
+                .HasOne(mp => mp.Menu)
+                .WithMany(m => m.MenuPersons);
+                *//*.HasForeignKey(mp => mp.Menu*//*
 
-            modelBuilder.Entity<ShoppingCart>().HasMany(sc => sc.MenuItems)
-                .WithOne(msc => msc.ShoppingCart)
-                .HasForeignKey(msc => msc.ShoppingCartId);
+            // Configure MenuPerson-Person relationship
+            modelBuilder.Entity<MenuPerson>()
+                .HasOne(mp => mp.Person)
+                .WithMany(p => p.MenuPersons)
+                *//*.HasForeignKey(mp => mp.Person)*//*;
 
-            modelBuilder.Entity<Menu>().HasMany(m => m.ShoppingCartItems)
-                .WithOne(msc => msc.Menu)
-                .HasForeignKey(msc => msc.MenuId);
+            // Other configurations...
+
+            //base.OnModelCreating(modelBuilder);*/
         }
+
     }
 }

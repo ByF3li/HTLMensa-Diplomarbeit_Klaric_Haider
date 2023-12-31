@@ -5,7 +5,7 @@
 namespace MensaWebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class hoffnungInCodeVonAndere : Migration
+    public partial class FK_again_again_again : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

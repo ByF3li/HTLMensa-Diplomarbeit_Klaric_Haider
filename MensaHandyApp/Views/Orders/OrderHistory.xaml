@@ -16,14 +16,14 @@
                         <Border StrokeThickness="4" Padding="50" >
                             <Grid RowDefinitions="2*, 2*, 2*" ColumnDefinitions="1*, 1*"  Margin="5">
 
-                                <Label Text="Bestellungs-Id:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
-                                <Label Text="{Binding OrderId}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="Email:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding Email}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
 
                                 <Label Text="Bestellungs-Datum:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
                                 <Label Text="{Binding OrderDate}" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
 
-                                <Label Text="Ihre Email:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
-                                <Label Text="{Binding UserEmail}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="Eingelöst:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding Activated}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
                             </Grid>
                         </Border>
                     </DataTemplate>

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MensaWebAPI.Migrations
 {
     [DbContext(typeof(MenuContext))]
-    [Migration("20230809174232_Order")]
-    partial class Order
+    [Migration("20231228195948_mzun")]
+    partial class mzun
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,52 +50,75 @@ namespace MensaWebAPI.Migrations
                     b.ToTable("Menues");
                 });
 
-            modelBuilder.Entity("MensaAppKlassenBibliothek.Order", b =>
+            modelBuilder.Entity("MensaAppKlassenBibliothek.MenuPerson", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<int>("MenuPersonId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<bool>("Activated")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateOnly>("OrderDate")
                         .HasColumnType("date");
 
-                    b.Property<string>("UserEmail")
+                    b.Property<bool>("Payed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("email")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("menuId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MenuPersonId");
+
+                    b.HasIndex("email");
+
+                    b.HasIndex("menuId");
+
+                    b.ToTable("MenuPersons");
+                });
+
+            modelBuilder.Entity("MensaAppKlassenBibliothek.Person", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Email");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("MenuOrder", b =>
+            modelBuilder.Entity("MensaAppKlassenBibliothek.MenuPerson", b =>
                 {
-                    b.Property<int>("MenusMenuId")
-                        .HasColumnType("int");
+                    b.HasOne("MensaAppKlassenBibliothek.Person", "Person")
+                        .WithMany("MenuPersons")
+                        .HasForeignKey("email");
 
-                    b.Property<int>("OrdersOrderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MenusMenuId", "OrdersOrderId");
-
-                    b.HasIndex("OrdersOrderId");
-
-                    b.ToTable("MenuOrder");
-                });
-
-            modelBuilder.Entity("MenuOrder", b =>
-                {
-                    b.HasOne("MensaAppKlassenBibliothek.Menu", null)
-                        .WithMany()
-                        .HasForeignKey("MenusMenuId")
+                    b.HasOne("MensaAppKlassenBibliothek.Menu", "Menu")
+                        .WithMany("MenuPersons")
+                        .HasForeignKey("menuId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MensaAppKlassenBibliothek.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Menu");
+
+                    b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("MensaAppKlassenBibliothek.Menu", b =>
+                {
+                    b.Navigation("MenuPersons");
+                });
+
+            modelBuilder.Entity("MensaAppKlassenBibliothek.Person", b =>
+                {
+                    b.Navigation("MenuPersons");
                 });
 #pragma warning restore 612, 618
         }

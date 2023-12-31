@@ -3,6 +3,7 @@ using System;
 using MensaWebAPI.Models.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MensaWebAPI.Migrations
 {
     [DbContext(typeof(MenuContext))]
-    partial class MenuContextModelSnapshot : ModelSnapshot
+    [Migration("20231229093333_FK_again")]
+    partial class FK_again
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,23 +62,23 @@ namespace MensaWebAPI.Migrations
                     b.Property<bool>("InShoppingcart")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("MenuId")
-                        .HasColumnType("int");
-
                     b.Property<DateOnly>("OrderDate")
                         .HasColumnType("date");
 
                     b.Property<bool>("Payed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("PersonEmail")
+                    b.Property<string>("email")
                         .HasColumnType("varchar(255)");
+
+                    b.Property<int>("menuId")
+                        .HasColumnType("int");
 
                     b.HasKey("MenuPersonId");
 
-                    b.HasIndex("MenuId");
+                    b.HasIndex("email");
 
-                    b.HasIndex("PersonEmail");
+                    b.HasIndex("menuId");
 
                     b.ToTable("MenuPersons");
                 });
@@ -96,15 +99,15 @@ namespace MensaWebAPI.Migrations
 
             modelBuilder.Entity("MensaAppKlassenBibliothek.MenuPerson", b =>
                 {
-                    b.HasOne("MensaAppKlassenBibliothek.Menu", "Menu")
-                        .WithMany("MenuPersons")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MensaAppKlassenBibliothek.Person", "Person")
                         .WithMany("MenuPersons")
-                        .HasForeignKey("PersonEmail");
+                        .HasForeignKey("email");
+
+                    b.HasOne("MensaAppKlassenBibliothek.Menu", "Menu")
+                        .WithMany("MenuPersons")
+                        .HasForeignKey("menuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Menu");
 

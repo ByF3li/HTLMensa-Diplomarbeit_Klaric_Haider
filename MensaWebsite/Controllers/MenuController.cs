@@ -36,7 +36,7 @@ namespace MensaWebsite.Controllers
                 MainCourse = mainCourse,
                 Price = price,
                 Date = date,
-                Orders = new List<Order>()
+                //order
             };
 
             

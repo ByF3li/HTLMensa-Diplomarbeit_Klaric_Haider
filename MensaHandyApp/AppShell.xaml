@@ -24,14 +24,6 @@
         ContentTemplate="{DataTemplate viewsMenu:WarenkorbView}"
         Route="Warenkorb" />
 
-    <!--
-    <ShellContent
-        Title="Ihre Bestellungen"
-        ContentTemplate="{DataTemplate viewsOrder:WeeklyOrders}"
-        Route="WeeklyOrders" />
-    -->
-    
-
     <ShellContent
         Title="Bestellverlauf"
         ContentTemplate="{DataTemplate viewsOrder:OrderHistory}"

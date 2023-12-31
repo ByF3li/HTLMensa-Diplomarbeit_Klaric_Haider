@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MensaWebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class MenuOrder : Migration
+    public partial class mzun : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,7 +27,7 @@ namespace MensaWebAPI.Migrations
                     MainCourse = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    Date = table.Column<DateOnly>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,63 +36,72 @@ namespace MensaWebAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Orders",
+                name: "Persons",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    OrderDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UserEmail = table.Column<string>(type: "longtext", nullable: false)
+                    Email = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Password = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.PrimaryKey("PK_Persons", x => x.Email);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "MenuOrder",
+                name: "MenuPersons",
                 columns: table => new
                 {
-                    MenusMenuId = table.Column<int>(type: "int", nullable: false),
-                    OrdersOrderId = table.Column<int>(type: "int", nullable: false)
+                    MenuPersonId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    OrderDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    Payed = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Activated = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    email = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    menuId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MenuOrder", x => new { x.MenusMenuId, x.OrdersOrderId });
+                    table.PrimaryKey("PK_MenuPersons", x => x.MenuPersonId);
                     table.ForeignKey(
-                        name: "FK_MenuOrder_Menues_MenusMenuId",
-                        column: x => x.MenusMenuId,
+                        name: "FK_MenuPersons_Menues_menuId",
+                        column: x => x.menuId,
                         principalTable: "Menues",
                         principalColumn: "MenuId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MenuOrder_Orders_OrdersOrderId",
-                        column: x => x.OrdersOrderId,
-                        principalTable: "Orders",
-                        principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_MenuPersons_Persons_email",
+                        column: x => x.email,
+                        principalTable: "Persons",
+                        principalColumn: "Email");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MenuOrder_OrdersOrderId",
-                table: "MenuOrder",
-                column: "OrdersOrderId");
+                name: "IX_MenuPersons_email",
+                table: "MenuPersons",
+                column: "email");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuPersons_menuId",
+                table: "MenuPersons",
+                column: "menuId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MenuOrder");
+                name: "MenuPersons");
 
             migrationBuilder.DropTable(
                 name: "Menues");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Persons");
         }
     }
 }

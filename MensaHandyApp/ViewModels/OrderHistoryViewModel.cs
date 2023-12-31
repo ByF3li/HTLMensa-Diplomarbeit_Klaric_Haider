@@ -10,14 +10,17 @@ namespace MensaHandyApp.ViewModels
     {
     
         [ObservableProperty]
-        private ObservableCollection<Order> _orders = new ObservableCollection<Order>();
-        
+        private ObservableCollection<MenuPerson> _orders = new ObservableCollection<MenuPerson>();
+
+        private Person person;
+
         public OrderHistoryViewModel()
         {
             Task t = ShowOrder();
         }
         private async Task ShowOrder()
         {
+            person = await Person.LoadObject();
 
             var handler = new HttpClientHandler();
             handler.ClientCertificateOptions = ClientCertificateOption.Manual;
@@ -27,24 +30,21 @@ namespace MensaHandyApp.ViewModels
                     return true;
                 };
 
-            var client = new HttpClient(handler);
-
-            String testMail = "testSchüler@tsn.at";
-
+            var _client = new HttpClient(handler);
             try
             {
-                List<Order> o = new List<Order>();
-                o = await client.GetFromJsonAsync<List<Order>>("https://oliverserver.ddns.net:7286/api/mensa/order/getOrderByUserEmail?mail=" + testMail);
+                List<MenuPerson> allOrders = new List<MenuPerson>();
+                allOrders = await _client.GetFromJsonAsync<List<MenuPerson>>("https://oliverserver.ddns.net:7286/api/mensa/order/getAllOrderByUserEmail" + person.Email);
                 // da hohl i mir alle Orders, brauch aber nur de von dieser Woche...
                 // alte Orders (nit die neuerste), da sind die Menus wenn ma mit getOrderByUserEmail drüberfährt nit drinnen => aus zwischentabelle holen
-                foreach (var order in o)
+                foreach (var order in allOrders)
                 {
                     Orders.Add(order);
                 }
             }
             catch (Exception ex)
             {
-
+                throw new Exception(ex.Message);
             }
             
         }

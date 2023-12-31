@@ -79,7 +79,7 @@ namespace MensaWebAPI.Controllers
             }
 
             this._context.Menues.Remove(articleToDelete);
-            return new JsonResult((await this._context.SaveChangesAsync()) == 1);
+            return new JsonResult((await this._context.SaveChangesAsync()) >= 1);
 
         }
 
@@ -93,29 +93,36 @@ namespace MensaWebAPI.Controllers
 
         [HttpPut]
         [Route("menu/changeMenuById")]
-        public async Task<IActionResult> AsyncUpdateMenu(Menu updatedMenu)
+        public async Task<IActionResult> AsyncUpdateMenu(int menuToUpdateId, int? whichMenu, string? starter, string? mainCourse, decimal? price, DateOnly? date)
         {
-            /*
-            if (updatedMenu == null)
+            if (menuToUpdateId == null)
             {
                 return BadRequest("Invalid data provided");
             }
-            */
+            
+            var existingMenu = await this._context.Menues.FindAsync(menuToUpdateId);
 
-            var existingMenu = await this._context.Menues.FindAsync(updatedMenu.MenuId);
-
-            /*
             if (existingMenu == null)
             {
-                return NotFound($"Menu with Id = {updatedMenu.MenuId} not found");
+                return NotFound($"Menu with Id = {menuToUpdateId} not found");
             }
-            */
-
-            existingMenu.Date = updatedMenu.Date;
+            
+            if(whichMenu != null) { existingMenu.WhichMenu = (int)whichMenu; } 
+            if(starter != null) { existingMenu.Starter = starter; }
+            if (mainCourse != null) { existingMenu.MainCourse = mainCourse; }
+            if (price != null) { existingMenu.Price = (decimal)price; }
+            if (date != null) { existingMenu.Date = (DateOnly)date; }
 
             var isUpdateSuccessful = await this._context.SaveChangesAsync() > 0;
-
-            return new JsonResult(isUpdateSuccessful, options);
+            
+            if (isUpdateSuccessful)
+            {
+                return new JsonResult(existingMenu, options);
+            }
+            else
+            {
+                return NotFound($"Updating Menu with Id = {menuToUpdateId} not successful");
+            }
         }
 
         [HttpGet]
@@ -123,6 +130,13 @@ namespace MensaWebAPI.Controllers
         public async Task<IActionResult> AsyncGetThisWeeklyMenu()
         {
             DateOnly resultDateOnly = ReturnThisWeek();
+
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+
+            if (today >= resultDateOnly.AddDays(+2))
+            {
+                resultDateOnly = resultDateOnly.AddDays(+7);
+            }
 
             List<DateOnly> days = new List<DateOnly>()
             {
@@ -135,13 +149,13 @@ namespace MensaWebAPI.Controllers
 
             List<Menu> menuList = new List<Menu>();
             menuList = await this._context.Menues.Where(m => days.Contains(m.Date)).ToListAsync();
-            
+
             List<Menu> sortedMenuList = SortMenus(menuList);
 
             return new JsonResult(sortedMenuList, options);
         }
 
-        public DateOnly ReturnThisWeek()
+        private DateOnly ReturnThisWeek()
         {
 
             DateTime dateTimeToday = DateTime.Now;
@@ -170,7 +184,7 @@ namespace MensaWebAPI.Controllers
 
             return resultDateOnly;
         }
-        public List<Menu> SortMenus(List<Menu> menuList)
+        private List<Menu> SortMenus(List<Menu> menuList)
         {
             Menu menuToSafe;
 

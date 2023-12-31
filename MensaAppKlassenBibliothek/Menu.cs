@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -15,9 +16,11 @@ namespace MensaAppKlassenBibliothek
         public string MainCourse { get; set; }
         public decimal Price { get; set; }
         public DateOnly Date { get; set; }
-        public List<Order>? Orders { get; set; } = new List<Order>();
-        public List<MenuShoppingCartItem> ShoppingCartItems { get; set; } = new List<MenuShoppingCartItem>();
 
+        public List<MenuPerson> MenuPersons { get; set; } = new List<MenuPerson>() { };
+
+        //public List<Order>? Orders { get; set; } = new List<Order>();
+        //public List<MenuShoppingCartItem> ShoppingCartItems { get; set; } = new List<MenuShoppingCartItem>();
 
         public int CompareTo(Menu? other)
         {
