@@ -3,7 +3,11 @@
     x:Class="MensaHandyApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:views="clr-namespace:MensaHandyApp.Views">
+    xmlns:views="clr-namespace:MensaHandyApp.Views"
+    xmlns:viewsMenu="clr-namespace:MensaHandyApp.Views.Menus"
+    xmlns:viewsOrder="clr-namespace:MensaHandyApp.Views.Orders">
+
+
 
     <ShellContent
         Title="Homepage"
@@ -11,13 +15,18 @@
         Route="MainPage" />
 
     <ShellContent
-        Title="Wochen-Menü"
-        ContentTemplate="{DataTemplate views:ShowWeeklyMenuView}"
-        Route="ShowWeeklyMenuView" />
+        Title="Wöchentliches Menü"
+        ContentTemplate="{DataTemplate viewsMenu:WeeklyMenusView}"
+        Route="WeeklyMenus" />
 
     <ShellContent
-        Title="Tages-Menü"
-        ContentTemplate="{DataTemplate views:ShowDailyMenuView}"
-        Route="ShowDailyMenuView" />
+        Title="Ihr Warenkorb"
+        ContentTemplate="{DataTemplate viewsMenu:WarenkorbView}"
+        Route="Warenkorb" />
+
+    <ShellContent
+        Title="Bestellverlauf"
+        ContentTemplate="{DataTemplate viewsOrder:OrderHistoryView}"
+        Route="OrderHistory" />
 
 </Shell>

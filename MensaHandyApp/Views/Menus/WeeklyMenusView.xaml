@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MensaHandyApp.Views.Menus.WeeklyMenusView"
+             Title="WeeklyMenus">
+
+
+    <ScrollView>
+        <VerticalStackLayout>
+            <IndicatorView x:Name="indicatorView" Margin="5" HorizontalOptions="Center" IndicatorColor="White" SelectedIndicatorColor="Red"/>
+            <CarouselView x:Name="carusellMenus"  ItemsSource="{Binding DayMenus}" IndicatorView="indicatorView" CurrentItem="{Binding DayMenu}">
+
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <VerticalStackLayout BackgroundColor="DarkViolet" Padding="5">
+                            <Label FontSize="Medium" FontAttributes="Bold" HorizontalTextAlignment="Center" Text="{Binding Date, StringFormat='{}{0:dddd dd MMM yyyy}'}" Margin="0,0,0,5" TextColor="White"/>
+
+                            <CollectionView ItemsSource="{Binding Menus}" SelectionMode="Single" SelectedItem="{Binding Path = BindingContext.SelectedListItem, Source={Reference carusellMenus}}">
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout Span="1" Orientation="Vertical" />
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border StrokeThickness="4" Padding="50" >
+                                            <Grid RowDefinitions="2*, 2*, 2*, 2*, 2*" ColumnDefinitions="1*, 1*"  Margin="5">
+
+                                                <Label Text="Menü Nummer:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                                <Label Text="{Binding WhichMenu}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                                <Label Text="Vorspeiße:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                                <Label Text="{Binding Starter}" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                                <Label Text="Hauptspeiße:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                                <Label Text="{Binding MainCourse}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 5"  FontSize="10"/>
+
+                                                <Label Text="Preis des Menüs:" HorizontalOptions="Start" Grid.Row="3" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10" />
+                                                <Label Text="{Binding Price, StringFormat='{0:F2}'}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                                <Label Text="Allergene:" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"></Label>
+                                                <Label Text="(ACG)" HorizontalOptions="Start" Grid.Row="4" Grid.Column="1"  FontSize="10" Margin="0, 0, 0, 5"></Label>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                            <Label Text="A=GLUTENHALTIGES GETREIDE; B=KREBSTIERE; C=EIER; D=FISCH; E=ERDNÜSSE; F=SOJA; G=MILCH UND LACTOSE; H=SCHALENFRÜCHTE (NÜSSE); L=SELLERIE; M=SENF; N=SESAM; O=SULFITE; P=LUPINIEN; R=WEICHTIERE" Padding="10" FontSize="10" TextColor="White"></Label>
+
+
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+
+            </CarouselView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -118,6 +118,7 @@ namespace MensaWebsite.Controllers
 
                     menuDTOList.Add(menuDTO);
                 }
+                await Console.Out.WriteLineAsync();
             }
             catch (Exception ex)
             {

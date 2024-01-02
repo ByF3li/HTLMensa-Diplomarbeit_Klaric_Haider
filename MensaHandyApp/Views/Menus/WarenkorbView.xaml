@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MensaHandyApp.Views.Menus.WarenkorbView"
+             Title="WarenkorbView">
+    <ScrollView>
+        <VerticalStackLayout>
+            <CollectionView ItemsSource="{Binding Shoppingcart}" SelectionMode="Single" SelectedItem="{Binding SelectedListItem}">
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Span="1" Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeThickness="4" Padding="50" >
+                            <Grid RowDefinitions="2*, 2*, 2*, 2*, 2*, 2*" ColumnDefinitions="1*, 1*"  Margin="5">
+
+                                <Label Text="Menü Id:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding Menu.MenuId}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                <Label Text="Menü Nummer:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding Menu.WhichMenu}" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                <Label Text="Vorspeiße:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding Menu.Starter}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                <Label Text="Hauptspeiße:" HorizontalOptions="Start" Grid.Row="3" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding Menu.MainCourse}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 5"  FontSize="10"/>
+
+                                <Label Text="Preis des Menüs:" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10" />
+                                <Label Text="{Binding Menu.Price, StringFormat='{0:F2}'}" HorizontalOptions="Start" Grid.Row="4" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+                                <Label Text="Allergene:" HorizontalOptions="Start" Grid.Row="5" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"></Label>
+                                <Label Text="(ACG)" HorizontalOptions="Start" Grid.Row="5" Grid.Column="1"  FontSize="10" Margin="0, 0, 0, 5"></Label>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label Text="A=GLUTENHALTIGES GETREIDE; B=KREBSTIERE; C=EIER; D=FISCH; E=ERDNÜSSE; F=SOJA; G=MILCH UND LACTOSE; H=SCHALENFRÜCHTE (NÜSSE); L=SELLERIE; M=SENF; N=SESAM; O=SULFITE; P=LUPINIEN; R=WEICHTIERE" Padding="10" FontSize="10" TextColor="White"></Label>
+
+            <Button Command="{Binding CmdPay}" Text="Bezahlen" HorizontalOptions="Center" Margin="20" FontSize="Large" TextColor="White" BackgroundColor="Blue"></Button>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

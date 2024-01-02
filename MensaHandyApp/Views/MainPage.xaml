@@ -5,50 +5,11 @@
              Title="MainPage">
     <ScrollView>
         <VerticalStackLayout>
-            <Grid RowDefinitions="2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*, 2*" >
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="3" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="5" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="6" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="7" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="8" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="9" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="10" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="11" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="12" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="13" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="14" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="15" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="16" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="17" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="18" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="19" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="20" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="21" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="22" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="23" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="24" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="25" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="26" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="27" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="28" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="29" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="30" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="31" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="32" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="33" Grid.Column="0" Margin="0, 0, 0, 5"/>
-                <Label Text="Hallo" HorizontalOptions="Start" Grid.Row="34" Grid.Column="0" Margin="0, 0, 0, 5"/>
-            </Grid>
+            <Label HorizontalOptions="Center" FontAttributes="Bold" FontSize="Medium">Willkommen bei der Mensa App</Label>
+            <Image HorizontalOptions="CenterAndExpand" Source="mensa_logo.png"></Image>
+            <Label HorizontalOptions="Center" Margin="20">Mittagessen von 11:00 - 14:00</Label>
+            <Label HorizontalOptions="Center" Margin="20">Telefon: 0650 461 32 30</Label>
+            <Label HorizontalOptions="Center" Margin="20">Email: info@htl-mensa.at</Label>
         </VerticalStackLayout>
     </ScrollView>
-    <!--
-        i.	 Login bei der App mit TSN-Daten über LDAP
-        ii.	 Anzeigen der einzelnen Menüs: Wochenmenü anclickbar wechselt zu tagesmenü 
-        iii.            -> menü auswählen (und warenkorb hinzufügen)
-    
-    warscheinlich a user  m-n  menu und in der zwischentabelle dann a selected oder so nur erster gedanke lmao 
-    #endregion-->
 </ContentPage>

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MensaAppKlassenBibliothek",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MensaHandyApp", "..\MensaHandyApp\MensaHandyApp.csproj", "{94D9A52C-66DD-4C37-BCE9-7747E42D7F5D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MensaWebsite", "MensaWebsite.csproj", "{2CED8B69-0B03-4988-B33F-E6790E006154}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bitte2", "..\..\Diplomarbeit Ewiger Tresor\Bitte2\Bitte2.csproj", "{DF8AE289-7731-45A5-89A4-1097CD5E6468}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,10 @@ Global
 		{94D9A52C-66DD-4C37-BCE9-7747E42D7F5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94D9A52C-66DD-4C37-BCE9-7747E42D7F5D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{94D9A52C-66DD-4C37-BCE9-7747E42D7F5D}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{2CED8B69-0B03-4988-B33F-E6790E006154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2CED8B69-0B03-4988-B33F-E6790E006154}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2CED8B69-0B03-4988-B33F-E6790E006154}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CED8B69-0B03-4988-B33F-E6790E006154}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF8AE289-7731-45A5-89A4-1097CD5E6468}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF8AE289-7731-45A5-89A4-1097CD5E6468}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF8AE289-7731-45A5-89A4-1097CD5E6468}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF8AE289-7731-45A5-89A4-1097CD5E6468}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

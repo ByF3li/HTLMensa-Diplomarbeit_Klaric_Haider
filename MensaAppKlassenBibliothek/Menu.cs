@@ -12,11 +12,16 @@ namespace MensaAppKlassenBibliothek
     public class Menu : IComparable<Menu>
     {
         public int MenuId { get; set; }
+        
         public string Starter { get; set; }
         public string MainCourse { get; set; }
+        
         public DateOnly Date { get; set; }
-        public PriceForMenu Prices { get; set; }
-        public List<Order> Orders { get; set; }
+
+        public List<MenuPerson> MenuPersons { get; set; } = new List<MenuPerson>() { };
+	public PriceForMenu Prices { get; set; }
+        //public List<Order>? Orders { get; set; } = new List<Order>();
+        //public List<MenuShoppingCartItem> ShoppingCartItems { get; set; } = new List<MenuShoppingCartItem>();
 
         public int CompareTo(Menu? other)
         {
