@@ -174,28 +174,22 @@ namespace MensaHandyApp.ViewModels
                             new Menu
                             {
                                 MenuId = 1,
-                                WhichMenu = 0,
                                 Starter = "Fehler",
                                 MainCourse = "Fehler",
-                                Price = 9999.99m,
                                 Date = DateOnly.MaxValue
                             },
                             new Menu
                             {
                                 MenuId = 2,
-                                WhichMenu = 0,
                                 Starter = "Fehler",
                                 MainCourse = "Fehler",
-                                Price = 9999.99m,
                                 Date = DateOnly.MaxValue
                             },
                             new Menu
                             {
                                 MenuId = 3,
-                                WhichMenu = 0,
                                 Starter = "Fehler",
                                 MainCourse = "Fehler",
-                                Price = 9999.99m,
                                 Date = DateOnly.MaxValue
                             }
                         }
