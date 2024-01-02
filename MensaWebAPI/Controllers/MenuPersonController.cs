@@ -38,26 +38,6 @@ namespace MensaWebAPI.Controllers
             return new JsonResult(await this._context.MenuPersons.Where(mp => mp.Person.Email == mail).ToListAsync(), options);
         }
 
-        [HttpGet]
-        [Route("order/getAllOrderByUserEmailFromThisWeek")]
-        public async Task<IActionResult> AsyncGetAllOrderByUserEmailFromThisWeek(String mail)
-        {
-            List<MenuPerson> mp = await this._context.MenuPersons.Where(mp => mp.Person.Email == mail).ToListAsync();
-
-
-            List<MenuPerson> menupersons = new List<MenuPerson>();
-            DateOnly resultDateOnly = ReturnThisWeek();
-
-            foreach (MenuPerson menuperson in mp) 
-            { 
-                if((menuperson.OrderDate >= resultDateOnly.AddDays(-3)) && (menuperson.OrderDate <= resultDateOnly.AddDays(+1)))
-                {
-                    menupersons.Add(menuperson);
-                }       
-            }
-            return new JsonResult(menupersons, options);
-        }
-
         [HttpPost]
         [Route("order/saveOrder")]
         public async Task<IActionResult> AsyncSaveOrder(List<MenuPerson> shoppingcart)
@@ -102,6 +82,7 @@ namespace MensaWebAPI.Controllers
             List<MenuPerson> shoppingCart = (this._context.MenuPersons.Where(mp => (mp.Person.Email.Equals(userEmail)) && (mp.InShoppingcart))).ToList();
             shoppingCart.ForEach(mp => {
                 mp.Payed = true;
+                mp.OrderDate = DateOnly.FromDateTime(DateTime.Now);
                 mp.InShoppingcart = false;
             });
             var isUpdateSuccessful = await this._context.SaveChangesAsync() > 0;

@@ -71,7 +71,7 @@ namespace MensaHandyApp.ViewModels
                     };
 
                 var _client = new HttpClient(handler);
-                List<MenuPerson> mps = await _client.GetFromJsonAsync<List<MenuPerson>>("https://localhost:7286/api/mensa/order/getAllOrderByUserEmail?mail=" + person.Email);
+                List<MenuPerson> mps = await _client.GetFromJsonAsync<List<MenuPerson>>("https://oliverserver.ddns.net:7286/api/mensa/order/getAllOrderByUserEmail?mail=" + person.Email);
 
                 // um Bug zu lösen, wegen 400 response
                 mps.ForEach(mp => {

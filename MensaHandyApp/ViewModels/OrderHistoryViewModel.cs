@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MensaAppKlassenBibliothek;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 
 namespace MensaHandyApp.ViewModels
 {
@@ -10,17 +12,25 @@ namespace MensaHandyApp.ViewModels
     {
     
         [ObservableProperty]
-        private ObservableCollection<MenuPerson> _orders = new ObservableCollection<MenuPerson>();
+        public ObservableCollection<MenuPerson> _orders = new ObservableCollection<MenuPerson>();
 
         private Person person;
 
-        public OrderHistoryViewModel()
+        [ObservableProperty]
+        public string _personemail; 
+       
+   
+        public async Task ReloadData()
         {
-            Task t = ShowOrder();
+            // Perform actions to reload data
+            await ShowOrder();
         }
+
+
         private async Task ShowOrder()
         {
             person = await Person.LoadObject();
+            Personemail = person.Email;
 
             var handler = new HttpClientHandler();
             handler.ClientCertificateOptions = ClientCertificateOption.Manual;
@@ -34,20 +44,20 @@ namespace MensaHandyApp.ViewModels
             try
             {
                 List<MenuPerson> allOrders = new List<MenuPerson>();
-                allOrders = await _client.GetFromJsonAsync<List<MenuPerson>>("https://oliverserver.ddns.net:7286/api/mensa/order/getAllOrderByUserEmail" + person.Email);
-                // da hohl i mir alle Orders, brauch aber nur de von dieser Woche...
-                // alte Orders (nit die neuerste), da sind die Menus wenn ma mit getOrderByUserEmail drüberfährt nit drinnen => aus zwischentabelle holen
+                allOrders = await _client.GetFromJsonAsync<List<MenuPerson>>("https://oliverserver.ddns.net:7286/api/mensa/order/getAllOrderByUserEmail?mail=" + person.Email);
+
+                allOrders.Reverse(); //The newest Order should be first
+
                 foreach (var order in allOrders)
                 {
                     Orders.Add(order);
                 }
+
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            
         }
-    
     }
 }

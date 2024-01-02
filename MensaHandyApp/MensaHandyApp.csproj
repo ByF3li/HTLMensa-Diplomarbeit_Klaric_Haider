@@ -58,17 +58,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\Menus\WeeklyMenus.xaml.cs">
-	    <DependentUpon>WeeklyMenus.xaml</DependentUpon>
+	  <Compile Update="Views\Menus\WeeklyMenusView.xaml.cs">
+	    <DependentUpon>WeeklyMenusView.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\MainPage.xaml.cs">
 	    <DependentUpon>MainPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\Orders\OrderItemsFromOrderView.xaml.cs">
+	    <DependentUpon>OrderItemsFromOrderView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Orders\WeeklyOrders.xaml.cs">
 	    <DependentUpon>WeeklyOrders.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\Orders\OrderHistory.xaml.cs">
-	    <DependentUpon>OrderHistory.xaml</DependentUpon>
+	  <Compile Update="Views\Orders\OrderHistoryView.xaml.cs">
+	    <DependentUpon>OrderHistoryView.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\ShowWeeklyMenuView.xaml.cs">
 	    <DependentUpon>ShowWeeklyMenuView.xaml</DependentUpon>
@@ -82,16 +85,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\Menus\WeeklyMenus.xaml">
+	  <MauiXaml Update="Views\Menus\WeeklyMenusView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\MainPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Orders\OrderItemsFromOrderView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Orders\WeeklyOrders.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Orders\OrderHistory.xaml">
+	  <MauiXaml Update="Views\Orders\OrderHistoryView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ShowWeeklyMenuView.xaml">

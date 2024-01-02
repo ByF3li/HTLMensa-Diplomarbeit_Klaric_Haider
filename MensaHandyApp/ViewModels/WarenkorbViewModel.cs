@@ -19,7 +19,6 @@ namespace MensaHandyApp.ViewModels
         [ObservableProperty]
         List<MenuPerson> _shoppingcart = new List<MenuPerson>();
 
-        public int GetMenuId { get; private set; }
 
         private MenuPerson selectedListItem;
         public MenuPerson SelectedListItem
@@ -42,7 +41,7 @@ namespace MensaHandyApp.ViewModels
                 }
             }
         }
-
+        
         public async void GetShoppingCart()
         {
             var handler = new HttpClientHandler();
@@ -54,15 +53,13 @@ namespace MensaHandyApp.ViewModels
                 };
             var client = new HttpClient(handler);
 
-
             List<MenuPerson> mps = await client.GetFromJsonAsync<List<MenuPerson>>("https://oliverserver.ddns.net:7286/api/mensa/order/getAllOrderByUserEmail?mail=" + person.Email);
             person.MenuPersons.Clear();
             person.MenuPersons.AddRange(mps);
            // person.SaveObject();
             Shoppingcart = mps.Where(mp => mp.InShoppingcart).ToList();
         }
-
-
+        
         private async void SendAlert(int menuId)
         {
             bool answer = await Shell.Current.DisplayAlert("Entfernen", "Soll das Menü vom Warenkorb entfernt werden", "Ja", "Nein");
@@ -122,29 +119,34 @@ namespace MensaHandyApp.ViewModels
 
         public async Task Pay()
         {
-            
-            var handler = new HttpClientHandler();
-            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-            handler.ServerCertificateCustomValidationCallback =
-                (httpRequestMessage, cert, cetChain, policyErrors) =>
-                {
-                    return true;
-                };
-
-            var _client = new HttpClient(handler);
-
-            //await _client.PatchAsJsonAsync("https://localhost:7286/api/mensa/order/updatePayedOrder", person.Email);
-            var requestUri = $"https://oliverserver.ddns.net:7286/api/mensa/order/updatePayedOrder?userEmail={Uri.EscapeDataString(person.Email)}";
-
-            var requestMessage = new HttpRequestMessage
+            if (Shoppingcart.Count() > 0)
             {
-                Method = HttpMethod.Put, 
-                RequestUri = new Uri(requestUri),
-            };
-            using var response = await _client.SendAsync(requestMessage);
+                var handler = new HttpClientHandler();
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.ServerCertificateCustomValidationCallback =
+                    (httpRequestMessage, cert, cetChain, policyErrors) =>
+                    {
+                        return true;
+                    };
 
-            await Shell.Current.GoToAsync($"///OrderHistory");
-            SelectedListItem = null;
+                var _client = new HttpClient(handler);
+
+                var requestUri = $"https://oliverserver.ddns.net:7286/api/mensa/order/updatePayedOrder?userEmail={Uri.EscapeDataString(person.Email)}";
+
+                var requestMessage = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Put,
+                    RequestUri = new Uri(requestUri),
+                };
+                using var response = await _client.SendAsync(requestMessage);
+
+                await Shell.Current.GoToAsync($"///OrderHistory");
+                SelectedListItem = null;
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Fehler", "Der Warenkorb ist leer", "OK");
+            }
         }
 
         public void ReloadData()
