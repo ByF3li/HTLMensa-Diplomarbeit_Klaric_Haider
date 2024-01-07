@@ -32,8 +32,13 @@ namespace MensaWebsite.Controllers
         [HttpGet("getAllOrderByUserEmail")]
         public async Task<IActionResult> AsyncGetAllOrderByUser(String mail)
         {
+            var menus = await this._context.MenuPersons
+                .Include(mp => mp.Menu)
+                .ThenInclude(m => m.Prices)
+                .Where(mp => mp.Person.Email == mail)
+                .ToListAsync();
 
-            return new JsonResult(await this._context.MenuPersons.Where(mp => mp.Person.Email == mail).ToListAsync(), options);
+            return new JsonResult(menus, options);
         }
 
         [HttpPost("saveOrder")]
