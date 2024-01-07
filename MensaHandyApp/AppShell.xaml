@@ -5,28 +5,53 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:MensaHandyApp.Views"
     xmlns:viewsMenu="clr-namespace:MensaHandyApp.Views.Menus"
-    xmlns:viewsOrder="clr-namespace:MensaHandyApp.Views.Orders">
+    xmlns:viewsOrder="clr-namespace:MensaHandyApp.Views.Orders"
+    xmlns:viewsLogin="clr-namespace:MensaHandyApp.Views.Login">
 
-
-
+    <Shell.ToolbarItems>
+        <ToolbarItem Command="{Binding ShowUserCommand}">
+            <ToolbarItem.IconImageSource>
+                <FileImageSource File="Images/usericon.png" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </Shell.ToolbarItems>
+    
+    <!--
+    <Shell.TitleView>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+            <Label Text="{Binding Person.Email}" Margin="10" VerticalTextAlignment="Center"/>
+        </StackLayout>
+    </Shell.TitleView>
+    -->
+    
     <ShellContent
         Title="Homepage"
         ContentTemplate="{DataTemplate views:MainPage}"
-        Route="MainPage" />
+        Route="MainPage" 
+        IsVisible="{Binding IsHomepageVisible}" />
 
     <ShellContent
         Title="Wöchentliches Menü"
         ContentTemplate="{DataTemplate viewsMenu:WeeklyMenusView}"
-        Route="WeeklyMenus" />
+        Route="WeeklyMenus" 
+        IsVisible="{Binding IsWeeklyMenusVisible}" />
 
     <ShellContent
         Title="Ihr Warenkorb"
         ContentTemplate="{DataTemplate viewsMenu:WarenkorbView}"
-        Route="Warenkorb" />
+        Route="Warenkorb" 
+        IsVisible="{Binding IsWarenkorbVisible}" />
 
     <ShellContent
         Title="Bestellverlauf"
         ContentTemplate="{DataTemplate viewsOrder:OrderHistoryView}"
-        Route="OrderHistory" />
+        Route="OrderHistory" 
+        IsVisible="{Binding IsOrderHistoryVisible}" />
+
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate viewsLogin:LoginView}"
+        Route="Login" 
+        IsVisible="{Binding IsLoginVisible}" />
 
 </Shell>

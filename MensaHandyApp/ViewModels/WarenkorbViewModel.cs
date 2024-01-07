@@ -14,11 +14,15 @@ namespace MensaHandyApp.ViewModels
     [ObservableObject]
     public partial class WarenkorbViewModel
     {
+        public string url = "https://oliverserver.ddns.net/";
+        //public string url = "https://localhost:7188/";
 
         private Person person;
         [ObservableProperty]
         List<MenuPerson> _shoppingcart = new List<MenuPerson>();
 
+        [ObservableProperty]
+        private decimal _priceOfMenu;
 
         private MenuPerson selectedListItem;
         public MenuPerson SelectedListItem
@@ -44,20 +48,32 @@ namespace MensaHandyApp.ViewModels
         
         public async void GetShoppingCart()
         {
-            var handler = new HttpClientHandler();
-            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-            handler.ServerCertificateCustomValidationCallback =
-                (httpRequestMessage, cert, cetChain, policyErrors) =>
-                {
-                    return true;
-                };
-            var client = new HttpClient(handler);
+            var _client = Connect();
 
-            List<MenuPerson> mps = await client.GetFromJsonAsync<List<MenuPerson>>("https://oliverserver.ddns.net:7286/api/mensa/order/getAllOrderByUserEmail?mail=" + person.Email);
+            List<MenuPerson> mps = await _client.GetFromJsonAsync<List<MenuPerson>>(url + "api/MenuPersonAPI/getAllOrderByUserEmail?mail=" + person.Email);
+
             person.MenuPersons.Clear();
             person.MenuPersons.AddRange(mps);
            // person.SaveObject();
             Shoppingcart = mps.Where(mp => mp.InShoppingcart).ToList();
+
+            foreach(MenuPerson mp in Shoppingcart)
+            {
+                //testuser@gmx.at exampel for student
+                if (person.Email == "testuser@gmx.at")
+                {
+                    PriceOfMenu = mp.Menu.Prices.PriceStudent;
+                }
+                //testuser2@gmx.at exampel for teacher
+                else if (person.Email == "testuser2@gmx.at")
+                {
+                    PriceOfMenu = mp.Menu.Prices.PriceTeacher;
+                }
+                else
+                {
+                    PriceOfMenu = 9999.99m;
+                }
+            } 
         }
         
         private async void SendAlert(int menuId)
@@ -67,17 +83,9 @@ namespace MensaHandyApp.ViewModels
             {
                 await Shell.Current.DisplayAlert("Ja", "Das Menü wird entfernt", "OK");
 
-                var handler = new HttpClientHandler();
-                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-                handler.ServerCertificateCustomValidationCallback =
-                    (httpRequestMessage, cert, cetChain, policyErrors) =>
-                    {
-                        return true;
-                    };
+                var _client = Connect();
 
-                var _client = new HttpClient(handler);
-
-                var requestUri = $"https://oliverserver.ddns.net:7286/api/mensa/order/deleteOrderByMenuId?userEmail={Uri.EscapeDataString(person.Email)}&menuId={menuId}";
+                var requestUri = url + $"api/MenuPersonAPI/deleteOrderByMenuId?userEmail={Uri.EscapeDataString(person.Email)}&menuId={menuId}";
 
                 var requestMessage = new HttpRequestMessage
                 {
@@ -108,7 +116,7 @@ namespace MensaHandyApp.ViewModels
 
         public WarenkorbViewModel()
         {
-            Setup();
+            _ = Setup();
             CmdPay = new AsyncRelayCommand(Pay);
         }
 
@@ -121,17 +129,10 @@ namespace MensaHandyApp.ViewModels
         {
             if (Shoppingcart.Count() > 0)
             {
-                var handler = new HttpClientHandler();
-                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-                handler.ServerCertificateCustomValidationCallback =
-                    (httpRequestMessage, cert, cetChain, policyErrors) =>
-                    {
-                        return true;
-                    };
+                var _client = Connect();
 
-                var _client = new HttpClient(handler);
+                var requestUri = url + $"api/MenuPersonAPI/updatePayedOrder?userEmail={Uri.EscapeDataString(person.Email)}";
 
-                var requestUri = $"https://oliverserver.ddns.net:7286/api/mensa/order/updatePayedOrder?userEmail={Uri.EscapeDataString(person.Email)}";
 
                 var requestMessage = new HttpRequestMessage
                 {
@@ -151,8 +152,35 @@ namespace MensaHandyApp.ViewModels
 
         public void ReloadData()
         {
-            // Perform actions to reload data
             GetShoppingCart();
+        }
+
+        public HttpClient Connect()
+        {
+            if (url == "https://localhost:7188/")
+            {
+                HttpClient _localhost_client = new HttpClient();
+                return _localhost_client;
+            }
+            else if (url == "https://oliverserver.ddns.net/")
+            {
+                var handler = new HttpClientHandler();
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.ServerCertificateCustomValidationCallback =
+                    (httpRequestMessage, cert, cetChain, policyErrors) =>
+                    {
+                        return true;
+                    };
+
+                var _oliverserver_client = new HttpClient(handler);
+
+                return _oliverserver_client;
+            }
+            else
+            {
+                throw new Exception("Konnte nicht verbunden werden");
+            }
+
         }
     }
 }
