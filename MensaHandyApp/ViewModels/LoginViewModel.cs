@@ -10,28 +10,26 @@ using System.Windows.Input;
 
 namespace MensaHandyApp.ViewModels
 {
+    // Has LoginSucces.publish
+    // Has LogoutSucces.subscribe
+
     public class LoginViewModel : INotifyPropertyChanged
     {
-        /*
-        private Person person;
-        private string email;
-        */
-        private string _username;
+        private string _email;
         private string _password;
 
-        public string Username
+        public string Email
         {
-            get { return _username; }
+            get { return _email; }
             set
             {
-                if (_username != value)
+                if (_email != value)
                 {
-                    _username = value;
-                    OnPropertyChanged(nameof(Username));
+                    _email = value;
+                    OnPropertyChanged(nameof(Email));
                 }
             }
         }
-
         public string Password
         {
             get { return _password; }
@@ -60,20 +58,32 @@ namespace MensaHandyApp.ViewModels
 
         public void LogoutSuccess()
         {
-            //email = string.Empty;
-            Username = string.Empty;
-            Password = string.Empty;
+            Email = "";
+            Password = "";
         }
 
         public async Task OnLogin()
         {
-            //person = await Person.LoadObject();
-            //email = person.Email;
+            Console.WriteLine($"Email: {Email}, Password: {Password}");
 
-            MessagingCenter.Send(this, "LoginSuccess");
+            bool check = Authent();
+
+            if (check)
+            {
+                MessagingCenter.Send(this, "LoginSuccess");
+                await Shell.Current.GoToAsync($"///MainPage");
+            }
+            else
+            {
+                Email = "";
+                Password = "";
+                await Shell.Current.DisplayAlert("Anmeldung fehlgeschlagen", "Email oder Passwort Falsch", "OK");
+            }
+           
+            
+            
             //SaveObject Person
             //Alle anderen SavePerson raus
-            await Shell.Current.GoToAsync($"///MainPage");
 
             /*
             if (AuthenticateWithLDAP())
@@ -86,8 +96,18 @@ namespace MensaHandyApp.ViewModels
                 await Shell.Current.DisplayAlert("Anmeldung fehlgeschlagen", "Benutzername oder Password sind Falsch", "OK");
             }
             */
+            
         }
 
+        public bool Authent()
+        {
+
+            if ((Email != "") && (Email.Contains('@')) && (Password != ""))
+            {
+                return true;
+            }
+            return false;
+        }
 
         /*
         private bool AuthenticateWithLDAP()

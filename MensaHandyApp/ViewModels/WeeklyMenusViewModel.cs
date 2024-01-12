@@ -38,8 +38,20 @@ namespace MensaHandyApp.ViewModels
         [ObservableProperty]
         private DayMenu _dayMenu;
 
-        [ObservableProperty]
-        private decimal _priceOfMenu;
+        private bool _teacherPrice = false;
+        private bool _studentPrice = false;
+
+        public bool ShowTeacherPrice
+        {
+            get { return _teacherPrice; }
+            set { SetProperty(ref _teacherPrice, value); }
+        }
+
+        public bool ShowStudentPrice
+        {
+            get { return _studentPrice; }
+            set { SetProperty(ref _studentPrice, value); }
+        }
 
 
         private Menu selectedListItem;
@@ -82,21 +94,6 @@ namespace MensaHandyApp.ViewModels
                 });
 
                 Menu menu = selectedListItem;
-
-                //testuser@gmx.at exampel for student
-                if (person.Email == "testuser@gmx.at")
-                {
-                    PriceOfMenu = menu.Prices.PriceStudent;
-                }
-                //testuser2@gmx.at exampel for teacher
-                else if (person.Email == "testuser2@gmx.at")
-                {
-                    PriceOfMenu = menu.Prices.PriceTeacher;
-                }
-                else
-                {
-                    PriceOfMenu = 9999.99m;
-                }
 
                 MenuPerson mp = new MenuPerson()
                 {
@@ -155,6 +152,29 @@ namespace MensaHandyApp.ViewModels
                 // Fetch the weekly menus from the API
                 var response = await _client.GetFromJsonAsync<List<Menu>>(url + "api/MenuAPI/getThisWeeklyMenu");
 
+                
+                //testuser@gmx.at exampel for student
+                if (person.Email == "testuser@gmx.at")
+                {
+                    ShowTeacherPrice = false;
+                    ShowStudentPrice = true;
+                }
+                //testuser2@gmx.at exampel for teacher
+                else if (person.Email == "testuser2@gmx.at")
+                {
+                    ShowTeacherPrice = true;
+                    ShowStudentPrice = false;
+                }
+                    
+          
+
+                    }
+                }
+                
+
+                    }
+                }
+                
 
                 if (response != null ) //&& response.Count >= 15)
                 {

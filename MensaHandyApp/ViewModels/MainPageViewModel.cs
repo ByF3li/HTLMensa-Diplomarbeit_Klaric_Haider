@@ -10,6 +10,8 @@ using System.Windows.Input;
 
 namespace MensaHandyApp.ViewModels
 {
+    // Has LoginSucces.subscribe
+    // Has LogoutSucces.publish
     public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
     {
         private bool _showLoginButton = true;
@@ -49,7 +51,7 @@ namespace MensaHandyApp.ViewModels
 
         public async Task OpenLoginPage()
         {
-            await Shell.Current.GoToAsync($"///Login");
+            await Shell.Current.GoToAsync($"///Login"); 
         }
 
         public async Task LogoutPerson()

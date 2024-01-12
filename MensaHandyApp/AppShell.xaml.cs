@@ -23,7 +23,7 @@ namespace MensaHandyApp
                 ShowLoggedInViews();
             });
 
-            MessagingCenter.Subscribe<MainPage>(this, "LogoutSuccess", (sender) =>
+            MessagingCenter.Subscribe<MainPageViewModel>(this, "LogoutSuccess", (sender) =>
             {
                 ShowLoggedOutViews();
             });

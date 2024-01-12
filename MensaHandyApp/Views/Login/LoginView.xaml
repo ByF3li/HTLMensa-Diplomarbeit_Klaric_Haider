@@ -5,7 +5,7 @@
              Title="LoginView">
     
     <VerticalStackLayout>
-        <Entry Placeholder="(TSN) Benutzername" Text="{Binding Username}"/>
+        <Entry Placeholder="(TSN) Benutzername" Text="{Binding Email}"/>
         <Entry Placeholder="(TSN) Password" Text="{Binding Password}" IsPassword="True" />
         <Button Text="Login" Command="{Binding LoginCommand}" />
     </VerticalStackLayout>
