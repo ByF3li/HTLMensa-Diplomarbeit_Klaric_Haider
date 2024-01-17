@@ -11,11 +11,11 @@ using System.Windows.Input;
 
 namespace MensaHandyApp.ViewModels
 {
-    // Has LoginSucces.publish
-    // Has LogoutSucces.subscribe
-
     public class LoginViewModel : INotifyPropertyChanged
     {
+        public string url = "https://oliverserver.ddns.net/";
+        //public string url = "https://localhost:7188/";
+
         private string _email;
         private string _password;
 
@@ -65,44 +65,41 @@ namespace MensaHandyApp.ViewModels
 
         public async Task OnLogin()
         {
-            Console.WriteLine($"Email: {Email}, Password: {Password}");
-
-            bool check = await AuthentAsync();
-
-            if (check)
+            if(Person.LoadObject() != null)
             {
                 MessagingCenter.Send(this, "LoginSuccess");
                 await Shell.Current.GoToAsync($"///MainPage");
             }
             else
             {
-                Email = "";
-                Password = "";
-                await Shell.Current.DisplayAlert("Anmeldung fehlgeschlagen", "Email oder Passwort Falsch", "OK");
-            }
-           
-            
-            
-            //SaveObject Person
-            //Alle anderen SavePerson raus
+                bool check = await AuthentAsync();
 
-            /*
-            if (AuthenticateWithLDAP())
-            {
-                MessagingCenter.Send(this, "LoginSuccess");
-                await Shell.Current.GoToAsync($"///MainPage");
+                if (check)
+                {
+                    Person person = new Person()
+                    {
+                        Email = Email,
+                        FirstName = "",
+                        LastName = "",
+                        IsTeacher = true,
+                    };
+                    person.SaveObject();
+
+                    MessagingCenter.Send(this, "LoginSuccess");
+                    await Shell.Current.GoToAsync($"///MainPage");
+                }
+                else
+                {
+                    Email = "";
+                    Password = "";
+                    await Shell.Current.DisplayAlert("Anmeldung fehlgeschlagen", "Email oder Passwort Falsch", "OK");
+                }
             }
-            else
-            {
-                await Shell.Current.DisplayAlert("Anmeldung fehlgeschlagen", "Benutzername oder Password sind Falsch", "OK");
-            }
-            */
             
         }
 
         public async Task<bool> AuthentAsync()
         {
-            string url = "https://oliverserver.ddns.net/";
 
             if ((Email != "") && (Password != ""))
             {
@@ -129,33 +126,13 @@ namespace MensaHandyApp.ViewModels
             return false;
         }
 
-        /*
-        private bool AuthenticateWithLDAP()
-        {
-            
-            try
-            {
-                // Replace the LDAP server details with your own
-                using (var connection = new LdapConnection { SecureSocketLayer = false })
-                {
-                    connection.Connect("your-ldap-server", ldapport);
-                    connection.Bind($"cn={Username},ou=users,dc=example,dc=com", Password);
-                    return connection.Bound;
-                }
-            }
-            catch (LdapException)
-            {
-                return false;
-            }
-            
-        }
-        */
-
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+       
         public HttpClient Connect()
         {
             if (url == "https://localhost:7188/")

@@ -54,7 +54,7 @@ namespace MensaHandyApp.ViewModels
 
             person.MenuPersons.Clear();
             person.MenuPersons.AddRange(mps);
-           // person.SaveObject();
+
             Shoppingcart = mps.Where(mp => mp.InShoppingcart).ToList();
 
             foreach(MenuPerson mp in Shoppingcart)

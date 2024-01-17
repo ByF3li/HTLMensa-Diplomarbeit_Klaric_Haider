@@ -104,7 +104,6 @@ namespace MensaHandyApp.ViewModels
                 };
                 mp.Menu.MenuPersons.Clear();
                 mps.Add(mp);
-                //person.SaveObject();
                 List<MenuPerson> shoppingcart = mps.Where(mp => mp.InShoppingcart).ToList();
 
                 Console.WriteLine(await _client.PostAsJsonAsync(url + "api/MenuPersonAPI/saveOrder", shoppingcart, options));
@@ -122,28 +121,15 @@ namespace MensaHandyApp.ViewModels
             }
         }
 
-        /*
-        private async void PerformNavigation(int? GetMenuId)
-        {
-            if (GetMenuId != null)
-            {
-                var navigationParameter = new Dictionary<string, object> { { "MenuId", GetMenuId } };
-                SelectedListItem = null;
-                await Shell.Current.GoToAsync($"///Warenkorb", navigationParameter);
-            }
-            SelectedListItem = null;
-        }
-        */
-
         public WeeklyMenusViewModel()
         {
-            _ = await Setup();
+            _ = Setup();
             ShowMenu();
         }
 
-        public async void Setup()
+        public async Task Setup()
         {
-            LoadOb
+            person = await Person.LoadObject();
         }
 
         private async Task ShowMenu()

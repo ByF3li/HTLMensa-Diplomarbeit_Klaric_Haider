@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,13 +14,27 @@ namespace MensaHandyApp
 {
     public partial class AppShellViewModel : ObservableObject, INotifyPropertyChanged
     {
-        //private Person person;
+        public Person user;
 
         private bool _isHomepageVisible = true;
         private bool _isWeeklyMenusVisible = false;
         private bool _isWarenkorbVisible = false;
         private bool _isOrderHistoryVisible = false;
         private bool _isLoginVisible = true;
+
+        private string _initials;
+        public string Initials
+        {
+            get { return _initials; }
+            set
+            {
+                if (_initials != value)
+                {
+                    _initials = value;
+                    OnPropertyChanged(nameof(Initials));
+                }
+            }
+        }
 
         public bool IsHomepageVisible
         {
@@ -90,29 +105,31 @@ namespace MensaHandyApp
 
         public AppShellViewModel()
         {
-            //_ = Setup();
+            _ = Setup();
+
 
             ShowUserCommand = new AsyncRelayCommand(ShowUser);
 
-            /*
             MessagingCenter.Subscribe<LoginViewModel>(this, "LoginSuccess", (sender) =>
             {
-                //person.Email = email;
+                char firstInitial = user.FirstName[0];
+                char lastInitial = user.LastName[0];
+
+                Initials = $"{firstInitial}.{lastInitial}.";
             });
 
             MessagingCenter.Subscribe<MainPageViewModel>(this, "LogoutSuccess", (sender) =>
             {
-                //person.Email = "";         
+                Initials = "";
             });
-            */
         }
 
-        /*
+
         public async Task Setup()
         {
-            person = await Person.LoadObject();
+            user = await Person.LoadObject();
         }
-        */
+        
 
         public async Task ShowUser()
         {

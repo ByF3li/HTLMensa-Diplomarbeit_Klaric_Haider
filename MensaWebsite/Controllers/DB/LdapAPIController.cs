@@ -36,8 +36,8 @@ namespace MensaWebsite.Controllers.DB
                 bool validate = await AsyncValidateUser(connection, username, password);
                 if (validate)
                 {
-                    SearchResultEntryCollection isTeacher = AsyncSearchUser(connection, baseDnLehrer, username);
-                    SearchResultEntryCollection isStudent = AsyncSearchUser(connection, baseDnSchüler, username);
+                    SearchResultEntryCollection isTeacher = SearchUser(connection, baseDnLehrer, username);
+                    SearchResultEntryCollection isStudent = SearchUser(connection, baseDnSchüler, username);
 
                     if (isTeacher != null)
                     {
@@ -111,7 +111,7 @@ namespace MensaWebsite.Controllers.DB
             conn.Dispose();
         }
 
-        private SearchResultEntryCollection AsyncSearchUser(LdapConnection ldapConnection, string baseDn, string username)
+        private SearchResultEntryCollection SearchUser(LdapConnection ldapConnection, string baseDn, string username)
         {
             // Create an LDAP search request
             var searchRequest = new SearchRequest(baseDn, $"(&(objectClass=person)(sAMAccountName={username}))", SearchScope.Subtree, null);
