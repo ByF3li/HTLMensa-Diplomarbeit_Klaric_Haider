@@ -7,13 +7,6 @@ namespace MensaHandyApp
     {
         public static MauiApp CreateMauiApp()
         {
-            Person person = new Person()
-            {
-                Email = "testuser@gmx.at",
-                Password = "hallo123"
-            };
-            person.SaveObject();
-            
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()

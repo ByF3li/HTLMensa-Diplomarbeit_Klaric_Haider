@@ -15,10 +15,12 @@ namespace MensaAppKlassenBibliothek
     {
         [Key]
         public string Email { get; set; }
-        public string Password { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public bool IsTeacher { get; set; }
+
 
         public List<MenuPerson> MenuPersons { get; set; } = new List<MenuPerson>() { };
-
 
         public async void SaveObject()
         {
@@ -30,7 +32,7 @@ namespace MensaAppKlassenBibliothek
             string serializedObject = JsonSerializer.Serialize(this, options);
 
             // Store the serialized object in Preferences
-            await SecureStorage.SetAsync("userEmail", serializedObject);
+            await SecureStorage.SetAsync("user", serializedObject);
         }
 
         public async static Task<Person> LoadObject()
@@ -38,7 +40,7 @@ namespace MensaAppKlassenBibliothek
             // Retrieve the serialized object from Preferences
             
                 // Deserialize the string back to the object
-            string serializedObject = await SecureStorage.GetAsync("userEmail");
+            string serializedObject = await SecureStorage.GetAsync("user");
             JsonSerializerOptions options = new JsonSerializerOptions()
             {
                 ReferenceHandler = ReferenceHandler.IgnoreCycles

@@ -7,7 +7,6 @@ using System.Text.Json;
 using System.Globalization;
 using Microsoft.VisualBasic;
 using Microsoft.AspNetCore.Connections.Features;
-using MensaWebsite.Migrations;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace MensaWebsite.Controllers

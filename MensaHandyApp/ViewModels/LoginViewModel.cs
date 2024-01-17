@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Java.Net;
 using MensaAppKlassenBibliothek;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,7 @@ namespace MensaHandyApp.ViewModels
         {
             Console.WriteLine($"Email: {Email}, Password: {Password}");
 
-            bool check = Authent();
+            bool check = await AuthentAsync();
 
             if (check)
             {
@@ -99,12 +100,31 @@ namespace MensaHandyApp.ViewModels
             
         }
 
-        public bool Authent()
+        public async Task<bool> AuthentAsync()
         {
+            string url = "https://oliverserver.ddns.net/";
 
-            if ((Email != "") && (Email.Contains('@')) && (Password != ""))
+            if ((Email != "") && (Password != ""))
             {
-                return true;
+                var _client = Connect();
+
+                var requestUri = $"{url}api/LdapAPI/getLDAP?username={Uri.EscapeDataString(Email)}" + 
+                                        $"&password={Uri.EscapeDataString(Password)}";
+                                
+                
+                var requestMessage = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri(requestUri),
+                };
+                using var response = await _client.SendAsync(requestMessage);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+
             }
             return false;
         }
@@ -132,10 +152,36 @@ namespace MensaHandyApp.ViewModels
         */
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public HttpClient Connect()
+        {
+            if (url == "https://localhost:7188/")
+            {
+                HttpClient _localhost_client = new HttpClient();
+                return _localhost_client;
+            }
+            else if (url == "https://oliverserver.ddns.net/")
+            {
+                var handler = new HttpClientHandler();
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.ServerCertificateCustomValidationCallback =
+                    (httpRequestMessage, cert, cetChain, policyErrors) =>
+                    {
+                        return true;
+                    };
+
+                var _oliverserver_client = new HttpClient(handler);
+
+                return _oliverserver_client;
+            }
+            else
+            {
+                throw new Exception("Konnte nicht verbunden werden");
+            }
+
         }
     }
 }

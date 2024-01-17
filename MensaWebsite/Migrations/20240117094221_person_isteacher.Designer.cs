@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MensaWebsite.Migrations
 {
     [DbContext(typeof(MenuContext))]
-    [Migration("20240102193215_price")]
-    partial class price
+    [Migration("20240117094221_person_isteacher")]
+    partial class person_isteacher
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,7 +88,14 @@ namespace MensaWebsite.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsTeacher")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("longtext");
 

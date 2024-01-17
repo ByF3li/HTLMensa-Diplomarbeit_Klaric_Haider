@@ -21,11 +21,7 @@ namespace MensaHandyApp.ViewModels
         public string url = "https://oliverserver.ddns.net/";
         //public string url = "https://localhost:7188/";
 
-        private Person person  = new Person()
-        {
-            Email = "testuser@gmx.at",
-            Password = "hallo123"
-        };
+        private Person person;
 
         JsonSerializerOptions options = new JsonSerializerOptions()
         {
@@ -85,10 +81,11 @@ namespace MensaHandyApp.ViewModels
 
                 var _client = Connect();
                 List<MenuPerson> mps = await _client.GetFromJsonAsync<List<MenuPerson>>(url + "api/MenuPersonAPI/getAllOrderByUserEmail?mail=" + person.Email);
-                
+
 
                 // um Bug zu lösen, wegen 400 response
-                mps.ForEach(mp => {
+                mps.ForEach(mp =>
+                {
                     mp.Person = person;
                     mp.Menu.MenuPersons.Clear();
                 });
@@ -109,7 +106,7 @@ namespace MensaHandyApp.ViewModels
                 mps.Add(mp);
                 //person.SaveObject();
                 List<MenuPerson> shoppingcart = mps.Where(mp => mp.InShoppingcart).ToList();
-                
+
                 Console.WriteLine(await _client.PostAsJsonAsync(url + "api/MenuPersonAPI/saveOrder", shoppingcart, options));
 
 
@@ -140,7 +137,13 @@ namespace MensaHandyApp.ViewModels
 
         public WeeklyMenusViewModel()
         {
+            _ = await Setup();
             ShowMenu();
+        }
+
+        public async void Setup()
+        {
+            LoadOb
         }
 
         private async Task ShowMenu()
@@ -152,31 +155,20 @@ namespace MensaHandyApp.ViewModels
                 // Fetch the weekly menus from the API
                 var response = await _client.GetFromJsonAsync<List<Menu>>(url + "api/MenuAPI/getThisWeeklyMenu");
 
-                
-                //testuser@gmx.at exampel for student
-                if (person.Email == "testuser@gmx.at")
-                {
-                    ShowTeacherPrice = false;
-                    ShowStudentPrice = true;
-                }
-                //testuser2@gmx.at exampel for teacher
-                else if (person.Email == "testuser2@gmx.at")
+
+                if (person.IsTeacher)
                 {
                     ShowTeacherPrice = true;
                     ShowStudentPrice = false;
                 }
-                    
-          
-
-                    }
+                else if (!person.IsTeacher)
+                {
+                    ShowTeacherPrice = true;
+                    ShowStudentPrice = false;
                 }
-                
 
-                    }
-                }
-                
 
-                if (response != null ) //&& response.Count >= 15)
+                if (response != null) //&& response.Count >= 15)
                 {
                     // Create DayMenus for each day of the week
                     DateOnly resultDateOnly = ReturnThisWeek();
@@ -186,11 +178,11 @@ namespace MensaHandyApp.ViewModels
                         {
                             Date = resultDateOnly.AddDays(i - 3),
                             Menus = new List<Menu>
-                            {
-                                response[i * 3],
-                                response[i * 3 + 1],
-                                response[i * 3 + 2]
-                            }
+                        {
+                            response[i * 3],
+                            response[i * 3 + 1],
+                            response[i * 3 + 2]
+                        }
                         };
                         DayMenus.Add(dayMenu);
                     }
@@ -201,33 +193,32 @@ namespace MensaHandyApp.ViewModels
                     {
                         Date = DateOnly.MaxValue,
                         Menus = new List<Menu>
+                    {
+                        new Menu
                         {
-                            new Menu
-                            {
-                                MenuId = 1,
-                                Starter = "Fehler",
-                                MainCourse = "Fehler",
-                                Date = DateOnly.MaxValue
-                            },
-                            new Menu
-                            {
-                                MenuId = 2,
-                                Starter = "Fehler",
-                                MainCourse = "Fehler",
-                                Date = DateOnly.MaxValue
-                            },
-                            new Menu
-                            {
-                                MenuId = 3,
-                                Starter = "Fehler",
-                                MainCourse = "Fehler",
-                                Date = DateOnly.MaxValue
-                            }
+                            MenuId = 1,
+                            Starter = "Fehler",
+                            MainCourse = "Fehler",
+                            Date = DateOnly.MaxValue
+                        },
+                        new Menu
+                        {
+                            MenuId = 2,
+                            Starter = "Fehler",
+                            MainCourse = "Fehler",
+                            Date = DateOnly.MaxValue
+                        },
+                        new Menu
+                        {
+                            MenuId = 3,
+                            Starter = "Fehler",
+                            MainCourse = "Fehler",
+                            Date = DateOnly.MaxValue
                         }
+                    }
                     };
                     DayMenus.Add(testFailed);
                 }
-
             }
             catch (HttpRequestException ex)
             {
@@ -271,7 +262,7 @@ namespace MensaHandyApp.ViewModels
 
             return resultDateOnly;
         }
-        
+
 
         //Pos wär eigentlich richtig aber wird nicht in view übernommen 
         public async Task GetCarusellPositionAsync()
@@ -318,7 +309,7 @@ namespace MensaHandyApp.ViewModels
 
         public HttpClient Connect()
         {
-            if(url == "https://localhost:7188/")
+            if (url == "https://localhost:7188/")
             {
                 HttpClient _localhost_client = new HttpClient();
                 return _localhost_client;
@@ -337,9 +328,9 @@ namespace MensaHandyApp.ViewModels
 
                 return _oliverserver_client;
             }
-            else 
-            { 
-                throw new Exception("Konnte nicht verbunden werden"); 
+            else
+            {
+                throw new Exception("Konnte nicht verbunden werden");
             }
 
         }
