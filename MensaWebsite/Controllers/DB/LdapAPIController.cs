@@ -10,11 +10,11 @@ namespace MensaWebsite.Controllers.DB
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MenuAPIController : ControllerBase
+    public class LdapAPIController : ControllerBase
     {
         private MenuContext _context = new MenuContext();
 
-        public MenuAPIController(MenuContext context)
+        public LdapAPIController(MenuContext context)
         {
             this._context = context;
         }

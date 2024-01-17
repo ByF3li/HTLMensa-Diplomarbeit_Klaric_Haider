@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Java.Net;
 using MensaAppKlassenBibliothek;
 using System;
 using System.Collections.Generic;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using UIKit;
 
 namespace MensaHandyApp.ViewModels
 {
@@ -65,6 +65,7 @@ namespace MensaHandyApp.ViewModels
 
         public async Task OnLogin()
         {
+            /*
             if(Person.LoadObject() != null)
             {
                 MessagingCenter.Send(this, "LoginSuccess");
@@ -72,10 +73,13 @@ namespace MensaHandyApp.ViewModels
             }
             else
             {
-                bool check = await AuthentAsync();
+            */
+                HttpResponseMessage check = await AuthentAsync();
 
-                if (check)
+                if (check != null)
                 {
+                    Console.WriteLine(check.Content);
+
                     Person person = new Person()
                     {
                         Email = Email,
@@ -94,11 +98,11 @@ namespace MensaHandyApp.ViewModels
                     Password = "";
                     await Shell.Current.DisplayAlert("Anmeldung fehlgeschlagen", "Email oder Passwort Falsch", "OK");
                 }
-            }
+            //}
             
         }
 
-        public async Task<bool> AuthentAsync()
+        public async Task<HttpResponseMessage> AuthentAsync()
         {
 
             if ((Email != "") && (Password != ""))
@@ -118,12 +122,12 @@ namespace MensaHandyApp.ViewModels
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return true;
+                    return response;
                 }
-                return false;
+                return null;
 
             }
-            return false;
+            return null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -159,6 +163,12 @@ namespace MensaHandyApp.ViewModels
                 throw new Exception("Konnte nicht verbunden werden");
             }
 
+        }
+
+        public static string Base64Decode(string base64)
+        {
+            var base64Bytes = System.Convert.FromBase64String(base64);
+            return System.Text.Encoding.UTF8.GetString(base64Bytes);
         }
     }
 }
