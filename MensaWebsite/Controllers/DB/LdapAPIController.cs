@@ -36,16 +36,16 @@ namespace MensaWebsite.Controllers.DB
                 bool validate = await AsyncValidateUser(connection, username, password);
                 if (validate)
                 {
-                    bool isTeacher = await AsyncSearchUser(connection, baseDnLehrer, username);
-                    bool isStudent = await AsyncSearchUser(connection, baseDnSchüler, username);
+                    SearchResultEntryCollection isTeacher = AsyncSearchUser(connection, baseDnLehrer, username);
+                    SearchResultEntryCollection isStudent = AsyncSearchUser(connection, baseDnSchüler, username);
 
-                    if (isTeacher)
+                    if (isTeacher != null)
                     {
-                        Console.WriteLine("Teacher");
+                        return new JsonResult(isTeacher);
                     }
-                    else if (isStudent)
+                    else if (isStudent != null)
                     {
-                        Console.WriteLine("Student");
+                        return new JsonResult(isStudent);
                     }
                     else
                     {
@@ -111,7 +111,7 @@ namespace MensaWebsite.Controllers.DB
             conn.Dispose();
         }
 
-        private async Task<IActionResult> AsyncSearchUser(LdapConnection ldapConnection, string baseDn, string username)
+        private SearchResultEntryCollection AsyncSearchUser(LdapConnection ldapConnection, string baseDn, string username)
         {
             // Create an LDAP search request
             var searchRequest = new SearchRequest(baseDn, $"(&(objectClass=person)(sAMAccountName={username}))", SearchScope.Subtree, null);
@@ -128,17 +128,17 @@ namespace MensaWebsite.Controllers.DB
                 }
                 if (searchResponse.Entries.Count == 1)
                 {
-                    return new JsonResult(searchResponse.Entries);
+                    return searchResponse.Entries;
                 }
                 else
                 {
-                    return new JsonResult(false);
+                    return null; 
                 }
             }
             catch (LdapException e)
             {
                 Console.WriteLine(e);
-                return new JsonResult(false);
+                return null; 
             }
         }
     }
