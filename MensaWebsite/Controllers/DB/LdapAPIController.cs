@@ -22,7 +22,7 @@ namespace MensaWebsite.Controllers.DB
         [HttpGet("getLDAP")]
         public async Task<IActionResult> AsyncGetLDAP(string username, string password)
         {
-            string ldapServer = "10.10.80.42:389";
+            string ldapServer = "10.10.80.42";
             string ldap_password = "2RFCdoJEQc!2vuWD=s#E";
             string baseDnLehrer = "OU=701417_Lehrer,OU=701417,OU=CAMPUS,DC=SYNCHTLINN,DC=local";
             string baseDnSchüler = "OU=701417_Schueler,OU=701417,OU=CAMPUS,DC=SYNCHTLINN,DC=local";
@@ -73,33 +73,38 @@ namespace MensaWebsite.Controllers.DB
             {
                 // Set up credentials and LDAP directory identifier
                 var credentials = new NetworkCredential("MensaLDAP", ldap_password, "SYNCHTLINN");
-                var serverId = new LdapDirectoryIdentifier(ldapServer);
-
+                var serverId = new LdapDirectoryIdentifier(ldapServer, 389, false, false);
                 ldapConnection = new LdapConnection(serverId, credentials);
-                ldapConnection.Bind();
+                ldapConnection.SessionOptions.ProtocolVersion = 3;
+                ldapConnection.AuthType = AuthType.Basic;
+                ldapConnection.Bind(credentials);
                 return ldapConnection;
 
             }
             catch (LdapException e)
             {
                 Console.WriteLine(e);
+                return null;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                return null;
             }
             return ldapConnection;
         }
 
         private async Task<bool> AsyncValidateUser(LdapConnection ldapConnection, string username, string password)
         {
-            var credentials = new NetworkCredential(username, password);
-            var serverId = new LdapDirectoryIdentifier(ldapConnection.SessionOptions.HostName);
+            var credentials = new NetworkCredential(username, password, "SYNCHTLINN");
+            var serverId = new LdapDirectoryIdentifier("10.10.80.42", 389, false, false);
 
             var conn = new LdapConnection(serverId, credentials);
+            conn.SessionOptions.ProtocolVersion = 3;
+            conn.AuthType = AuthType.Basic;
             try
             {
-                conn.Bind();
+                conn.Bind(credentials);
                 return true;
             }
             catch (Exception e)
