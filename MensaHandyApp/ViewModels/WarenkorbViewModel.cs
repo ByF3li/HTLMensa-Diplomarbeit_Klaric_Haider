@@ -57,15 +57,15 @@ namespace MensaHandyApp.ViewModels
 
             Shoppingcart = mps.Where(mp => mp.InShoppingcart).ToList();
 
+            person = await Person.LoadObject();
+
             foreach(MenuPerson mp in Shoppingcart)
             {
-                //testuser@gmx.at exampel for student
-                if (person.Email == "testuser@gmx.at")
+                if (!person.IsTeacher)
                 {
                     PriceOfMenu = mp.Menu.Prices.PriceStudent;
                 }
-                //testuser2@gmx.at exampel for teacher
-                else if (person.Email == "testuser2@gmx.at")
+                else if (person.IsTeacher)
                 {
                     PriceOfMenu = mp.Menu.Prices.PriceTeacher;
                 }

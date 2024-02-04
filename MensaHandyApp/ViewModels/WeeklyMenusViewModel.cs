@@ -80,6 +80,9 @@ namespace MensaHandyApp.ViewModels
                 await Shell.Current.DisplayAlert("Ja", "Das Menü wird hinzugefügt", "OK");
 
                 var _client = Connect();
+
+                person = await Person.LoadObject();
+
                 List<MenuPerson> mps = await _client.GetFromJsonAsync<List<MenuPerson>>(url + "api/MenuPersonAPI/getAllOrderByUserEmail?mail=" + person.Email);
 
 
@@ -149,8 +152,8 @@ namespace MensaHandyApp.ViewModels
                 }
                 else if (!person.IsTeacher)
                 {
-                    ShowTeacherPrice = true;
-                    ShowStudentPrice = false;
+                    ShowTeacherPrice = false;
+                    ShowStudentPrice = true;
                 }
 
 

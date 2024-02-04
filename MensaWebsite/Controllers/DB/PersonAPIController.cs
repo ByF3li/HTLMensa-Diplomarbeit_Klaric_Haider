@@ -35,5 +35,13 @@ namespace MensaWebsite.Controllers
         {
             return new JsonResult((await this._context.MenuPersons.Where(mp => mp.Person.Email.Equals(email) && mp.InShoppingcart).ToListAsync()), options);
         }
+
+        [HttpPost("addPerson")]
+        public async Task<IActionResult> AsyncAddPerson(Person p)
+        {
+            this._context.Persons.Add(p);
+            return new JsonResult((await this._context.SaveChangesAsync()) == 1, options);
+        }
+
     }
 }

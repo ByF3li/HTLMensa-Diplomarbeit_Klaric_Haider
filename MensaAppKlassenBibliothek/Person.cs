@@ -22,7 +22,7 @@ namespace MensaAppKlassenBibliothek
 
         public List<MenuPerson> MenuPersons { get; set; } = new List<MenuPerson>() { };
 
-        public async void SaveObject()
+        public async Task SaveObject()
         {
             JsonSerializerOptions options = new JsonSerializerOptions()
             {
@@ -48,6 +48,11 @@ namespace MensaAppKlassenBibliothek
             return JsonSerializer.Deserialize<Person>(serializedObject, options);
             
 
+        }
+
+        public async static Task DeleteObject()
+        {
+            SecureStorage.Remove("user");
         }
     }
 }

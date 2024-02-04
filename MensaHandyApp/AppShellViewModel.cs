@@ -110,8 +110,10 @@ namespace MensaHandyApp
 
             ShowUserCommand = new AsyncRelayCommand(ShowUser);
 
-            MessagingCenter.Subscribe<LoginViewModel>(this, "LoginSuccess", (sender) =>
+            MessagingCenter.Subscribe<LoginViewModel>(this, "LoginSuccess", async(sender) =>
             {
+                user = await Person.LoadObject();
+
                 char firstInitial = user.FirstName[0];
                 char lastInitial = user.LastName[0];
 

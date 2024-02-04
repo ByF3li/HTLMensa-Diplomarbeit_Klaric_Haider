@@ -5,7 +5,7 @@
              Title="WarenkorbView">
     <ScrollView>
         <VerticalStackLayout>
-            <CollectionView ItemsSource="{Binding Shoppingcart}" SelectionMode="Single" SelectedItem="{Binding SelectedListItem}">
+            <CollectionView x:Name="Menues" ItemsSource="{Binding Shoppingcart}" SelectionMode="Single" SelectedItem="{Binding SelectedListItem}">
 
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Span="1" Orientation="Vertical"/>
@@ -17,7 +17,7 @@
                             <Grid RowDefinitions="2*, 2*, 2*, 2*, 2*" ColumnDefinitions="1*, 1*"  Margin="5">
 
                                 <Label Text="Menü Nummer:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
-                                <Label Text="{Binding Prices.PriceId}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label Text="{Binding Menu.Prices.PriceId}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
 
                                 <Label Text="Vorspeiße:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
                                 <Label Text="{Binding Menu.Starter}" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
@@ -26,8 +26,8 @@
                                 <Label Text="{Binding Menu.MainCourse}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 5"  FontSize="10"/>
 
                                 <Label Text="Preis des Menüs:" HorizontalOptions="Start" Grid.Row="3" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10" />
-                                <Label Text="{Binding PriceOfMenu}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
-                                
+                                <Label Text="{Binding Path=BindingContext.PriceOfMenu, Source={Reference Menues}}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
                                 <Label Text="Allergene:" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"></Label>
                                 <Label Text="(ACG)" HorizontalOptions="Start" Grid.Row="4" Grid.Column="1"  FontSize="10" Margin="0, 0, 0, 5"></Label>
                             </Grid>

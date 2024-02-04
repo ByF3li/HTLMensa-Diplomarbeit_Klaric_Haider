@@ -5,6 +5,7 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.DirectoryServices.Protocols;
+using MensaAppKlassenBibliothek;
 
 namespace MensaWebsite.Controllers.DB
 {
@@ -41,11 +42,27 @@ namespace MensaWebsite.Controllers.DB
 
                     if (isTeacher != null)
                     {
-                        return new JsonResult(isTeacher);
+                        Person p = new Person()
+                        {
+                            IsTeacher = true,
+                            Email = "",
+                            FirstName = (string)isTeacher[0].Attributes["givenName"][0],
+                            LastName = (string)isTeacher[0].Attributes["sn"][0]
+                        };
+
+                        return new JsonResult(p);
                     }
                     else if (isStudent != null)
                     {
-                        return new JsonResult(isStudent);
+                        Person p = new Person()
+                        {
+                            IsTeacher = false,
+                            Email = "",
+                            FirstName = (string)isStudent[0].Attributes["givenName"][0],
+                            LastName = (string)isStudent[0].Attributes["sn"][0]
+                        };
+
+                        return new JsonResult(p);
                     }
                     else
                     {

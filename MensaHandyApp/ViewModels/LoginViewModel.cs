@@ -3,11 +3,13 @@ using MensaAppKlassenBibliothek;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.DirectoryServices.Protocols;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using UIKit;
 
 namespace MensaHandyApp.ViewModels
 {
@@ -61,48 +63,36 @@ namespace MensaHandyApp.ViewModels
         {
             Email = "";
             Password = "";
+
+            Person.DeleteObject();
         }
 
         public async Task OnLogin()
         {
-            /*
-            if(Person.LoadObject() != null)
+            Person check = await AuthentAsync();
+            
+            HttpClient _client = Connect();
+
+            if (check != null)
             {
+                check.Email = Email;
+                var response = await _client.PostAsJsonAsync<Person>($"{url}api/PersonAPI/addPerson", check);
+                await check.SaveObject();
+
                 MessagingCenter.Send(this, "LoginSuccess");
                 await Shell.Current.GoToAsync($"///MainPage");
             }
             else
             {
-            */
-                HttpResponseMessage check = await AuthentAsync();
-
-                if (check != null)
-                {
-                    Console.WriteLine(check.Content);
-
-                    Person person = new Person()
-                    {
-                        Email = Email,
-                        FirstName = "",
-                        LastName = "",
-                        IsTeacher = true,
-                    };
-                    person.SaveObject();
-
-                    MessagingCenter.Send(this, "LoginSuccess");
-                    await Shell.Current.GoToAsync($"///MainPage");
-                }
-                else
-                {
-                    Email = "";
-                    Password = "";
-                    await Shell.Current.DisplayAlert("Anmeldung fehlgeschlagen", "Email oder Passwort Falsch", "OK");
-                }
-            //}
+                Email = "";
+                Password = "";
+                await Shell.Current.DisplayAlert("Anmeldung fehlgeschlagen", "Email oder Passwort Falsch", "OK");
+            }
+            
             
         }
 
-        public async Task<HttpResponseMessage> AuthentAsync()
+        public async Task<Person> AuthentAsync()
         {
 
             if ((Email != "") && (Password != ""))
@@ -118,14 +108,11 @@ namespace MensaHandyApp.ViewModels
                     Method = HttpMethod.Get,
                     RequestUri = new Uri(requestUri),
                 };
-                using var response = await _client.SendAsync(requestMessage);
+                var response = await _client.GetFromJsonAsync<Person>(requestUri);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return response;
-                }
-                return null;
+                Password = "";
 
+                return response;
             }
             return null;
         }

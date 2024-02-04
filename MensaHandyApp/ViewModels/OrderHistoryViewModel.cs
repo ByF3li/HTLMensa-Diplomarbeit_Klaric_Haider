@@ -37,6 +37,8 @@ namespace MensaHandyApp.ViewModels
             var _client = Connect();
             try
             {
+                person = await Person.LoadObject();
+
                 List<MenuPerson> allOrders = new List<MenuPerson>();
                 allOrders = await _client.GetFromJsonAsync<List<MenuPerson>>(url + "api/MenuPersonAPI/getAllOrderByUserEmail?mail=" + person.Email);
 
