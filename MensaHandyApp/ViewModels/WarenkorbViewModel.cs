@@ -22,7 +22,19 @@ namespace MensaHandyApp.ViewModels
         List<MenuPerson> _shoppingcart = new List<MenuPerson>();
 
         [ObservableProperty]
-        private decimal _priceOfMenu;
+        private string _shoppingCartPrice;
+
+        [ObservableProperty]
+        private string _productsInShoppingCart;
+
+
+        [ObservableProperty]
+        private bool _isTeacher = false;
+
+        [ObservableProperty]
+        private bool _isStudent = false;
+
+        private decimal ShoppingCartPriceDecimal;
 
         private MenuPerson selectedListItem;
         public MenuPerson SelectedListItem
@@ -63,17 +75,19 @@ namespace MensaHandyApp.ViewModels
             {
                 if (!person.IsTeacher)
                 {
-                    PriceOfMenu = mp.Menu.Prices.PriceStudent;
+                    IsTeacher = false;
+                    IsStudent = true;
+                    ShoppingCartPriceDecimal = ShoppingCartPriceDecimal + mp.Menu.Prices.PriceStudent;
                 }
                 else if (person.IsTeacher)
                 {
-                    PriceOfMenu = mp.Menu.Prices.PriceTeacher;
+                    IsTeacher = true;
+                    IsStudent = false;
+                    ShoppingCartPriceDecimal = ShoppingCartPriceDecimal + mp.Menu.Prices.PriceTeacher;
                 }
-                else
-                {
-                    PriceOfMenu = 9999.99m;
-                }
-            } 
+            }
+            ShoppingCartPrice = "" + ShoppingCartPriceDecimal;
+            ProductsInShoppingCart = "" + Shoppingcart.Count();
         }
         
         private async void SendAlert(int menuId)

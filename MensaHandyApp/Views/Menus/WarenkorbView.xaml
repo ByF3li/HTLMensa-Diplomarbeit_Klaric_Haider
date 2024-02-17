@@ -26,7 +26,8 @@
                                 <Label Text="{Binding Menu.MainCourse}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 5"  FontSize="10"/>
 
                                 <Label Text="Preis des Menüs:" HorizontalOptions="Start" Grid.Row="3" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10" />
-                                <Label Text="{Binding Path=BindingContext.PriceOfMenu, Source={Reference Menues}}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label IsVisible="{Binding Path=BindingContext.IsTeacher, Source={Reference Menues}}" Text="{Binding Menu.Prices.PriceTeacher}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+                                <Label IsVisible="{Binding Path=BindingContext.IsStudent, Source={Reference Menues}}" Text="{Binding Menu.Prices.PriceStudent}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
 
                                 <Label Text="Allergene:" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"></Label>
                                 <Label Text="(ACG)" HorizontalOptions="Start" Grid.Row="4" Grid.Column="1"  FontSize="10" Margin="0, 0, 0, 5"></Label>
@@ -37,7 +38,14 @@
             </CollectionView>
             <Label Text="A=GLUTENHALTIGES GETREIDE; B=KREBSTIERE; C=EIER; D=FISCH; E=ERDNÜSSE; F=SOJA; G=MILCH UND LACTOSE; H=SCHALENFRÜCHTE (NÜSSE); L=SELLERIE; M=SENF; N=SESAM; O=SULFITE; P=LUPINIEN; R=WEICHTIERE" Padding="10" FontSize="10" TextColor="White"></Label>
 
-            <Button Command="{Binding CmdPay}" Text="Bezahlen" HorizontalOptions="Center" Margin="20" FontSize="Large" TextColor="White" BackgroundColor="Blue"></Button>
+            <Grid RowDefinitions="2*, 2*, 2*" ColumnDefinitions="1*, 1*"  Margin="5">
+                <Label Text="Gesamtpreis:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0"  FontSize="20"/>
+                <Label Text="{Binding ShoppingCartPrice, StringFormat='{}{0} €'}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" FontSize="20"/>
+                <Label Text="Produkten im Warenkorb:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0"  FontSize="20"/>
+                <Label Text="{Binding ProductsInShoppingCart}" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1"   FontSize="20"/>
+            </Grid>
+            <Button Command="{Binding CmdPay}" Text="Bezahlen" HorizontalOptions="Center" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,20" FontSize="Large" TextColor="White" BackgroundColor="Blue"></Button>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
