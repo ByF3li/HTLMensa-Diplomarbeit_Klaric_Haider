@@ -3,25 +3,16 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:15402",
-      "sslPort": 44315
+      "applicationUrl": "http://localhost:37165",
+      "sslPort": 44342
     }
   },
   "profiles": {
-    "http": {
+    "PayPalWebsiteTeil": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5262",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "https": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "https://0.0.0.0:7188;http://0.0.0.0:5262",
+      "applicationUrl": "https://localhost:7220;http://localhost:5187",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
