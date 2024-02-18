@@ -6,7 +6,8 @@
     xmlns:views="clr-namespace:MensaHandyApp.Views"
     xmlns:viewsMenu="clr-namespace:MensaHandyApp.Views.Menus"
     xmlns:viewsOrder="clr-namespace:MensaHandyApp.Views.Orders"
-    xmlns:viewsLogin="clr-namespace:MensaHandyApp.Views.Login">
+    xmlns:viewsLogin="clr-namespace:MensaHandyApp.Views.Login"
+    xmlns:viewsPayment="clr-namespace:MensaHandyApp.Views.Payment">
 
     <Shell.ToolbarItems>
         <ToolbarItem Text="{Binding Initials}"></ToolbarItem>
@@ -55,5 +56,11 @@
         ContentTemplate="{DataTemplate viewsLogin:LoginView}"
         Route="Login" 
         IsVisible="{Binding IsLoginVisible}" />
+
+    <ShellContent
+        Title="Bezahlung"
+        ContentTemplate="{DataTemplate viewsPayment:PaymentView}"
+        Route="///PaymentView" 
+        IsVisible="False" />
 
 </Shell>

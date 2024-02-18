@@ -73,7 +73,8 @@ namespace MensaWebsite.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "MenuPersons",
+                name: "
+                s",
                 columns: table => new
                 {
                     MenuPersonId = table.Column<int>(type: "int", nullable: false)

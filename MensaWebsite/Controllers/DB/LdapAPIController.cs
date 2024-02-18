@@ -67,19 +67,21 @@ namespace MensaWebsite.Controllers.DB
                     else
                     {
                         Console.WriteLine("Houston we have a problem");
+                        return new JsonResult(null);
                     }
                 }
                 else
                 {
                     Console.WriteLine("User doesn't exist");
+                    return new JsonResult(null);
                 }
 
             }
             else
             {
                 Console.WriteLine("Connection Failed!");
+                return new JsonResult(null);
             }
-            return new JsonResult(true);
         }
 
         private async Task<LdapConnection> AsyncConnectToLDAP(string ldapServer, string ldap_password)

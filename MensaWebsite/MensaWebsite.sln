@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MensaHandyApp", "..\MensaHa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MensaWebsite", "MensaWebsite.csproj", "{3B05EA5F-9F2D-4414-8CB9-8C49BEC90CD9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PayPalWebsiteTeil", "..\..\..\PayPalWebsiteTeil\PayPalWebsiteTeil.csproj", "{C4BE3142-AF7D-4CB7-B49E-E916A37602BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{3B05EA5F-9F2D-4414-8CB9-8C49BEC90CD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B05EA5F-9F2D-4414-8CB9-8C49BEC90CD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B05EA5F-9F2D-4414-8CB9-8C49BEC90CD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4BE3142-AF7D-4CB7-B49E-E916A37602BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4BE3142-AF7D-4CB7-B49E-E916A37602BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4BE3142-AF7D-4CB7-B49E-E916A37602BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4BE3142-AF7D-4CB7-B49E-E916A37602BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

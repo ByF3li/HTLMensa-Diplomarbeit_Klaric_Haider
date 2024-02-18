@@ -34,7 +34,7 @@ namespace MensaHandyApp.ViewModels
         [ObservableProperty]
         private bool _isStudent = false;
 
-        private decimal ShoppingCartPriceDecimal;
+        private decimal ShoppingCartPriceDecimal = 0;
 
         private MenuPerson selectedListItem;
         public MenuPerson SelectedListItem
@@ -87,6 +87,7 @@ namespace MensaHandyApp.ViewModels
                 }
             }
             ShoppingCartPrice = "" + ShoppingCartPriceDecimal;
+            ShoppingCartPriceDecimal = 0;
             ProductsInShoppingCart = "" + Shoppingcart.Count();
         }
         
@@ -143,18 +144,8 @@ namespace MensaHandyApp.ViewModels
         {
             if (Shoppingcart.Count() > 0)
             {
-                var _client = Connect();
-
-                var requestUri = url + $"api/MenuPersonAPI/updatePayedOrder?userEmail={Uri.EscapeDataString(person.Email)}";
-
-
-                var requestMessage = new HttpRequestMessage
-                {
-                    Method = HttpMethod.Put,
-                    RequestUri = new Uri(requestUri),
-                };
-                using var response = await _client.SendAsync(requestMessage);
-
+                GoToPaymentView();
+                
                 await Shell.Current.GoToAsync($"///OrderHistory");
                 SelectedListItem = null;
             }
@@ -167,6 +158,16 @@ namespace MensaHandyApp.ViewModels
         public void ReloadData()
         {
             GetShoppingCart();
+        }
+
+        public async void GoToPaymentView()
+        {
+            string javascriptCommand = $"updateShoppingCartData('{ShoppingCartPrice}', '{ProductsInShoppingCart}', '{person.Email}', '{ShoppingCartPrice}', '{ProductsInShoppingCart}', '{person.Email}');";
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await Shell.Current.CurrentPage.FindByName<WebView>("paymentWebView").EvaluateJavaScriptAsync(javascriptCommand);
+            });
+            await Shell.Current.GoToAsync($"///PaymentView");
         }
 
         public HttpClient Connect()
@@ -196,5 +197,6 @@ namespace MensaHandyApp.ViewModels
             }
 
         }
+    
     }
 }

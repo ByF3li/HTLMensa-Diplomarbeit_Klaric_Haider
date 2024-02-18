@@ -80,6 +80,7 @@ namespace MensaHandyApp.ViewModels
                 check.Email = Email;
                 var response = await _client.PostAsJsonAsync<Person>($"{url}api/PersonAPI/addPerson", check);
                 await check.SaveObject();
+                Email = "";
 
                 MessagingCenter.Send(this, "LoginSuccess");
                 await Shell.Current.GoToAsync($"///MainPage");
@@ -88,13 +89,15 @@ namespace MensaHandyApp.ViewModels
             {
                 Email = "";
                 Password = "";
-                await Shell.Current.DisplayAlert("Anmeldung fehlgeschlagen", "Email oder Passwort Falsch", "OK");
+                await Shell.Current.DisplayAlert("Fehler", "Username und Password müssen befüllt werden", "OK");
             }
         }
 
         public async Task<Person> AuthentAsync()
         {
             //Start of waiting animation
+
+            Console.WriteLine("E: " + Email + "P: " + Password);
 
             if ((Email == "admin@admin") && (Password == "admin"))
             {
@@ -121,10 +124,15 @@ namespace MensaHandyApp.ViewModels
                     RequestUri = new Uri(requestUri),
                 };
                 var response = await _client.GetFromJsonAsync<Person>(requestUri);
-
                 Password = "";
 
                 return response;
+            }
+            else
+            {
+                Email = "";
+                Password = "";
+                await Shell.Current.DisplayAlert("Fehler", "Username und Password müssen befüllt werden", "OK");
             }
             return null;
         }
