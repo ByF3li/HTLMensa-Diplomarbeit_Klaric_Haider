@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MensaAppKlassenBibliothek;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +9,9 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using ThreadNetwork;
+using static System.Net.WebRequestMethods;
 
 namespace MensaHandyApp.ViewModels
 {
@@ -60,7 +64,7 @@ namespace MensaHandyApp.ViewModels
         
         public async void GetShoppingCart()
         {
-            var _client = Connect();
+            var _client = Connect(url);
 
             List<MenuPerson> mps = await _client.GetFromJsonAsync<List<MenuPerson>>(url + "api/MenuPersonAPI/getAllOrderByUserEmail?mail=" + person.Email);
 
@@ -160,24 +164,37 @@ namespace MensaHandyApp.ViewModels
             GetShoppingCart();
         }
 
-        public async void GoToPaymentView()
+        public async Task GoToPaymentView()
         {
-            string javascriptCommand = $"updateShoppingCartData('{ShoppingCartPrice}', '{ProductsInShoppingCart}', '{person.Email}', '{ShoppingCartPrice}', '{ProductsInShoppingCart}', '{person.Email}');";
-            Device.BeginInvokeOnMainThread(async () =>
+            string paypalurl = "https://oliverserver.ddns.net:7220/";
+            string apiUrl = "https://oliverserver.ddns.net:7220/api/sendShoppingcartData";
+
+            HttpClient _client = Connect(paypalurl);
+
+            string jsonPayload = $"{{\"shoppingCartPrice\":\"{ShoppingCartPrice}\", \"productsInShoppingCart\":\"{ProductsInShoppingCart}\"}}";
+
+            var content = new StringContent(jsonPayload, System.Text.Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _client.PostAsync(apiUrl, content);
+
+            if (response.IsSuccessStatusCode)
             {
-                await Shell.Current.CurrentPage.FindByName<WebView>("paymentWebView").EvaluateJavaScriptAsync(javascriptCommand);
-            });
-            await Shell.Current.GoToAsync($"///PaymentView");
+                await Shell.Current.GoToAsync($"///PaymentView");
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Fehler", "Verbindung zu Server fehlgeschlagen", "OK");
+            }
         }
 
-        public HttpClient Connect()
+        public HttpClient Connect(string url)
         {
             if (url == "https://localhost:7188/")
             {
                 HttpClient _localhost_client = new HttpClient();
                 return _localhost_client;
             }
-            else if (url == "https://oliverserver.ddns.net/")
+            else if (url == "https://oliverserver.ddns.net/" || url == "https://oliverserver.ddns.net:7220/")
             {
                 var handler = new HttpClientHandler();
                 handler.ClientCertificateOptions = ClientCertificateOption.Manual;

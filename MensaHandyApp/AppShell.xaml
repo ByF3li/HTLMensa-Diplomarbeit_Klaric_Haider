@@ -60,7 +60,7 @@
     <ShellContent
         Title="Bezahlung"
         ContentTemplate="{DataTemplate viewsPayment:PaymentView}"
-        Route="///PaymentView" 
-        IsVisible="False" />
+        Route="PaymentView" 
+        IsVisible="True" />
 
 </Shell>

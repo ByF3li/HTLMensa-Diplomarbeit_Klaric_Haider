@@ -98,12 +98,13 @@ namespace MensaHandyApp.ViewModels
                 MenuPerson mp = new MenuPerson()
                 {
                     OrderDate = DateOnly.FromDateTime(DateTime.Now),
-                    Payed = false,
+                    PaymentStatus = "Not Payed",
                     Activated = false,
                     Person = person,
                     Menu = menu,
                     InShoppingcart = true,
-                    MenuPersonId = 0
+                    MenuPersonId = 0,
+                    PaypalOrderId = ""
                 };
                 mp.Menu.MenuPersons.Clear();
                 mps.Add(mp);

@@ -30,6 +30,8 @@ namespace PayPalWebsiteTeil.Pages
 
         public void OnGet()
         {
+
+
             Console.WriteLine("" + TempData["Total"] + "" + TempData["ProductIdentifiers"]);
 
             Total = TempData["Total"]?.ToString() ?? "";
@@ -50,7 +52,7 @@ namespace PayPalWebsiteTeil.Pages
         {
             Total = TempData["Total"]?.ToString() ?? "";
             ProductIdentifiers = TempData["ProductIdentifiers"]?.ToString() ?? "";
-            
+
             TempData.Keep();
 
             if (Total == "" || ProductIdentifiers == "")
@@ -117,9 +119,9 @@ namespace PayPalWebsiteTeil.Pages
             return new JsonResult(response);
         }
 
-        public JsonResult OnPostCompleteOrder([FromBody] JsonObject data) 
-        { 
-            if(data == null || data["orderID"] == null) return new JsonResult("");
+        public JsonResult OnPostCompleteOrder([FromBody] JsonObject data)
+        {
+            if (data == null || data["orderID"] == null) return new JsonResult("");
 
             var orderID = data["orderID"]!.ToString();
 

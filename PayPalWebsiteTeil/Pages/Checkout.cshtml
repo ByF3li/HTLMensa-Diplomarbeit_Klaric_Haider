@@ -27,23 +27,13 @@
 
 
 <script>
-
-    function updateShoppingCartData(price, products, email) {
-        console.log("Received data - Price: " + price + ", Products: " + products, "Email: " + email);
-
-        @TempData["Total"] = "" + price;
-        @TempData["ProductIdentifiers"] = "" + products;
-        @TempData["Email"] = "" + email;
-
-    }
-
     let paypal_buttons = paypal.Buttons({
         createOrder() {
             return fetch("/Checkout?handler=CreateOrder", {
                 method: "POST"
             })
-            .then((response) => response.json())
-            .then((order) => order.id);
+                .then((response) => response.json())
+                .then((order) => order.id);
         },
         onApprove(data) {
             paypal_buttons.close();
@@ -57,19 +47,19 @@
                     orderID: data.orderID
                 })
             })
-            .then((response) => response.json())
-            .then((details) => {
-                if(details == "success"){
-                    document.getElementById("notification-container").innerHTML = '<div class="alert alert-success" role="alert">The order is created succesfully!</div>';
-                }
-                else{
-                    document.getElementById("notification-container").innerHTML = '<div class="alert alert-danger" role="alert">Failed to create order!</div>';
-                }
-            });
+                .then((response) => response.json())
+                .then((details) => {
+                    if (details == "success") {
+                        document.getElementById("notification-container").innerHTML = '<div class="alert alert-success" role="alert">The order is created succesfully!</div>';
+                    }
+                    else {
+                        document.getElementById("notification-container").innerHTML = '<div class="alert alert-danger" role="alert">Failed to create order!</div>';
+                    }
+                });
         },
         onCancel(data) {
             document.getElementById("notification-container").innerHTML = '<div class="alert alert-danger" role="alert">Order Canceled!</div>';
-        
+
             return fetch("/Checkout?handler=CancelOrder", {
                 method: "POST",
                 headers: {

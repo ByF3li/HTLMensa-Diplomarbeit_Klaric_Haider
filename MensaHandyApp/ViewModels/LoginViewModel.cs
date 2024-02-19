@@ -97,9 +97,7 @@ namespace MensaHandyApp.ViewModels
         {
             //Start of waiting animation
 
-            Console.WriteLine("E: " + Email + "P: " + Password);
-
-            if ((Email == "admin@admin") && (Password == "admin"))
+            if ((Email == "Admin@Admin") && (Password == "Admin"))
             {
                 Person p = new Person()
                 {
