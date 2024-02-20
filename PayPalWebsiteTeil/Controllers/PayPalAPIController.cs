@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MensaAppKlassenBibliothek;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using PayPalWebsiteTeil.Models;
 
 namespace PayPalWebsiteTeil.Controllers
 {
@@ -16,6 +16,12 @@ namespace PayPalWebsiteTeil.Controllers
             TempData.Keep();
 
             return Ok(new { Message = "Data received successfully.", Data = shoppingcart });
+        }
+
+        [HttpPost("sendMessage")]
+        public IActionResult AsyncSendMessage(string message)
+        {
+            return new JsonResult(message);
         }
     }
 }

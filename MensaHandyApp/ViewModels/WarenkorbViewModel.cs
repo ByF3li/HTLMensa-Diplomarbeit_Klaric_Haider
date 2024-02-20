@@ -10,7 +10,6 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using ThreadNetwork;
 using static System.Net.WebRequestMethods;
 
 namespace MensaHandyApp.ViewModels
@@ -102,7 +101,7 @@ namespace MensaHandyApp.ViewModels
             {
                 await Shell.Current.DisplayAlert("Ja", "Das Menü wird entfernt", "OK");
 
-                var _client = Connect();
+                var _client = Connect(url);
 
                 var requestUri = url + $"api/MenuPersonAPI/deleteOrderByMenuId?userEmail={Uri.EscapeDataString(person.Email)}&menuId={menuId}";
 
@@ -149,7 +148,10 @@ namespace MensaHandyApp.ViewModels
             if (Shoppingcart.Count() > 0)
             {
                 GoToPaymentView();
-                
+
+                //if(message == "SUCCESS") => ///Orderhistory
+                //if (message == "CANCLED") => "Fehler"
+
                 await Shell.Current.GoToAsync($"///OrderHistory");
                 SelectedListItem = null;
             }
@@ -167,15 +169,17 @@ namespace MensaHandyApp.ViewModels
         public async Task GoToPaymentView()
         {
             string paypalurl = "https://oliverserver.ddns.net:7220/";
-            string apiUrl = "https://oliverserver.ddns.net:7220/api/sendShoppingcartData";
+            string apiUrl = "https://oliverserver.ddns.net:7220/api/PayPalAPI/sendShoppingcartData";
 
             HttpClient _client = Connect(paypalurl);
 
-            string jsonPayload = $"{{\"shoppingCartPrice\":\"{ShoppingCartPrice}\", \"productsInShoppingCart\":\"{ProductsInShoppingCart}\"}}";
+            Shoppingcart shoppingcart = new Shoppingcart()
+            {
+                Total = ShoppingCartPrice,
+                ProductIdentifiers = ProductsInShoppingCart
+            };
 
-            var content = new StringContent(jsonPayload, System.Text.Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = await _client.PostAsync(apiUrl, content);
+            HttpResponseMessage response = await _client.PostAsJsonAsync(apiUrl, shoppingcart);
 
             if (response.IsSuccessStatusCode)
             {

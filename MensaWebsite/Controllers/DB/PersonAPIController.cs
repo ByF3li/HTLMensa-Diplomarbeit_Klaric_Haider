@@ -39,8 +39,16 @@ namespace MensaWebsite.Controllers
         [HttpPost("addPerson")]
         public async Task<IActionResult> AsyncAddPerson(Person p)
         {
-            this._context.Persons.Add(p);
-            return new JsonResult((await this._context.SaveChangesAsync()) == 1, options);
+            Person personToFind = this._context.Persons.Find(p.Email);
+            if (personToFind != null)
+            {
+                return new JsonResult("Success");
+            }
+            else
+            {
+                this._context.Persons.Add(p);
+                return new JsonResult((await this._context.SaveChangesAsync()) == 1, options);
+            }
         }
 
     }
