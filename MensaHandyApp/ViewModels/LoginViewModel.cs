@@ -15,7 +15,7 @@ namespace MensaHandyApp.ViewModels
 {
     public class LoginViewModel : INotifyPropertyChanged
     {
-        public string url = "https://oliverserver.ddns.net/";
+        public string url = "https://oliverserver.ddns.net:7188/";
         //public string url = "https://localhost:7188/";
 
         private string _email;
@@ -149,7 +149,7 @@ namespace MensaHandyApp.ViewModels
                 HttpClient _localhost_client = new HttpClient();
                 return _localhost_client;
             }
-            else if (url == "https://oliverserver.ddns.net/")
+            else if (url == "https://oliverserver.ddns.net:7188/")
             {
                 var handler = new HttpClientHandler();
                 handler.ClientCertificateOptions = ClientCertificateOption.Manual;

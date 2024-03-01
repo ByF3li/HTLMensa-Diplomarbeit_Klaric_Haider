@@ -4,5 +4,5 @@
              x:Class="MensaHandyApp.Views.Payment.PaymentView"
              Title="PaymentView">
     
-    <WebView x:Name="paymentWebView" Source="http://oliverserver.ddns.net:5187/"></WebView>
+    <WebView x:Name="paymentWebView" Source="https://oliverserver.ddns.net/"></WebView>
 </ContentPage>
