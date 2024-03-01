@@ -32,7 +32,8 @@ namespace MensaWebsite.Controllers
             menuDTO.PriceTeacher = price.PriceTeacher;
             return PartialView(menuDTO);
         }
-        public async Task<IActionResult> SafeMenues()
+        [HttpGet]
+        public async Task<IActionResult> SaveMenues()
         {
             int priceId = 1;
             MenuDTO menuDTO = new MenuDTO();
@@ -44,7 +45,7 @@ namespace MensaWebsite.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SafeMenues(MenuDTO menuDTO)
+        public async Task<IActionResult> SaveMenues(MenuDTO menuDTO)
         {
             bool isSuccess = false;
             if (menuDTO.WhichMenu < 1 || menuDTO.WhichMenu > 3)
@@ -88,12 +89,12 @@ namespace MensaWebsite.Controllers
                 if (isSuccess)
                 {
                     TempData["SuccessAlert"] = "Menü wurde erfolgreich hinzugefügt!";
-                    return RedirectToAction("SafeMenues");
+                    return RedirectToAction("SaveMenues");
                 }
                 else if (!isSuccess)
                 {
                     TempData["NoSuccessAlert"] = "Menü konnte nicht gespeichert werden!";
-                    return RedirectToAction("SafeMenues");
+                    return RedirectToAction("SaveMenues");
                 }
             }
 
@@ -104,7 +105,7 @@ namespace MensaWebsite.Controllers
             List<MenuDTO> menuDTOList = new List<MenuDTO>();
             try
             {
-                menus = await _context.Menues.Include("Prices").OrderByDescending(m => m.MenuId).ToListAsync();
+                menus = await _context.Menues.Include(m => m.Prices).OrderByDescending(m => m.MenuId).ToListAsync();
                 foreach(Menu menu in menus)
                 {
                     MenuDTO menuDTO = new();
@@ -140,6 +141,20 @@ namespace MensaWebsite.Controllers
                 var menuToDelete = await _context.Menues.FindAsync(Id);
                 _context.Menues.Remove(menuToDelete);
                 isSuccess = (await _context.SaveChangesAsync()) == 1;
+                menus = await _context.Menues.Include("Prices").OrderByDescending(m => m.MenuId).ToListAsync();
+                foreach (Menu menu in menus)
+                {
+                    MenuDTO menuDTO = new();
+                    menuDTO.MenuId = menu.MenuId;
+                    menuDTO.WhichMenu = menu.Prices.PriceId;
+                    menuDTO.Starter = menu.Starter;
+                    menuDTO.MainCourse = menu.MainCourse;
+                    menuDTO.Date = menu.Date;
+                    menuDTO.PriceStudent = menu.Prices.PriceStudent;
+                    menuDTO.PriceTeacher = menu.Prices.PriceTeacher;
+
+                    menuDTOList.Add(menuDTO);
+                }
             }
             catch (Exception ex)
             {
@@ -148,12 +163,12 @@ namespace MensaWebsite.Controllers
             if (isSuccess)
             {
                 TempData["SuccessAlert"] = "Menü wurde erfolgreich gelöscht!";
-                return PartialView("_MessagePartialView");
+                return View("ShowAllMenus", menuDTOList);
             }
             else
             {
                 TempData["NoSuccessAlert"] = "Menü konnte nicht gelöscht werden!";
-                return PartialView("_MessagePartialView");
+                return View("ShowAllMenus", menuDTOList);
             }
         }
 

@@ -5,8 +5,8 @@
 
 <h1>Menüs hinzufügen:</h1>
 <br />
-<form asp-controller="menu" asp-action="SafeMenues" method="post">
-    <partial name="_SafeMenuFormPartialView" model="@Model" />
+<form asp-controller="menu" asp-action="SaveMenues" method="post">
+    <partial name="_SaveMenuFormPartialView" model="@Model" />
 </form>
 
 @section Scripts{
@@ -19,7 +19,7 @@
         });
 
 
-        $('#WhichMenu').change(function(){
+        $('#WhichMenu').change(function () {
             var whichMenu = $('#WhichMenu').val();
             $.ajax({
                 url: '@Url.Action("_PricesPartialView","Menu")',
@@ -28,14 +28,14 @@
                 data: {
                     priceId: whichMenu
                 },
-                success: function(data){
+                success: function (data) {
                     $('#prices').html(data).fadeIn();
                 },
-                error: function(){
+                error: function () {
                     alert('Error');
                 }
             });
-            
+
         });
     </script>
 }

@@ -15,7 +15,9 @@ namespace MensaAppKlassenBibliothek
     {
         [Key]
         public string Email { get; set; }
-        public string Password { get; set; }
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
+        public bool IsTeacher { get; set; }
 
         public List<MenuPerson> MenuPersons { get; set; } = new List<MenuPerson>() { };
 
