@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MensaHandyApp.Views.Payment.PaymentView"
-             Title="PaymentView">
+             Title="PaymentView" 
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls">
     
-    <WebView x:Name="paymentWebView" Source="http://oliverserver.ddns.net:5187/"></WebView>
+    <!-- Opens the webserver-page to pay with paypal (payment not fully implemented) -->
+    <WebView x:Name="paymentWebView" Source="http://oliverserver.ddns.net:5187/" android:WebView.MixedContentMode="AlwaysAllow"></WebView>
 </ContentPage>

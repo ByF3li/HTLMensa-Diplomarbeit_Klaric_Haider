@@ -42,8 +42,7 @@ namespace MensaHandyApp.ViewModels
                 List<MenuPerson> allOrders = new List<MenuPerson>();
                 allOrders = await _client.GetFromJsonAsync<List<MenuPerson>>(url + "api/MenuPersonAPI/getAllOrderByUserEmail?mail=" + person.Email);
 
-
-                allOrders.Reverse(); //The newest Order should be first
+                allOrders.Reverse();
 
                 foreach (var order in allOrders)
                 {

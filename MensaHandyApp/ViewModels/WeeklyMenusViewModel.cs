@@ -86,7 +86,7 @@ namespace MensaHandyApp.ViewModels
                 List<MenuPerson> mps = await _client.GetFromJsonAsync<List<MenuPerson>>(url + "api/MenuPersonAPI/getAllOrderByUserEmail?mail=" + person.Email);
 
 
-                // um Bug zu lösen, wegen 400 response
+                // solving a 400 response
                 mps.ForEach(mp =>
                 {
                     mp.Person = person;
@@ -110,13 +110,10 @@ namespace MensaHandyApp.ViewModels
                 mps.Add(mp);
                 List<MenuPerson> shoppingcart = mps.Where(mp => mp.InShoppingcart).ToList();
 
-                Console.WriteLine(await _client.PostAsJsonAsync(url + "api/MenuPersonAPI/saveOrder", shoppingcart, options));
-
+                await _client.PostAsJsonAsync(url + "api/MenuPersonAPI/saveOrder", shoppingcart, options);
 
                 selectedListItem = new();
                 await Shell.Current.GoToAsync($"///Warenkorb");
-
-                //PerformNavigation(SelectedListItem.MenuId);
             }
             else
             {
@@ -142,7 +139,6 @@ namespace MensaHandyApp.ViewModels
             {
                 var _client = Connect();
 
-                // Fetch the weekly menus from the API
                 var response = await _client.GetFromJsonAsync<List<Menu>>(url + "api/MenuAPI/getThisWeeklyMenu");
 
 
@@ -158,7 +154,7 @@ namespace MensaHandyApp.ViewModels
                 }
 
 
-                if (response != null) //&& response.Count >= 15)
+                if (response != null)
                 {
                     // Create DayMenus for each day of the week
                     DateOnly resultDateOnly = ReturnThisWeek();
@@ -179,6 +175,7 @@ namespace MensaHandyApp.ViewModels
                 }
                 else
                 {
+                    //For testing purposes
                     DayMenu testFailed = new DayMenu
                     {
                         Date = DateOnly.MaxValue,
@@ -212,18 +209,22 @@ namespace MensaHandyApp.ViewModels
             }
             catch (HttpRequestException ex)
             {
-                // Handle the specific exception related to the HTTP request
                 Console.WriteLine("HttpRequestException: " + ex.Message);
             }
             catch (Exception ex)
             {
-                // Handle any other exceptions that may occur during the API request or data processing
                 Console.WriteLine("An error occurred: " + ex.Message);
             }
-
-            await GetCarusellPositionAsync();
         }
 
+        // Getting the thursday of the current week 
+        // The ReturnThisWeek()-Method is made by stackoverflow and was later rewritten and adapted
+        // 1. The MDSN Library Approach:
+        //      Author: Amberlamps
+        //      url: https://stackoverflow.com/q/11154673   
+        // 2. And the Answer of Leidegren, John
+        //      Author: Leidegren, John
+        //      url: https://stackoverflow.com/a/5378150
         public DateOnly ReturnThisWeek()
         {
             DateTime dateTimeToday = DateTime.Now;
@@ -251,50 +252,6 @@ namespace MensaHandyApp.ViewModels
             DateOnly resultDateOnly = DateOnly.FromDateTime(resultDateTime);
 
             return resultDateOnly;
-        }
-
-
-        //Pos wär eigentlich richtig aber wird nicht in view übernommen 
-        public async Task GetCarusellPositionAsync()
-        {
-            DateOnly dateThisWeek = ReturnThisWeek();
-
-            DateOnly monday = dateThisWeek.AddDays(-3); //Monday
-            DateOnly tuesday = dateThisWeek.AddDays(-2); //Tuesday
-            DateOnly wednesday = dateThisWeek.AddDays(-1); //Wednesday
-            DateOnly thursday = dateThisWeek;             //Thursday
-            DateOnly friday = dateThisWeek.AddDays(+1); //Friday
-            DateOnly saturaday = dateThisWeek.AddDays(+2); //Saturday
-            DateOnly sunday = dateThisWeek.AddDays(+3); //Sunday
-
-            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-
-            if (today == monday || today == saturaday || today == sunday)
-            {
-                DayMenu = DayMenus[0];
-            }
-            else if (today == tuesday)
-            {
-                DayMenu = DayMenus[1];
-            }
-            else if (today == wednesday)
-            {
-                DayMenu = DayMenus[2];
-            }
-            else if (today == thursday)
-            {
-                DayMenu = DayMenus[3];
-            }
-            else if (today == friday)
-            {
-                DayMenu = DayMenus[4];
-            }
-            else
-            {
-                DayMenu = DayMenus[0];
-                await Shell.Current.DisplayAlert("Fehler", "GetCarusellPosition geht nicht", "OK");
-            }
-            //await Shell.Current.DisplayAlert("pos", pos, "OK");
         }
 
         public HttpClient Connect()

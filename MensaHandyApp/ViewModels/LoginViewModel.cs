@@ -46,7 +46,6 @@ namespace MensaHandyApp.ViewModels
             }
         }
 
-
         public ICommand LoginCommand { get; private set; }
 
         public LoginViewModel()
@@ -75,8 +74,6 @@ namespace MensaHandyApp.ViewModels
 
             if (check != null)
             {
-                //End of waiting animation
-
                 check.Email = Email;
                 var response = await _client.PostAsJsonAsync<Person>($"{url}api/PersonAPI/addPerson", check);
                 await check.SaveObject();
@@ -95,8 +92,6 @@ namespace MensaHandyApp.ViewModels
 
         public async Task<Person> AuthentAsync()
         {
-            //Start of waiting animation
-
             if ((Email == "Admin@Admin") && (Password == "Admin"))
             {
                 Person p = new Person()

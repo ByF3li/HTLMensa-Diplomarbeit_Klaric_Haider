@@ -4,7 +4,6 @@
              x:Class="MensaHandyApp.Views.Orders.OrderHistoryView"
              Title="Bestellverlauf">
 
-
     <ScrollView>
         <VerticalStackLayout>
             <CollectionView ItemsSource="{Binding Orders}">

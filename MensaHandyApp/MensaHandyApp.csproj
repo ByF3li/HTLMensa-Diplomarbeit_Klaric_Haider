@@ -66,9 +66,6 @@
 	  <Compile Update="Views\MainPage.xaml.cs">
 	    <DependentUpon>MainPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\Orders\OrderItemsFromOrderView.xaml.cs">
-	    <DependentUpon>OrderItemsFromOrderView.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Views\Orders\WeeklyOrders.xaml.cs">
 	    <DependentUpon>WeeklyOrders.xaml</DependentUpon>
 	  </Compile>
@@ -94,9 +91,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\MainPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Orders\OrderItemsFromOrderView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Orders\WeeklyOrders.xaml">

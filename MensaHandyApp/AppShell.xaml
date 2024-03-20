@@ -11,22 +11,14 @@
 
     <Shell.ToolbarItems>
         <ToolbarItem Text="{Binding Initials}"></ToolbarItem>
-        
+
         <ToolbarItem Command="{Binding ShowUserCommand}">
             <ToolbarItem.IconImageSource>
                 <FileImageSource File="Images/usericon.png" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </Shell.ToolbarItems>
-    
-    <!--
-    <Shell.TitleView>
-        <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
-            <Label Text="{Binding Person.Email}" Margin="10" VerticalTextAlignment="Center"/>
-        </StackLayout>
-    </Shell.TitleView>
-    -->
-    
+
     <ShellContent
         Title="Homepage"
         ContentTemplate="{DataTemplate views:MainPage}"
@@ -61,6 +53,6 @@
         Title="Bezahlung"
         ContentTemplate="{DataTemplate viewsPayment:PaymentView}"
         Route="PaymentView" 
-        IsVisible="True" />
+        IsVisible="False" />
 
 </Shell>

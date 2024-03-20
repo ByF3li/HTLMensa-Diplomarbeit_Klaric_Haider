@@ -22,6 +22,7 @@ namespace MensaAppKlassenBibliothek
 
         public List<MenuPerson> MenuPersons { get; set; } = new List<MenuPerson>() { };
 
+        //With this Methods a Person can be saved in SecureStorage
         public async Task SaveObject()
         {
             JsonSerializerOptions options = new JsonSerializerOptions()
@@ -35,6 +36,7 @@ namespace MensaAppKlassenBibliothek
             await SecureStorage.SetAsync("user", serializedObject);
         }
 
+        //With this Methods a Person can be loaded from the SecureStorage
         public async static Task<Person> LoadObject()
         {
             // Retrieve the serialized object from Preferences
@@ -50,6 +52,7 @@ namespace MensaAppKlassenBibliothek
 
         }
 
+        //With this Methods a Person can be deleted from the SecureStorage
         public async static Task DeleteObject()
         {
             SecureStorage.Remove("user");

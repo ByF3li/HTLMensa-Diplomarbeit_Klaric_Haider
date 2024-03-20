@@ -10,8 +10,6 @@ using System.Windows.Input;
 
 namespace MensaHandyApp.ViewModels
 {
-    // Has LoginSucces.subscribe
-    // Has LogoutSucces.publish
     public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
     {
         private bool _showLoginButton = true;

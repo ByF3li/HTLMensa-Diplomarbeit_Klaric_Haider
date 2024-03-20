@@ -115,8 +115,7 @@ namespace MensaHandyApp.ViewModels
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    await Shell.Current.DisplayAlert("Fehler", "Das Menü wird entfernt", "OK");
-                    throw new Exception("Order konnte nicht gelöscht werden");
+                    await Shell.Current.DisplayAlert("Fehler", "Das Menü wurde nicht entfernt", "OK");
                 }
                 else
                 {
@@ -148,9 +147,6 @@ namespace MensaHandyApp.ViewModels
             if (Shoppingcart.Count() > 0)
             {
                 GoToPaymentView();
-
-                //if(message == "SUCCESS") => ///Orderhistory
-                //if (message == "CANCLED") => "Fehler"
 
                 await Shell.Current.GoToAsync($"///OrderHistory");
                 SelectedListItem = null;

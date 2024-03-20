@@ -135,7 +135,7 @@ namespace MensaWebsite.Controllers.DB
             conn.Dispose();
         }
 
-        private SearchResultEntryCollection SearchUser(LdapConnection ldapConnection, string baseDn, string username)
+        private async Task<SearchResultEntryCollection> AsyncSearchUser(LdapConnection ldapConnection, string baseDn, string username)
         {
             // Create an LDAP search request
             var searchRequest = new SearchRequest(baseDn, $"(&(objectClass=person)(sAMAccountName={username}))", SearchScope.Subtree, null);

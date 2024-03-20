@@ -135,7 +135,7 @@ namespace MensaHandyApp
 
         public async Task ShowUser()
         {
-            //Make dropdown menu
+            //Make a dropdown menu
             await Shell.Current.DisplayAlert("UserIcon angeklickt", "Funktionen kommen noch", "OK");
         }
 
