@@ -5,7 +5,10 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Compatibility;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -13,25 +16,32 @@ using static System.Net.WebRequestMethods;
 
 namespace MensaHandyApp.ViewModels
 {
-    [ObservableObject]
-    partial class WeeklyMenusViewModel
+    
+    partial class WeeklyMenusViewModel : ObservableObject, INotifyPropertyChanged
     {
+        public string url = "https://oliverserver.ddns.net/";
+        //public string url = "https://localhost:7188/";
+
         private Person person  = new Person()
         {
             Email = "testuser@gmx.at",
             Password = "hallo123"
         };
+
         JsonSerializerOptions options = new JsonSerializerOptions()
         {
             ReferenceHandler = ReferenceHandler.IgnoreCycles
         };
-
 
         [ObservableProperty]
         private ObservableCollection<DayMenu> _dayMenus = new ObservableCollection<DayMenu>();
 
         [ObservableProperty]
         private DayMenu _dayMenu;
+
+        [ObservableProperty]
+        private decimal _priceOfMenu;
+
 
         private Menu selectedListItem;
         public Menu SelectedListItem
@@ -42,18 +52,20 @@ namespace MensaHandyApp.ViewModels
             }
             set
             {
-                if (selectedListItem != value)
+                SetProperty(ref selectedListItem, value); 
+                if (selectedListItem != null)
                 {
-                    selectedListItem = value;
-                    OnPropertyChanged("SelectedListItem");
-
-                    if (selectedListItem != null)
-                    {
-                        SendAlert();
-                    }
+                    SendAlert();
                 }
             }
         }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private async void SendAlert()
         {
@@ -62,16 +74,9 @@ namespace MensaHandyApp.ViewModels
             {
                 await Shell.Current.DisplayAlert("Ja", "Das Menü wird hinzugefügt", "OK");
 
-                var handler = new HttpClientHandler();
-                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-                handler.ServerCertificateCustomValidationCallback =
-                    (httpRequestMessage, cert, cetChain, policyErrors) =>
-                    {
-                        return true;
-                    };
-
-                var _client = new HttpClient(handler);
-                List<MenuPerson> mps = await _client.GetFromJsonAsync<List<MenuPerson>>("https://oliverserver.ddns.net:7286/api/mensa/order/getAllOrderByUserEmail?mail=" + person.Email);
+                var _client = Connect();
+                List<MenuPerson> mps = await _client.GetFromJsonAsync<List<MenuPerson>>(url + "api/MenuPersonAPI/getAllOrderByUserEmail?mail=" + person.Email);
+                
 
                 // um Bug zu lösen, wegen 400 response
                 mps.ForEach(mp => {
@@ -80,6 +85,7 @@ namespace MensaHandyApp.ViewModels
                 });
 
                 Menu menu = selectedListItem;
+
                 MenuPerson mp = new MenuPerson()
                 {
                     OrderDate = DateOnly.FromDateTime(DateTime.Now),
@@ -95,7 +101,8 @@ namespace MensaHandyApp.ViewModels
                 //person.SaveObject();
                 List<MenuPerson> shoppingcart = mps.Where(mp => mp.InShoppingcart).ToList();
                 
-                Console.WriteLine(await _client.PostAsJsonAsync("https://oliverserver.ddns.net:7286/api/mensa/order/saveOrder", shoppingcart, options));
+                Console.WriteLine(await _client.PostAsJsonAsync(url + "api/MenuPersonAPI/saveOrder", shoppingcart, options));
+
 
                 selectedListItem = new();
                 await Shell.Current.GoToAsync($"///Warenkorb");
@@ -131,19 +138,29 @@ namespace MensaHandyApp.ViewModels
         {
             try
             {
-                
-                var handler = new HttpClientHandler();
-                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-                handler.ServerCertificateCustomValidationCallback =
-                    (httpRequestMessage, cert, cetChain, policyErrors) =>
-                    {
-                        return true;
-                    };
+                var _client = Connect();
 
-                var client = new HttpClient(handler);
-                
                 // Fetch the weekly menus from the API
-                var response = await client.GetFromJsonAsync<List<Menu>>("https://oliverserver.ddns.net:7286/api/mensa/menu/getThisWeeklyMenu");
+                var response = await _client.GetFromJsonAsync<List<Menu>>(url + "api/MenuAPI/getThisWeeklyMenu");
+
+                foreach(var item in response)
+                {
+                    //testuser@gmx.at exampel for student
+                    if (person.Email == "testuser@gmx.at")
+                    {
+                        PriceOfMenu = item.Prices.PriceStudent;
+                    }
+                    //testuser2@gmx.at exampel for teacher
+                    else if (person.Email == "testuser2@gmx.at")
+                    {
+                        PriceOfMenu = item.Prices.PriceTeacher;
+                    }
+                    else
+                    {
+                        PriceOfMenu = 9999.99m;
+                    }
+                }
+                
 
                 if (response != null ) //&& response.Count >= 15)
                 {
@@ -283,6 +300,34 @@ namespace MensaHandyApp.ViewModels
                 await Shell.Current.DisplayAlert("Fehler", "GetCarusellPosition geht nicht", "OK");
             }
             //await Shell.Current.DisplayAlert("pos", pos, "OK");
+        }
+
+        public HttpClient Connect()
+        {
+            if(url == "https://localhost:7188/")
+            {
+                HttpClient _localhost_client = new HttpClient();
+                return _localhost_client;
+            }
+            else if (url == "https://oliverserver.ddns.net/")
+            {
+                var handler = new HttpClientHandler();
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.ServerCertificateCustomValidationCallback =
+                    (httpRequestMessage, cert, cetChain, policyErrors) =>
+                    {
+                        return true;
+                    };
+
+                var _oliverserver_client = new HttpClient(handler);
+
+                return _oliverserver_client;
+            }
+            else 
+            { 
+                throw new Exception("Konnte nicht verbunden werden"); 
+            }
+
         }
     }
 }
