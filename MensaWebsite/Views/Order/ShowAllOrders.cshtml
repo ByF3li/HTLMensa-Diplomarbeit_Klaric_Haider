@@ -6,8 +6,7 @@
 
 <h1>Bestellungen</h1>
 <br />
-@using (Html.BeginForm())
-{
+<form asp-controller="order" asp-action="ShowAllOrders" method="post">
     <div class="row justify-content-center">
         <label class="col-sm-1 col-form-label">Datum:</label>
         <div class="col-sm-2">
@@ -17,16 +16,16 @@
             <button id="datePickerBtn" type="submit" class="btn btn-success btn-sm">Bestätigen!</button>
         </div>
     </div>
-}
+</form>
     <br />
     @if (Model != null && Model.Count() >= 1)
     {
-    <div id="orders" class="row">
+        <div id="orders" class="row">
             
-                <partial name="_ShowOrdersMenus" model="@Model" />
-    </div>
-    <label id="lastRefresh"></label>
-}
+                    <partial name="_ShowOrdersMenus" model="@Model" />
+        </div>
+        <label id="lastRefresh"></label>
+    }
 
 
     @section Scripts{
@@ -60,7 +59,6 @@
                 reloadEveryTenSeconds();
             }, 10000); 
         }
-
         reloadEveryTenSeconds();
         
     </script>

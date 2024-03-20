@@ -3,12 +3,11 @@
 <div class="form-group row">
     <label class="col-sm-2 col-form-label">Menü:</label>
     <div class="col-sm-6">
-        @Html.DropDownListFor(m => m.WhichMenu, new List<SelectListItem>
-        {
-        new SelectListItem { Text = "Menü 1", Value = "1", Selected=true},
-        new SelectListItem { Text = "Menü 2", Value = "2"},
-        new SelectListItem { Text = "Menü 3", Value = "3"}
-        })
+        <select asp-for="WhichMenu">
+            <option value="1">Menü 1</option>
+            <option value="2">Menü 2</option>
+            <option value="3">Menü 3</option>
+        </select>
     </div>
     <div class="col-sm-4">
         <span asp-validation-for="WhichMenu"></span>
@@ -16,9 +15,9 @@
 </div>
 
 <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Vorspeiße:</label>
+    <label class="col-sm-2 col-form-label">Vorspeise:</label>
     <div class="col-sm-6">
-        @Html.TextBoxFor(m => m.Starter, new {@placeholder = "Suppe", @class = "form-control"})
+        <input asp-for="Starter" placeholder="Suppe" class="form-control"/>
     </div>
     <div class="col-sm-4">
         <span asp-validation-for="Starter"></span>
@@ -26,9 +25,9 @@
 </div>
 
 <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Hauptspeiße:</label>
+    <label class="col-sm-2 col-form-label">Hauptspeise:</label>
     <div class="col-sm-6">
-        @Html.TextBoxFor(m => m.MainCourse, new {@placeholder = "Schnitzel", @class = "form-control"})
+        <input asp-for="MainCourse" placeholder="Schnitzel" class="form-control" />
     </div>
     <div class="col-sm-4">
         <span asp-validation-for="MainCourse"></span>
@@ -42,7 +41,7 @@
 <div class="form-group row">
     <label class="col-sm-2 col-form-label">Datum:</label>
     <div class="col-sm-6">
-        @Html.TextBoxFor(m => m.Date, "{0:d}", new {@class = "form-control datepicker"})
+        <input asp-for="Date" class="form-control datepicker" />
     </div>
     <div class="col-sm-4">
         <span asp-validation-for="Date"></span>

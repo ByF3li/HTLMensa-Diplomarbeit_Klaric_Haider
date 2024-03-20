@@ -5,6 +5,7 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Compatibility;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net.Http;
@@ -15,8 +16,8 @@ using static System.Net.WebRequestMethods;
 
 namespace MensaHandyApp.ViewModels
 {
-    [ObservableObject]
-    partial class WeeklyMenusViewModel
+    
+    partial class WeeklyMenusViewModel : ObservableObject, INotifyPropertyChanged
     {
         public string url = "https://oliverserver.ddns.net:7188/";
         //public string url = "https://localhost:7188/";
@@ -59,18 +60,20 @@ namespace MensaHandyApp.ViewModels
             }
             set
             {
-                if (selectedListItem != value)
+                SetProperty(ref selectedListItem, value); 
+                if (selectedListItem != null)
                 {
-                    selectedListItem = value;
-                    OnPropertyChanged("SelectedListItem");
-
-                    if (selectedListItem != null)
-                    {
-                        SendAlert();
-                    }
+                    SendAlert();
                 }
             }
         }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private async void SendAlert()
         {
@@ -141,6 +144,24 @@ namespace MensaHandyApp.ViewModels
 
                 var response = await _client.GetFromJsonAsync<List<Menu>>(url + "api/MenuAPI/getThisWeeklyMenu");
 
+                foreach(var item in response)
+                {
+                    //testuser@gmx.at exampel for student
+                    if (person.Email == "testuser@gmx.at")
+                    {
+                        PriceOfMenu = item.Prices.PriceStudent;
+                    }
+                    //testuser2@gmx.at exampel for teacher
+                    else if (person.Email == "testuser2@gmx.at")
+                    {
+                        PriceOfMenu = item.Prices.PriceTeacher;
+                    }
+                    else
+                    {
+                        PriceOfMenu = 9999.99m;
+                    }
+                }
+                
 
                 if (person.IsTeacher)
                 {
