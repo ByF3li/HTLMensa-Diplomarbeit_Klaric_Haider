@@ -32,8 +32,9 @@ namespace MensaWebsite.Controllers
             menuDTO.PriceTeacher = price.PriceTeacher;
             return PartialView(menuDTO);
         }
+
         [HttpGet]
-        public async Task<IActionResult> SaveMenues()
+        public async Task<IActionResult> SaveMenus()
         {
             int priceId = 1;
             MenuDTO menuDTO = new MenuDTO();
@@ -45,7 +46,7 @@ namespace MensaWebsite.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveMenues(MenuDTO menuDTO)
+        public async Task<IActionResult> SaveMenus(MenuDTO menuDTO)
         {
             bool isSuccess = false;
             if (menuDTO.WhichMenu < 1 || menuDTO.WhichMenu > 3)
@@ -54,17 +55,16 @@ namespace MensaWebsite.Controllers
             }
             if (menuDTO.Starter == null || menuDTO.Starter.Trim().Length < 3)
             {
-                ModelState.AddModelError("Starter", "Vorspeiße muss mehr als 3 Zeichen enthalten!");
+                ModelState.AddModelError("Starter", "Vorspeise muss mehr als 3 Zeichen enthalten!");
             }
             if (menuDTO.MainCourse == null || menuDTO.MainCourse.Trim().Length < 3)
             {
-                ModelState.AddModelError("MainCourse", "Hauptspeiße muss mehr als 3 Zeichen enthalten!");
+                ModelState.AddModelError("MainCourse", "Hauptspeise muss mehr als 3 Zeichen enthalten!");
             }
             if (menuDTO.Date < DateOnly.FromDateTime(DateTime.Now))
             {
                 ModelState.AddModelError("Date", "Datum darf nicht in der Vergangenheit liegen!");
             }
-
 
             if(ModelState.IsValid)
             {
@@ -85,21 +85,21 @@ namespace MensaWebsite.Controllers
                     Console.WriteLine(ex.ToString());
                 }
 
-
                 if (isSuccess)
                 {
                     TempData["SuccessAlert"] = "Menü wurde erfolgreich hinzugefügt!";
-                    return RedirectToAction("SaveMenues");
+                    return RedirectToAction("SaveMenus");
                 }
                 else if (!isSuccess)
                 {
                     TempData["NoSuccessAlert"] = "Menü konnte nicht gespeichert werden!";
-                    return RedirectToAction("SaveMenues");
+                    return RedirectToAction("SaveMenus");
                 }
             }
 
             return View(menuDTO);
         }
+
         public async Task<IActionResult> ShowAllMenus()
         {
             List<MenuDTO> menuDTOList = new List<MenuDTO>();
@@ -119,7 +119,6 @@ namespace MensaWebsite.Controllers
 
                     menuDTOList.Add(menuDTO);
                 }
-                await Console.Out.WriteLineAsync();
             }
             catch (Exception ex)
             {
@@ -193,7 +192,6 @@ namespace MensaWebsite.Controllers
                 PriceStudent = menu.Prices.PriceStudent,
                 PriceTeacher = menu.Prices.PriceTeacher
             };
-
             return View(menuDTO);
         }
 
@@ -243,7 +241,7 @@ namespace MensaWebsite.Controllers
                     return RedirectToAction("EditMenu");
                 }
             }
-            return View();
+            return View(menuDTO);
         }
 
         public async Task<IActionResult> UpdatePrice()
@@ -302,7 +300,7 @@ namespace MensaWebsite.Controllers
                 }
             }
 
-            return View();
+            return View(price);
         }
     }
 

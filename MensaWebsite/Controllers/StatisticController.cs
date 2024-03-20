@@ -16,19 +16,19 @@ namespace MensaWebsite.Controllers
         }
 
 
-        public IActionResult firstChart()
+        public IActionResult showStatistic()
         {
             return View();
         }
         public IActionResult MenuChartsPartialView()
         {
             ViewBag.buttonClick = "Menü";
-            return View("firstChart");
+            return View("showStatistic");
         }
         public IActionResult OrderChartsPartialView()
         {
             ViewBag.buttonClick = "Order";
-            return View("firstChart");
+            return View("showStatistic");
         }
 
 

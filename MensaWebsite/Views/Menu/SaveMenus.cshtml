@@ -5,7 +5,7 @@
 
 <h1>Menüs hinzufügen:</h1>
 <br />
-<form asp-controller="menu" asp-action="SaveMenues" method="post">
+<form asp-controller="menu" asp-action="SaveMenus" method="post">
     <partial name="_SaveMenuFormPartialView" model="@Model" />
 </form>
 
@@ -35,7 +35,6 @@
                     alert('Error');
                 }
             });
-
         });
     </script>
 }

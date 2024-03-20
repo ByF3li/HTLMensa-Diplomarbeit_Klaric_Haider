@@ -54,6 +54,7 @@
             if (activeChart) {
                 activeChart.destroy();
             }
+
             $.ajax({
                 url: '@Url.Action("getMostSoldMenus", "Statistic")',
                 dataType: 'json',

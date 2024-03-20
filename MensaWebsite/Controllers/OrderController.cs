@@ -40,7 +40,6 @@ namespace MensaWebsite.Controllers
         {   
             try
             {
-                // er findet kein Menü, es sind aber welche vorhanden!
                 menus = await _context.Menues.Include(m => m.MenuPersons).Include(m => m.Prices).Where(m => m.Date == date).OrderBy(m => m.Prices.PriceId).ToListAsync();
             }
             catch (Exception ex)
