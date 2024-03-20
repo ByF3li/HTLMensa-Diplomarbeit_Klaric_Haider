@@ -10,7 +10,7 @@ namespace MensaHandyApp.ViewModels
     [ObservableObject]
     public partial class OrderHistoryViewModel
     {
-        public string url = "https://oliverserver.ddns.net/";
+        public string url = "https://oliverserver.ddns.net:7188/";
         //public string url = "https://localhost:7188/";
 
         [ObservableProperty]
@@ -63,7 +63,7 @@ namespace MensaHandyApp.ViewModels
                 HttpClient _localhost_client = new HttpClient();
                 return _localhost_client;
             }
-            else if (url == "https://oliverserver.ddns.net/")
+            else if (url == "https://oliverserver.ddns.net:7188/")
             {
                 var handler = new HttpClientHandler();
                 handler.ClientCertificateOptions = ClientCertificateOption.Manual;

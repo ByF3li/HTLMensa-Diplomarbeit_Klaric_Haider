@@ -17,7 +17,7 @@ namespace MensaHandyApp.ViewModels
     [ObservableObject]
     public partial class WarenkorbViewModel
     {
-        public string url = "https://oliverserver.ddns.net:7188/";
+        public string url = "https://oliverserver.ddns.net/";
         //public string url = "https://localhost:7188/";
 
         private Person person;
@@ -148,14 +148,7 @@ namespace MensaHandyApp.ViewModels
             {
                 GoToPaymentView();
 
-<<<<<<< HEAD
                 await Shell.Current.GoToAsync($"///OrderHistory");
-=======
-                //if(message == "SUCCESS") => ///Orderhistory
-                //if (message == "CANCLED") => "Fehler"
-
-                //await Shell.Current.GoToAsync($"///OrderHistory");
->>>>>>> c1624158e24f19268b69b699121282f0fffc2e20
                 SelectedListItem = null;
             }
             else
@@ -171,8 +164,8 @@ namespace MensaHandyApp.ViewModels
 
         public async Task GoToPaymentView()
         {
-            string paypalurl = "https://oliverserver.ddns.net/";
-            string apiUrl = "https://oliverserver.ddns.net/api/PayPalAPI/sendShoppingcartData";
+            string paypalurl = "https://oliverserver.ddns.net:7220/";
+            string apiUrl = "https://oliverserver.ddns.net:7220/api/PayPalAPI/sendShoppingcartData";
 
             HttpClient _client = Connect(paypalurl);
 
@@ -201,7 +194,7 @@ namespace MensaHandyApp.ViewModels
                 HttpClient _localhost_client = new HttpClient();
                 return _localhost_client;
             }
-            else if (url == "https://oliverserver.ddns.net/" || url == "https://oliverserver.ddns.net:7188/")
+            else if (url == "https://oliverserver.ddns.net/" || url == "https://oliverserver.ddns.net:7220/")
             {
                 var handler = new HttpClientHandler();
                 handler.ClientCertificateOptions = ClientCertificateOption.Manual;
