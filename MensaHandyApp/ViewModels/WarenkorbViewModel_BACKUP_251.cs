@@ -60,7 +60,7 @@ namespace MensaHandyApp.ViewModels
                 }
             }
         }
-
+        
         public async void GetShoppingCart()
         {
             var _client = Connect(url);
@@ -74,7 +74,7 @@ namespace MensaHandyApp.ViewModels
 
             person = await Person.LoadObject();
 
-            foreach (MenuPerson mp in Shoppingcart)
+            foreach(MenuPerson mp in Shoppingcart)
             {
                 if (!person.IsTeacher)
                 {
@@ -93,7 +93,7 @@ namespace MensaHandyApp.ViewModels
             ShoppingCartPriceDecimal = 0;
             ProductsInShoppingCart = "" + Shoppingcart.Count();
         }
-
+        
         private async void SendAlert(int menuId)
         {
             bool answer = await Shell.Current.DisplayAlert("Entfernen", "Soll das Menü vom Warenkorb entfernt werden", "Ja", "Nein");
@@ -221,6 +221,6 @@ namespace MensaHandyApp.ViewModels
             }
 
         }
-
+    
     }
 }

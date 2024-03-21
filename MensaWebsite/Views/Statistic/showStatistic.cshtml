@@ -1,0 +1,290 @@
+﻿@{
+    ViewData["Title"] = "Erste Statistic";
+}
+<h1>Statistiken</h1>
+<br />
+<div class="row">
+    <div class="col-sm-2">
+        <form>
+            <button id="menus" name="button" class="btn btn-primary" style="margin-bottom: 5px; padding: 6px 33px 6px 33px;" type="submit" asp-action="MenuChartsPartialView">Menüs</button>
+        <br />
+            <button id="orders" name="button" class="btn btn-primary" style="margin-bottom: 5px;" type="submit" asp-action="OrderChartsPartialView">Bestellungen</button>
+        <br />
+        </form>
+    </div>
+    <div class="col-sm-10">
+        <div class="row" style="margin-bottom: 5px;">
+            <div class="col-9"></div>
+            <div class="col-3">
+                <form id="buttonGroup">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-success active">
+                            <input type="radio" name="options" id="monthly" value="monthly" autocomplete="off" checked> Monat
+                        </label>
+                        <label class="btn btn-success">
+                            <input type="radio" name="options" id="weekly" value="weekly" autocomplete="off"> Woche
+                        </label>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @if (ViewBag.buttonClick == "Menü")
+        {
+            <partial name="_MenuChartsPartialView" />
+        }
+        else if (ViewBag.buttonClick == "Order")
+        {
+            <partial name="_OrderChartsPartialView" />
+        }
+        <canvas id="chart"></canvas>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        let activeChart;
+        let whatChart;
+        const ctx = document.getElementById('chart');
+
+        $('#mostSoldMenus').click(function () {
+
+            whatChart = 'mostSoldMenus';
+
+            if (activeChart) {
+                activeChart.destroy();
+            }
+
+            $.ajax({
+                url: '@Url.Action("getMostSoldMenus", "Statistic")',
+                dataType: 'json',
+                type: 'GET',
+                success: function (soldMenus) {
+                    activeChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Menü 1', 'Menü 2', 'Menü 3'],
+                            datasets: [{
+                                data: soldMenus.value
+                            }]
+                        },
+                        options: {
+                            aspectRatio: 3
+                        }
+                    });
+                },
+                error: function () {
+                    alert('Error');
+                }
+            });
+        });
+
+        $('#soldMenus').click(function () {
+
+            whatChart = 'soldMenus';
+
+            if (activeChart) {
+                activeChart.destroy();
+            }
+
+            getSoldMenus($("input[type='radio'][name=options]:checked", '#buttonGroup').val());
+        });
+
+        $('#soldPickedUpMenu1').click(function(){
+
+            whatChart = 'soldPickedUpMenu1';
+
+            if (activeChart) {
+                activeChart.destroy();
+            }
+
+            getSoldPickedUpMenu(1, $("input[type='radio'][name=options]:checked", '#buttonGroup').val());
+        });
+
+        $('#soldPickedUpMenu2').click(function () {
+
+            whatChart = 'soldPickedUpMenu2';
+
+            if (activeChart) {
+                activeChart.destroy();
+            }
+
+            getSoldPickedUpMenu(2, $("input[type='radio'][name=options]:checked", '#buttonGroup').val());
+        });
+
+        $('#soldPickedUpMenu3').click(function () {
+
+            whatChart = 'soldPickedUpMenu3';
+
+            if (activeChart) {
+                activeChart.destroy();
+            }
+
+            getSoldPickedUpMenu(3, $("input[type='radio'][name=options]:checked", '#buttonGroup').val());
+            
+        });
+
+        $('#weekly').click(function () {
+            if (whatChart == 'soldMenus') {
+                if (activeChart) {
+                    activeChart.destroy();
+                }
+                getSoldMenus('weekly');
+            }
+            if (whatChart == 'soldPickedUpMenu1') {
+                if (activeChart) {
+                    activeChart.destroy();
+                }
+                getSoldPickedUpMenu(1, 'weekly');
+            }
+            if (whatChart == 'soldPickedUpMenu2') {
+                if (activeChart) {
+                    activeChart.destroy();
+                }
+                getSoldPickedUpMenu(2, 'weekly');
+            }
+            if (whatChart == 'soldPickedUpMenu3') {
+                if (activeChart) {
+                    activeChart.destroy();
+                }
+                getSoldPickedUpMenu(3, 'weekly');
+            }
+        });
+
+        $('#monthly').click(function () {
+            if (whatChart == 'soldMenus') {
+                if (activeChart) {
+                    activeChart.destroy();
+                }
+                getSoldMenus('monthly');
+            }
+            if (whatChart == 'soldPickedUpMenu1') {
+                if (activeChart) {
+                    activeChart.destroy();
+                }
+                getSoldPickedUpMenu(1, 'monthly');
+            }
+            if (whatChart == 'soldPickedUpMenu2') {
+                if (activeChart) {
+                    activeChart.destroy();
+                }
+                getSoldPickedUpMenu(2, 'monthly');
+            }
+            if (whatChart == 'soldPickedUpMenu3') {
+                if (activeChart) {
+                    activeChart.destroy();
+                }
+                getSoldPickedUpMenu(3, 'monthly');
+            }
+        });
+        
+
+
+        function getSoldMenus(monthlyOrWeekly) {
+            $.ajax({
+                url: '@Url.Action("getSoldMenus", "Statistic")',
+                dataType: 'json',
+                type: 'GET',
+                data: { monthlyOrWeekly: monthlyOrWeekly },
+                success: function (test) {
+                    let x = [];
+                    let Menu1_y = [];
+                    let Menu2_y = [];
+                    let Menu3_y = [];
+                    for (let data of test.value[0]) {
+                        x.push(data.x);
+                        Menu1_y.push(data.y);
+                    }
+                    for (let data of test.value[1]) {
+                        Menu2_y.push(data.y);
+                    }
+                    for (let data of test.value[2]) {
+                        Menu3_y.push(data.y);
+                    }
+                    activeChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: x,
+                            datasets: [{
+                                label: 'Menü 1',
+                                data: Menu1_y
+                            },
+                            {
+                                label: 'Menü 2',
+                                data: Menu2_y
+                            },
+                            {
+                                label: 'Menü 3',
+                                data: Menu3_y
+                            }]
+                        },
+                        options: {
+                            aspectRatio: 4,
+                            scales: {
+                                y: {
+                                    ticks: {
+                                        stepSize: 1,
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function () {
+                    alert('Error');
+                }
+            });
+        }
+
+        function getSoldPickedUpMenu(whichMenu, monthlyOrWeekly) {
+            $.ajax({
+                url: '@Url.Action("getSoldPickedUpMenu", "Statistic")',
+                dataType: 'json',
+                type: 'GET',
+                data: { WhichMenu: whichMenu,
+                        monthlyOrWeekly: monthlyOrWeekly
+                },
+                success: function (data) {
+                    let x = [];
+                    let notPickedUp_y = [];
+                    let allOrdered_y = [];
+                    for (let d of data.value[1]) {
+                        x.push(d.x);
+                        allOrdered_y.push(d.y);
+                    }
+                    for (let d of data.value[0]) {
+                        notPickedUp_y.push(d.y);
+                    }
+                    activeChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: x,
+                            datasets: [{
+                                label: 'Alle Bestellungen',
+                                data: allOrdered_y
+                            },
+                            {
+                                label: 'Nicht abgeholte Bestellungen',
+                                data: notPickedUp_y
+                            }]
+                        },
+                        options: {
+                            aspectRatio: 4,
+                            scales: {
+                                y: {
+                                    ticks: {
+                                        stepSize: 1,
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function () {
+                    alert('Error');
+                }
+            });
+        }
+
+    </script>
+}

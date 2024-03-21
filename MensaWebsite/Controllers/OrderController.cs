@@ -25,7 +25,7 @@ namespace MensaWebsite.Controllers
         {
             try
             {
-                menus = await _context.Menues.Include("Orders").Include("Prices").Where(m => m.Date == DateOnly.FromDateTime(DateTime.Now)).OrderBy(m => m.Prices.PriceId).ToListAsync();
+                menus = await _context.Menues.Include("MenuPersons").Include("Prices").Where(m => m.Date == DateOnly.FromDateTime(DateTime.Now)).OrderBy(m => m.Prices.PriceId).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -40,7 +40,7 @@ namespace MensaWebsite.Controllers
         {   
             try
             {
-                menus = await _context.Menues.Include("Orders").Include("Prices").Where(m => m.Date == date).OrderBy(m => m.Prices.PriceId).ToListAsync();
+                menus = await _context.Menues.Include(m => m.MenuPersons).Include(m => m.Prices).Where(m => m.Date == date).OrderBy(m => m.Prices.PriceId).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -54,7 +54,7 @@ namespace MensaWebsite.Controllers
             DateOnly date = DateOnly.Parse(orderDate);
             try
             {
-                menus = await _context.Menues.Include("Orders").Where(m => m.Date == date).OrderBy(m => m.Prices.PriceId).ToListAsync();
+                menus = await _context.Menues.Include("MenuPersons").Where(m => m.Date == date).OrderBy(m => m.Prices.PriceId).ToListAsync();
             }
             catch (Exception ex)
             {
