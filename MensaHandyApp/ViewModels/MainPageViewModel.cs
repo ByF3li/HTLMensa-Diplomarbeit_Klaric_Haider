@@ -49,7 +49,7 @@ namespace MensaHandyApp.ViewModels
 
         public async Task OpenLoginPage()
         {
-            await Shell.Current.GoToAsync($"///Login"); 
+            await Shell.Current.GoToAsync($"///Login");
         }
 
         public async Task LogoutPerson()

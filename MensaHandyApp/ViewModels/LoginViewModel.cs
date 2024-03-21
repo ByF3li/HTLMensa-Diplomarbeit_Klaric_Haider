@@ -15,7 +15,7 @@ namespace MensaHandyApp.ViewModels
 {
     public class LoginViewModel : INotifyPropertyChanged
     {
-        public string url = "https://oliverserver.ddns.net/";
+        public string url = "https://oliverserver.ddns.net:7188/";
         //public string url = "https://localhost:7188/";
 
         private string _email;
@@ -69,7 +69,7 @@ namespace MensaHandyApp.ViewModels
         public async Task OnLogin()
         {
             Person check = await AuthentAsync();
-            
+
             HttpClient _client = Connect();
 
             if (check != null)
@@ -107,10 +107,10 @@ namespace MensaHandyApp.ViewModels
             {
                 var _client = Connect();
 
-                var requestUri = $"{url}api/LdapAPI/getLDAP?username={Uri.EscapeDataString(Email)}" + 
+                var requestUri = $"{url}api/LdapAPI/getLDAP?username={Uri.EscapeDataString(Email)}" +
                                         $"&password={Uri.EscapeDataString(Password)}";
-                                
-                
+
+
                 var requestMessage = new HttpRequestMessage
                 {
                     Method = HttpMethod.Get,
@@ -136,7 +136,7 @@ namespace MensaHandyApp.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-       
+
         public HttpClient Connect()
         {
             if (url == "https://localhost:7188/")
@@ -144,7 +144,7 @@ namespace MensaHandyApp.ViewModels
                 HttpClient _localhost_client = new HttpClient();
                 return _localhost_client;
             }
-            else if (url == "https://oliverserver.ddns.net/")
+            else if (url == "https://oliverserver.ddns.net:7188/")
             {
                 var handler = new HttpClientHandler();
                 handler.ClientCertificateOptions = ClientCertificateOption.Manual;

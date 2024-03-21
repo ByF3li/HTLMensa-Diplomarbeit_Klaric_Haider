@@ -37,8 +37,8 @@ namespace MensaWebsite.Controllers.DB
                 bool validate = await AsyncValidateUser(connection, username, password);
                 if (validate)
                 {
-                    SearchResultEntryCollection isTeacher = SearchUser(connection, baseDnLehrer, username);
-                    SearchResultEntryCollection isStudent = SearchUser(connection, baseDnSchüler, username);
+                    SearchResultEntryCollection isTeacher = await AsyncSearchUser(connection, baseDnLehrer, username);
+                    SearchResultEntryCollection isStudent = await AsyncSearchUser(connection, baseDnSchüler, username);
 
                     if (isTeacher != null)
                     {
@@ -90,7 +90,6 @@ namespace MensaWebsite.Controllers.DB
 
             try
             {
-                // Set up credentials and LDAP directory identifier
                 var credentials = new NetworkCredential("MensaLDAP", ldap_password, "SYNCHTLINN");
                 var serverId = new LdapDirectoryIdentifier(ldapServer, 389, false, false);
                 ldapConnection = new LdapConnection(serverId, credentials);
@@ -137,14 +136,11 @@ namespace MensaWebsite.Controllers.DB
 
         private async Task<SearchResultEntryCollection> AsyncSearchUser(LdapConnection ldapConnection, string baseDn, string username)
         {
-            // Create an LDAP search request
             var searchRequest = new SearchRequest(baseDn, $"(&(objectClass=person)(sAMAccountName={username}))", SearchScope.Subtree, null);
 
-            // Perform the search and get the result
             try
             {
                 var searchResponse = (SearchResponse)ldapConnection.SendRequest(searchRequest);
-                // Process the search result
                 foreach (SearchResultEntry entry in searchResponse.Entries)
                 {
                     Console.WriteLine($"Firstname: {entry.Attributes["givenName"][0]}");
@@ -156,13 +152,13 @@ namespace MensaWebsite.Controllers.DB
                 }
                 else
                 {
-                    return null; 
+                    return null;
                 }
             }
             catch (LdapException e)
             {
                 Console.WriteLine(e);
-                return null; 
+                return null;
             }
         }
     }

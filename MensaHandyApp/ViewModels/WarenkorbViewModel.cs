@@ -17,7 +17,7 @@ namespace MensaHandyApp.ViewModels
     [ObservableObject]
     public partial class WarenkorbViewModel
     {
-        public string url = "https://oliverserver.ddns.net/";
+        public string url = "https://oliverserver.ddns.net:7188/";
         //public string url = "https://localhost:7188/";
 
         private Person person;
@@ -60,7 +60,7 @@ namespace MensaHandyApp.ViewModels
                 }
             }
         }
-        
+
         public async void GetShoppingCart()
         {
             var _client = Connect(url);
@@ -74,7 +74,7 @@ namespace MensaHandyApp.ViewModels
 
             person = await Person.LoadObject();
 
-            foreach(MenuPerson mp in Shoppingcart)
+            foreach (MenuPerson mp in Shoppingcart)
             {
                 if (!person.IsTeacher)
                 {
@@ -93,7 +93,7 @@ namespace MensaHandyApp.ViewModels
             ShoppingCartPriceDecimal = 0;
             ProductsInShoppingCart = "" + Shoppingcart.Count();
         }
-        
+
         private async void SendAlert(int menuId)
         {
             bool answer = await Shell.Current.DisplayAlert("Entfernen", "Soll das Menü vom Warenkorb entfernt werden", "Ja", "Nein");
@@ -164,8 +164,8 @@ namespace MensaHandyApp.ViewModels
 
         public async Task GoToPaymentView()
         {
-            string paypalurl = "https://oliverserver.ddns.net:7220/";
-            string apiUrl = "https://oliverserver.ddns.net:7220/api/PayPalAPI/sendShoppingcartData";
+            string paypalurl = "https://oliverserver.ddns.net/";
+            string apiUrl = "https://oliverserver.ddns.net/api/PayPalAPI/sendShoppingcartData";
 
             HttpClient _client = Connect(paypalurl);
 
@@ -194,7 +194,7 @@ namespace MensaHandyApp.ViewModels
                 HttpClient _localhost_client = new HttpClient();
                 return _localhost_client;
             }
-            else if (url == "https://oliverserver.ddns.net/" || url == "https://oliverserver.ddns.net:7220/")
+            else if (url == "https://oliverserver.ddns.net/" || url == "https://oliverserver.ddns.net:7188/")
             {
                 var handler = new HttpClientHandler();
                 handler.ClientCertificateOptions = ClientCertificateOption.Manual;
@@ -214,6 +214,6 @@ namespace MensaHandyApp.ViewModels
             }
 
         }
-    
+
     }
 }
