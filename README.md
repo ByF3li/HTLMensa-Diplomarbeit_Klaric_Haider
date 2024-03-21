@@ -1,5 +1,7 @@
-# HTL-Mensa-App\Mittagsmenüs mittels App Online bestellen
+# Diplomarbeit 
+## HTL-Mensa-App\Mittagsmenüs mittels App Online bestellen
 
+### Kurzfassung
 Zur Mittagszeit entsteht in der Mensa immer eine lange Warteschlange, da
 mehr und mehr Schüler es bevorzugen die Feinkost der Mensa zu genießen.
 Im Rahmen der Diplomarbeit versuchen wir den Kaufvorgang der Mittags-
@@ -11,6 +13,7 @@ zur Bestellung an. Zusätzlich hat die Mensa, die Möglichkeit auf einem
 Terminal, die Statistiken der letzten Tage, Wochen und Monaten abzurufen
 und die Daten grafisch darstellen zu lassen.
 
+### Abstract
 There is always a long queue in the canteen at lunchtime, as more and more
 pupils prefer to enjoy the canteen’s food. As part of the diploma thesis, we
 are trying to digitise the process of buying lunch menus and thus reduce the
