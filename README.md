@@ -11,8 +11,8 @@ There is always a long queue in the canteen at lunchtime, as more and more pupil
 * Einfüllen der Url für Ihren Webserver in jeder ViewModel-Datei.
 
 * Im LdapAPIController.cs müssen diese Felder befüllt werden:
-    string ldapServer = "ldap_server_ip";
-    string ldap_password = "ldap_server_password";
-    string baseDnLehrer = "ldap_baseDN_teacher";
-    string baseDnSchüler = "ldap_baseDN_student";
+    * string ldapServer = "ldap_server_ip";
+    * string ldap_password = "ldap_server_password";
+    * string baseDnLehrer = "ldap_baseDN_teacher";
+    * string baseDnSchüler = "ldap_baseDN_student";
 * Das PayPal Projekt (PayPalWebsiteTeil) wurde aufgrund von Zeitmangel nicht komplett implementiert
