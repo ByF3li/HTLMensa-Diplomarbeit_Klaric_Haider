@@ -32,8 +32,13 @@ namespace MensaWebsite.Controllers
         [HttpGet("getAllOrderByUserEmail")]
         public async Task<IActionResult> AsyncGetAllOrderByUser(String mail)
         {
+            var menus = await this._context.MenuPersons
+                .Include(mp => mp.Menu)
+                .ThenInclude(m => m.Prices)
+                .Where(mp => mp.Person.Email == mail)
+                .ToListAsync();
 
-            return new JsonResult(await this._context.MenuPersons.Where(mp => mp.Person.Email == mail).ToListAsync(), options);
+            return new JsonResult(menus, options);
         }
 
         [HttpPost("saveOrder")]
@@ -72,13 +77,14 @@ namespace MensaWebsite.Controllers
         }
 
         [HttpPut("updatePayedOrder")]
-        public async Task<IActionResult> AsyncUpdatePayedOrder(string userEmail)
+        public async Task<IActionResult> AsyncUpdatePayedOrder(string userEmail, string message, string paypalOrderId)
         {
             List<MenuPerson> shoppingCart = (this._context.MenuPersons.Where(mp => (mp.Person.Email.Equals(userEmail)) && (mp.InShoppingcart))).ToList();
             shoppingCart.ForEach(mp => {
-                mp.Payed = true;
+                mp.PaymentStatus = message; 
                 mp.OrderDate = DateOnly.FromDateTime(DateTime.Now);
                 mp.InShoppingcart = false;
+                mp.PaypalOrderId = paypalOrderId;
             });
             var isUpdateSuccessful = await this._context.SaveChangesAsync() > 0;
             return new JsonResult(shoppingCart, options);
@@ -87,7 +93,7 @@ namespace MensaWebsite.Controllers
         [HttpPut("updateActivatedOrder")]
         public async Task<IActionResult> AsyncUpdateActivatedOrder(string userEmail)
         {
-            List<MenuPerson> shoppingCart = (this._context.MenuPersons.Where(mp => (mp.Person.Email.Equals(userEmail)) && (mp.Payed) && !mp.Activated)).ToList();
+            List<MenuPerson> shoppingCart = (this._context.MenuPersons.Where(mp => (mp.Person.Email.Equals(userEmail)) && (mp.PaymentStatus == "SUCCESS") && !mp.Activated)).ToList();
 
             shoppingCart.ForEach(mp => mp.Activated = true);
             var isUpdateSuccessful = await this._context.SaveChangesAsync() > 0;

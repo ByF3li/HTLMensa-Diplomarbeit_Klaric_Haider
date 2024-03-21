@@ -4,7 +4,6 @@
              x:Class="MensaHandyApp.Views.Menus.WeeklyMenusView"
              Title="WeeklyMenus">
 
-
     <ScrollView>
         <VerticalStackLayout>
             <IndicatorView x:Name="indicatorView" Margin="5" HorizontalOptions="Center" IndicatorColor="White" SelectedIndicatorColor="Red"/>
@@ -12,8 +11,8 @@
 
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <VerticalStackLayout BackgroundColor="DarkViolet" Padding="5">
-                            <Label FontSize="Medium" FontAttributes="Bold" HorizontalTextAlignment="Center" Text="{Binding Date, StringFormat='{}{0:dddd dd MMM yyyy}'}" Margin="0,0,0,5" TextColor="White"/>
+                        <VerticalStackLayout Padding="5">
+                            <Label FontSize="Medium" FontAttributes="Bold" HorizontalTextAlignment="Center" Text="{Binding Date, StringFormat='{}{0:dddd dd MMM yyyy}'}" Margin="0,0,0,5"/>
 
                             <CollectionView ItemsSource="{Binding Menus}" SelectionMode="Single" SelectedItem="{Binding Path = BindingContext.SelectedListItem, Source={Reference carusellMenus}}">
                                 <CollectionView.ItemsLayout>
@@ -25,16 +24,19 @@
                                             <Grid RowDefinitions="2*, 2*, 2*, 2*, 2*" ColumnDefinitions="1*, 1*"  Margin="5">
 
                                                 <Label Text="Menü Nummer:" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
-                                                <Label Text="{Binding WhichMenu}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+                                                <Label Text="{Binding Prices.PriceId}" HorizontalOptions="Start" Grid.Row="0" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
 
-                                                <Label Text="Vorspeiße:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                                <Label Text="Vorspeise:" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
                                                 <Label Text="{Binding Starter}" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
 
-                                                <Label Text="Hauptspeiße:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
+                                                <Label Text="Hauptspeise:" HorizontalOptions="Start" Grid.Row="2" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"/>
                                                 <Label Text="{Binding MainCourse}" HorizontalOptions="Start" Grid.Row="2" Grid.Column="1" Margin="0, 0, 0, 5"  FontSize="10"/>
 
                                                 <Label Text="Preis des Menüs:" HorizontalOptions="Start" Grid.Row="3" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10" />
-                                                <Label Text="{Binding Price, StringFormat='{0:F2}'}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+                                                <Label Text="{Binding Prices.PriceTeacher}" IsVisible="{Binding BindingContext.ShowTeacherPrice, Source={Reference carusellMenus}}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+                                                <Label Text="{Binding Prices.PriceStudent}" IsVisible="{Binding BindingContext.ShowStudentPrice, Source={Reference carusellMenus}}" HorizontalOptions="Start" Grid.Row="3" Grid.Column="1" Margin="0, 0, 0, 5" FontSize="10"/>
+
+
 
                                                 <Label Text="Allergene:" HorizontalOptions="Start" Grid.Row="4" Grid.Column="0" Margin="0, 0, 0, 5" FontSize="10"></Label>
                                                 <Label Text="(ACG)" HorizontalOptions="Start" Grid.Row="4" Grid.Column="1"  FontSize="10" Margin="0, 0, 0, 5"></Label>
@@ -44,7 +46,6 @@
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
                             <Label Text="A=GLUTENHALTIGES GETREIDE; B=KREBSTIERE; C=EIER; D=FISCH; E=ERDNÜSSE; F=SOJA; G=MILCH UND LACTOSE; H=SCHALENFRÜCHTE (NÜSSE); L=SELLERIE; M=SENF; N=SESAM; O=SULFITE; P=LUPINIEN; R=WEICHTIERE" Padding="10" FontSize="10" TextColor="White"></Label>
-
 
                         </VerticalStackLayout>
                     </DataTemplate>

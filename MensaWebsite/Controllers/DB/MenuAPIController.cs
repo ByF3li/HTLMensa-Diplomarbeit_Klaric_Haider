@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Globalization;
 using Microsoft.VisualBasic;
 using Microsoft.AspNetCore.Connections.Features;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace MensaWebsite.Controllers
 {
@@ -30,7 +31,7 @@ namespace MensaWebsite.Controllers
         [HttpGet("getAllMenus")]
         public async Task<IActionResult> AsyncGetAllMenues()
         {
-            return new JsonResult(await this._context.Menues.ToListAsync(), options);
+            return new JsonResult(await this._context.Menues.Include("Prices").ToListAsync(), options);
         }
 
         [HttpPost("saveMenu")]
@@ -50,7 +51,7 @@ namespace MensaWebsite.Controllers
         [HttpGet("getMenuByDate/{menuDate}")]
         public async Task<IActionResult> AsyncGetMenuByDate(DateOnly menuDate)
         {
-            var toSortDate = await this._context.Menues.Where(m => m.Date.Equals(menuDate)).ToListAsync();
+            var toSortDate = await this._context.Menues.Include("Prices").Where(m => m.Date.Equals(menuDate)).ToListAsync();
             toSortDate.Sort();
             return new JsonResult(toSortDate, options);
         }
@@ -58,7 +59,7 @@ namespace MensaWebsite.Controllers
         [HttpGet("getMenuById/{menuId}")]
         public async Task<IActionResult> AsyncGetMenuById(int menuId)
         {
-            return new JsonResult(await this._context.Menues.Where(m => m.MenuId.Equals(menuId)).FirstAsync(), options);
+            return new JsonResult(await this._context.Menues.Include("Prices").Where(m => m.MenuId.Equals(menuId)).FirstAsync(), options);
         }
 
         [HttpDelete("deleteMenuById/{menuId}")]
@@ -80,7 +81,7 @@ namespace MensaWebsite.Controllers
         public async Task<IActionResult> AsyncGetDailyMenu()
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-            return new JsonResult(await this._context.Menues.Where(m => m.Date.Equals(today)).ToListAsync());
+            return new JsonResult(await this._context.Menues.Include("Prices").Where(m => m.Date.Equals(today)).ToListAsync());
         }
 
         [HttpPut("changeMenuById")]
@@ -142,6 +143,22 @@ namespace MensaWebsite.Controllers
             List<Menu> sortedMenuList = SortMenus(menuList);
 
             return new JsonResult(sortedMenuList, options);
+        }
+
+        [HttpGet("getPriceForMenu")]
+        public async Task<IActionResult> AsyncGetPriceForMenu(int menuId)
+        {
+            var menuToGetPriceFor = await this._context.Menues.FindAsync(menuId);
+            if(menuToGetPriceFor != null)
+            {
+                PriceForMenu price = await _context.Prices.FindAsync(menuToGetPriceFor.Prices.PriceId);
+                return new JsonResult(price, options);
+
+            }
+            else
+            {
+                return BadRequest("No menu found to get price for");
+            }
         }
 
         private DateOnly ReturnThisWeek()

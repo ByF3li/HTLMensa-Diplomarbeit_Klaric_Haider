@@ -15,14 +15,15 @@ namespace MensaAppKlassenBibliothek
     {
         [Key]
         public string Email { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public bool IsTeacher { get; set; }
+
 
         public List<MenuPerson> MenuPersons { get; set; } = new List<MenuPerson>() { };
 
-
-        public async void SaveObject()
+        //With this Methods a Person can be saved in SecureStorage
+        public async Task SaveObject()
         {
             JsonSerializerOptions options = new JsonSerializerOptions()
             {
@@ -32,15 +33,16 @@ namespace MensaAppKlassenBibliothek
             string serializedObject = JsonSerializer.Serialize(this, options);
 
             // Store the serialized object in Preferences
-            await SecureStorage.SetAsync("userEmail", serializedObject);
+            await SecureStorage.SetAsync("user", serializedObject);
         }
 
+        //With this Methods a Person can be loaded from the SecureStorage
         public async static Task<Person> LoadObject()
         {
             // Retrieve the serialized object from Preferences
             
                 // Deserialize the string back to the object
-            string serializedObject = await SecureStorage.GetAsync("userEmail");
+            string serializedObject = await SecureStorage.GetAsync("user");
             JsonSerializerOptions options = new JsonSerializerOptions()
             {
                 ReferenceHandler = ReferenceHandler.IgnoreCycles
@@ -48,6 +50,12 @@ namespace MensaAppKlassenBibliothek
             return JsonSerializer.Deserialize<Person>(serializedObject, options);
             
 
+        }
+
+        //With this Methods a Person can be deleted from the SecureStorage
+        public async static Task DeleteObject()
+        {
+            SecureStorage.Remove("user");
         }
     }
 }

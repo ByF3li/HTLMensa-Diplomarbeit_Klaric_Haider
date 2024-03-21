@@ -16,9 +16,7 @@ public partial class WarenkorbView : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-
-        // Reload data or perform any other actions when the page appears
-        // For example, you can call a method in your view model to refresh data
+        //Calling the Method ReloadData() every time the WarenkorbView is opened   
         ((WarenkorbViewModel)BindingContext).ReloadData();
     }
 }

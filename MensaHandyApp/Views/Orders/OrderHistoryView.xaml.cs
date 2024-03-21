@@ -16,6 +16,7 @@ public partial class OrderHistoryView : ContentPage
     {
         base.OnAppearing();
 
+        //Calling the Method ReloadData() every time the ORderHistoryView is opened   
         await ((OrderHistoryViewModel)BindingContext).ReloadData();
     }
 }
