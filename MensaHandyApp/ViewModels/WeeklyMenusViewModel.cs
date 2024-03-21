@@ -18,7 +18,7 @@ namespace MensaHandyApp.ViewModels
     [ObservableObject]
     partial class WeeklyMenusViewModel
     {
-        public string url = "https://oliverserver.ddns.net/";
+        public string url = "input_your_server_ip";
         //public string url = "https://localhost:7188/";
 
         private Person person;
@@ -261,7 +261,7 @@ namespace MensaHandyApp.ViewModels
                 HttpClient _localhost_client = new HttpClient();
                 return _localhost_client;
             }
-            else if (url == "https://oliverserver.ddns.net/")
+            else if (url == "your_server_ip")
             {
                 var handler = new HttpClientHandler();
                 handler.ClientCertificateOptions = ClientCertificateOption.Manual;
@@ -271,9 +271,9 @@ namespace MensaHandyApp.ViewModels
                         return true;
                     };
 
-                var _oliverserver_client = new HttpClient(handler);
+                var _server_client = new HttpClient(handler);
 
-                return _oliverserver_client;
+                return _server_client;
             }
             else
             {

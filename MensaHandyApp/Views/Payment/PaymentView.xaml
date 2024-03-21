@@ -6,5 +6,5 @@
              xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls">
     
     <!-- Opens the webserver-page to pay with paypal (payment not fully implemented) -->
-    <WebView x:Name="paymentWebView" Source="http://oliverserver.ddns.net:5187/" android:WebView.MixedContentMode="AlwaysAllow"></WebView>
+    <WebView x:Name="paymentWebView" Source="input_your_server_ip" android:WebView.MixedContentMode="AlwaysAllow"></WebView>
 </ContentPage>

@@ -23,11 +23,11 @@ namespace MensaWebsite.Controllers.DB
         [HttpGet("getLDAP")]
         public async Task<IActionResult> AsyncGetLDAP(string username, string password)
         {
-            string ldapServer = "10.10.80.42";
-            string ldap_password = "2RFCdoJEQc!2vuWD=s#E";
-            string baseDnLehrer = "OU=701417_Lehrer,OU=701417,OU=CAMPUS,DC=SYNCHTLINN,DC=local";
-            string baseDnSchüler = "OU=701417_Schueler,OU=701417,OU=CAMPUS,DC=SYNCHTLINN,DC=local";
-            //string bindUserDN = "CN=MensaLDAP,OU=ADMIN,DC=SYNCHTLINN,DC=local";
+            //input your data
+            string ldapServer = "ldap_server_ip";
+            string ldap_password = "ldap_server_password";
+            string baseDnLehrer = "ldap_baseDN_teacher";
+            string baseDnSchüler = "ldap_baseDN_student";
 
             var connection = await AsyncConnectToLDAP(ldapServer, ldap_password);
             if (connection != null)
@@ -116,7 +116,7 @@ namespace MensaWebsite.Controllers.DB
         private async Task<bool> AsyncValidateUser(LdapConnection ldapConnection, string username, string password)
         {
             var credentials = new NetworkCredential(username, password, "SYNCHTLINN");
-            var serverId = new LdapDirectoryIdentifier("10.10.80.42", 389, false, false);
+            var serverId = new LdapDirectoryIdentifier("ldap_server_ip", 389, false, false);
 
             var conn = new LdapConnection(serverId, credentials);
             conn.SessionOptions.ProtocolVersion = 3;
