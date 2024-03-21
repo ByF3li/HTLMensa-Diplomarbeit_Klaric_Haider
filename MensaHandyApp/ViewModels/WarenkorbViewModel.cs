@@ -148,14 +148,7 @@ namespace MensaHandyApp.ViewModels
             {
                 GoToPaymentView();
 
-<<<<<<< HEAD
                 await Shell.Current.GoToAsync($"///OrderHistory");
-=======
-                //if(message == "SUCCESS") => ///Orderhistory
-                //if (message == "CANCLED") => "Fehler"
-
-                //await Shell.Current.GoToAsync($"///OrderHistory");
->>>>>>> c1624158e24f19268b69b699121282f0fffc2e20
                 SelectedListItem = null;
             }
             else
