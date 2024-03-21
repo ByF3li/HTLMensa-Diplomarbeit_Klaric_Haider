@@ -37,8 +37,8 @@ namespace MensaWebsite.Controllers.DB
                 bool validate = await AsyncValidateUser(connection, username, password);
                 if (validate)
                 {
-                    SearchResultEntryCollection isTeacher = SearchUser(connection, baseDnLehrer, username);
-                    SearchResultEntryCollection isStudent = SearchUser(connection, baseDnSchüler, username);
+                    SearchResultEntryCollection isTeacher = await AsyncSearchUser(connection, baseDnLehrer, username);
+                    SearchResultEntryCollection isStudent = await AsyncSearchUser(connection, baseDnSchüler, username);
 
                     if (isTeacher != null)
                     {
